@@ -1,0 +1,15 @@
+*
+{
+    /* Size */
+    box-sizing: border-box;
+}
+
+:host
+{
+    /* Layout */
+    display: block;
+
+    /* Size */
+    width: 100%;
+    height: 100%;
+}
