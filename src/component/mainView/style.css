@@ -1,0 +1,30 @@
+*
+{
+    /* Size */
+    box-sizing: border-box;
+}
+
+:host
+{
+    /* Layout */
+    display: flex;
+    flex-direction: row;
+
+    /* Size */
+    width: 100vw;
+    height: 100vh;
+}
+
+.left
+{
+    /* Size */
+    width: 50%;
+    height: 100%;
+}
+
+.right
+{
+    /* Size */
+    width: 50%;
+    height: 100%;
+}
