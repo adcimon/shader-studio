@@ -35,3 +35,9 @@
     /* Size */
     width: auto !important;
 }
+
+.codeflask__flatten
+{
+    /* Position */
+    z-index: 0 !important;
+}
