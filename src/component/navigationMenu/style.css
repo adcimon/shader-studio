@@ -42,7 +42,8 @@
 
     /* Style */
     background: var(--nav-color);
-    border-radius: 10px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
 }
 
 .nav-menu ul
