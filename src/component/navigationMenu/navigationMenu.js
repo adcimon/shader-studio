@@ -5,7 +5,7 @@ const css = `<link type="text/css" rel="stylesheet" href="./src/component/naviga
 const html = `
 <div class="nav-menu">
     <ul>
-        <li class="nav-item active">
+        <li class="nav-item active" name="shader">
             <a href="#">
                 <span class="nav-icon">
                     <svg viewBox="0 0 512 512">
@@ -20,7 +20,7 @@ const html = `
                 <span class="nav-text">Shader</span>
             </a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" name="uniforms">
             <a href="#">
                 <span class="nav-icon">
                     <svg viewBox="0 0 512 512">
@@ -58,7 +58,7 @@ export class NavigationMenu extends HTMLElement
         this.items = this.shadowRoot.querySelectorAll(".nav-item");
         this.items.forEach((item) =>
         {
-            item.addEventListener("click", this.activeItem.bind(this, item));
+            item.addEventListener("click", this.handleClickItem.bind(this, item));
         });
     }
 
@@ -66,17 +66,24 @@ export class NavigationMenu extends HTMLElement
     {
         this.items.forEach((item) =>
         {
-            item.removeEventListener("click", this.activeItem);
+            item.removeEventListener("click", this.handleClickItem);
         });
     }
 
-    activeItem( item )
+    handleClickItem( item )
     {
         this.items.forEach((i) =>
         {
             i.classList.remove("active");
             item.classList.add("active");
         });
+
+        let event = new CustomEvent("itemselect", { detail:
+        {
+            item: item,
+            name: item.getAttribute("name")
+        }});
+        this.dispatchEvent(event);
     }
 }
 
