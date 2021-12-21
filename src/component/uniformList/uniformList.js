@@ -27,16 +27,6 @@ export class UniformList extends HTMLElement
     disconnectedCallback()
     {
     }
-
-    show()
-    {
-        this.style.visibility = "visible";
-    }
-
-    hide()
-    {
-        this.style.visibility = "hidden";
-    }
 }
 
 window.customElements.define("uniform-list", UniformList);
