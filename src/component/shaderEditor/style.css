@@ -6,10 +6,11 @@
 :host
 {
     /* Variables */
-    --controls-height: 40px;
     --editor-background: var(--secondary-color);
-    --controls-background: var(--primary-color);
     --editor-border-color: var(--border-color);
+    --controls-background: var(--primary-color);
+    --controls-height: 40px;
+    --selection-color: var(--text-selection-color);
 
     /* Layout */
     display: block;
@@ -22,6 +23,11 @@
 :host([hidden])
 {
     display: none
+}
+
+::selection
+{
+    background: var(--selection-color);
 }
 
 .editor
@@ -105,7 +111,7 @@
 .codeflask
 {
     background: var(--editor-background);
-    color: #4f559c;
+    color: #d4d4d4;
 }
 
 .codeflask .token.punctuation
@@ -115,55 +121,55 @@
 
 .codeflask .token.keyword
 {
-    color: #8500ff;
+    color: #569cd6;
 }
 
 .codeflask .token.operator
 {
-    color: #ff5598;
+    color: #d4d4d4;
 }
 
 .codeflask .token.string
 {
-    color: #41ad8f;
+    color: #ce9178;
 }
 
 .codeflask .token.comment
 {
-    color: #9badb7;
+    color: #6A9955;
 }
 
 .codeflask .token.function
 {
-    color: #8500ff;
+    color: #569cd6;
 }
 
 .codeflask .token.boolean
 {
-    color: #8500ff;
+    color: #569cd6;
 }
 
 .codeflask .token.number
 {
-    color: #8500ff;
+    color: #b5cea8;
 }
 
 .codeflask .token.selector
 {
-    color: #8500ff;
+    color: #d4d4d4;
 }
 
 .codeflask .token.property
 {
-    color: #8500ff;
+    color: #d4d4d4;
 }
 
 .codeflask .token.tag
 {
-    color: #8500ff;
+    color: #ce9178;
 }
 
 .codeflask .token.attr-value
 {
-    color: #8500ff;
+    color: #d4d4d4;
 }
