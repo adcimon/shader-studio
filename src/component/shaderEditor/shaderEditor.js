@@ -40,7 +40,8 @@ export class ShaderEditor extends HTMLElement
         {
             language: "js",
             lineNumbers: true,
-            styleParent: this.shadowRoot
+            styleParent: this.shadowRoot,
+            defaultTheme: false
         });
         this.flask.onUpdate(function( code )
         {
