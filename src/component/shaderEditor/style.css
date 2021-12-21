@@ -9,7 +9,7 @@
     --controls-height: 40px;
     --editor-background: var(--secondary-color);
     --controls-background: var(--primary-color);
-    --controls-border-color: var(--border-color);
+    --editor-border-color: var(--border-color);
 
     /* Layout */
     display: block;
@@ -46,7 +46,7 @@
 
     /* Style */
     background-color: var(--controls-background);
-    border-top: 2px solid var(--controls-border-color);
+    border-top: 2px solid var(--editor-border-color);
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
 }
@@ -92,6 +92,12 @@
 .codeflask textarea
 {
     color: transparent;
+}
+
+.codeflask.codeflask--has-line-numbers::before
+{
+    background: transparent !important;
+    border-right: 2px solid var(--editor-border-color);
 }
 
 /* Theme */
