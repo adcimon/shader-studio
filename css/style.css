@@ -1,6 +1,6 @@
 :root
 {
-    --background: hsla(214, 7%, 19%, 1);
+    --background: radial-gradient(circle, rgba(32,163,253,1) 24%, rgba(3,14,32,1) 100%);
     --main-color: hsla(0, 0%, 100%, 1);
     --active-color: hsla(207, 90%, 54%, 1);
     --inactive-color: hsla(228, 7%, 14%, 1);
