@@ -43,14 +43,14 @@ function initializeInterface()
         {
             case "shader":
             {
-                uniformList.hide();
-                shaderEditor.show();
+                uniformList.hidden = true;
+                shaderEditor.hidden = false;
                 break;
             }
             case "uniforms":
             {
-                shaderEditor.hide();
-                uniformList.show();
+                shaderEditor.hidden = true;
+                uniformList.hidden = false;
                 break;
             }
         }
