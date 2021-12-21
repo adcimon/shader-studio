@@ -1,9 +1,11 @@
 :root
 {
     --background: radial-gradient(circle, hsla(204, 98%, 56%, 1) 24%, hsla(217, 83%, 7%, 1) 100%);
-    --main-color: hsla(0, 0%, 100%, 1);
+    --primary-color: rgba(28, 28, 28, 1);
+    --secondary-color: rgba(36, 36, 36, 1);
+    --border-color: rgba(48, 48, 48, 1);
     --active-color: hsla(207, 90%, 54%, 1);
-    --inactive-color: hsla(228, 7%, 14%, 1);
+    --inactive-color: rgba(255, 255, 255, 1);
 }
 
 *

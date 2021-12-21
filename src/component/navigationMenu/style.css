@@ -8,7 +8,7 @@
     /* Variables */
     --nav-item-width: 70px;
     --nav-indicator-size: 70px;
-    --nav-color: var(--main-color);
+    --nav-color: var(--primary-color);
     --nav-active-color: var(--active-color);
     --nav-inactive-color: var(--inactive-color);
 
