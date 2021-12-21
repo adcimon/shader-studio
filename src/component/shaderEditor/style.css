@@ -31,24 +31,6 @@
     height: calc(100% - var(--bottom-height));
 }
 
-.codeflask
-{
-    /* Position */
-    position: relative !important;
-}
-
-.codeflask__pre
-{
-    /* Size */
-    width: auto !important;
-}
-
-.codeflask__flatten
-{
-    /* Position */
-    z-index: 0 !important;
-}
-
 .controls
 {
     /* Layout */
@@ -80,4 +62,90 @@
     /* Style */
     border: none;
     border-radius: 25%;
+}
+
+/*
+|--------------------------------------------------------------------------
+| CodeFlask
+|--------------------------------------------------------------------------
+*/
+
+.codeflask
+{
+    position: relative !important;
+}
+
+.codeflask__pre
+{
+    width: auto !important;
+}
+
+.codeflask__flatten
+{
+    z-index: 0 !important;
+}
+
+.codeflask
+{
+    background: #fff;
+    color: #4f559c;
+}
+.codeflask .token.punctuation
+{
+    color: #4a4a4a;
+}
+
+.codeflask .token.keyword
+{
+    color: #8500ff;
+}
+
+.codeflask .token.operator
+{
+    color: #ff5598;
+}
+
+.codeflask .token.string
+{
+    color: #41ad8f;
+}
+
+.codeflask .token.comment
+{
+    color: #9badb7;
+}
+
+.codeflask .token.function
+{
+    color: #8500ff;
+}
+
+.codeflask .token.boolean
+{
+    color: #8500ff;
+}
+
+.codeflask .token.number
+{
+    color: #8500ff;
+}
+
+.codeflask .token.selector
+{
+    color: #8500ff;
+}
+
+.codeflask .token.property
+{
+    color: #8500ff;
+}
+
+.codeflask .token.tag
+{
+    color: #8500ff;
+}
+
+.codeflask .token.attr-value
+{
+    color: #8500ff;
 }
