@@ -1,6 +1,5 @@
 *
 {
-    /* Size */
     box-sizing: border-box;
 }
 
@@ -12,6 +11,11 @@
     /* Size */
     width: 100%;
     height: 100%;
+}
+
+:host([hidden])
+{
+    display: none
 }
 
 .editor
