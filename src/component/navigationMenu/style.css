@@ -54,6 +54,9 @@
 {
     /* Layout */
     display: flex;
+
+    /* Space */
+    padding-left: 0px;
 }
 
 .nav-menu ul li
