@@ -1,0 +1,6 @@
+{
+    "name": "Shader Studio",
+    "short_name": "Shader Studio",
+    "display": "standalone",
+    "orientation":  "landscape"
+}
