@@ -6,7 +6,10 @@
 :host
 {
     /* Variables */
-    --bottom-height: 40px;
+    --controls-height: 40px;
+    --editor-background: var(--secondary-color);
+    --controls-background: var(--primary-color);
+    --controls-border-color: var(--border-color);
 
     /* Layout */
     display: block;
@@ -28,7 +31,7 @@
 
     /* Size */
     width: 100%;
-    height: calc(100% - var(--bottom-height));
+    height: calc(100% - var(--controls-height));
 }
 
 .controls
@@ -39,10 +42,11 @@
 
     /* Size */
     width: 100%;
-    height: var(--bottom-height);
+    height: var(--controls-height);
 
     /* Style */
-    background-color: rgb(32, 32, 32);
+    background-color: var(--controls-background);
+    border-top: 2px solid var(--controls-border-color);
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
 }
@@ -85,11 +89,19 @@
     z-index: 0 !important;
 }
 
+.codeflask textarea
+{
+    color: transparent;
+}
+
+/* Theme */
+
 .codeflask
 {
-    background: #fff;
+    background: var(--editor-background);
     color: #4f559c;
 }
+
 .codeflask .token.punctuation
 {
     color: #4a4a4a;
