@@ -33,6 +33,7 @@ function initializeInterface()
 {
     shaderEditor = document.body.querySelector("shader-editor");
     shaderEditor.setCode(Fragments[0]);
+    shaderEditor.addEventListener("compile", compile);
 
     uniformList = new UniformList();
 
