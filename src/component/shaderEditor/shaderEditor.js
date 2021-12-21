@@ -44,16 +44,6 @@ export class ShaderEditor extends HTMLElement
     {
     }
 
-    show()
-    {
-        this.style.visibility = "visible";
-    }
-
-    hide()
-    {
-        this.style.visibility = "hidden";
-    }
-
     getCode()
     {
         return this.code;
