@@ -8,8 +8,6 @@
     /* Variables */
     --editor-background-color: var(--secondary-color);
     --editor-border-color: var(--border-color);
-    --controls-background-color: var(--primary-color);
-    --controls-height: 40px;
     --selection-color: var(--text-selection-color);
 
     /* Layout */
@@ -42,41 +40,7 @@
 
     /* Size */
     width: 100%;
-    height: calc(100% - var(--controls-height));
-}
-
-.controls
-{
-    /* Layout */
-    display: flex;
-    align-items: center;
-
-    /* Size */
-    width: 100%;
-    height: var(--controls-height);
-
-    /* Style */
-    background-color: var(--controls-background-color);
-    border-top: 2px solid var(--editor-border-color);
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
-}
-
-.compile-button
-{
-    /* Layout */
-    display: flex;
-
-    /* Size */
-    width: 30px;
-    height: 30px;
-
-    /* Space */
-    margin-left: 10px;
-
-    /* Style */
-    border: none;
-    border-radius: 25%;
+    height: 100%;
 }
 
 /*
