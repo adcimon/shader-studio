@@ -7,6 +7,7 @@
 {
     /* Variables */
     --background-color: var(--secondary-color);
+    --add-button-size: 35px;
 
     /* Layout */
     display: block;
@@ -31,10 +32,11 @@
 {
     /* Layout */
     display: block;
+    overflow: scroll;
 
     /* Size */
     width: 100%;
-    height: 100%;
+    height: calc(90% - var(--add-button-size));
 }
 
 .add-button
@@ -45,8 +47,8 @@
     left: 50%;
 
     /* Size */
-    width: 35px;
-    height: 35px;
+    width: var(--add-button-size);
+    height: var(--add-button-size);
 
     /* Space */
     margin-bottom: 10px;
