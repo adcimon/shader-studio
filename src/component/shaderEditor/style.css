@@ -6,9 +6,9 @@
 :host
 {
     /* Variables */
-    --editor-background: var(--secondary-color);
+    --editor-background-color: var(--secondary-color);
     --editor-border-color: var(--border-color);
-    --controls-background: var(--primary-color);
+    --controls-background-color: var(--primary-color);
     --controls-height: 40px;
     --selection-color: var(--text-selection-color);
 
@@ -51,7 +51,7 @@
     height: var(--controls-height);
 
     /* Style */
-    background-color: var(--controls-background);
+    background-color: var(--controls-background-color);
     border-top: 2px solid var(--editor-border-color);
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
@@ -102,7 +102,7 @@
 
 .codeflask.codeflask--has-line-numbers::before
 {
-    background: transparent !important;
+    background: var(--editor-background-color) !important;
     border-right: 2px solid var(--editor-border-color);
 }
 
@@ -110,7 +110,7 @@
 
 .codeflask
 {
-    background: var(--editor-background);
+    background: var(--editor-background-color);
     color: #d4d4d4;
 }
 
