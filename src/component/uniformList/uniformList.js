@@ -38,6 +38,13 @@ export class UniformList extends HTMLElement
     disconnectedCallback()
     {
     }
+
+    addUniform()
+    {
+        let item = new UniformItem();
+        this.list.appendChild(item);
+        return item;
+    }
 }
 
 window.customElements.define("uniform-list", UniformList);
