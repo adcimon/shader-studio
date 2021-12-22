@@ -23,3 +23,10 @@
 {
     display: none
 }
+
+.list
+{
+    /* Layout */
+    display: flex;
+    flex-direction: column;
+}

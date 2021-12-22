@@ -1,0 +1,15 @@
+*
+{
+    box-sizing: border-box;
+}
+
+:host
+{
+    /* Layout */
+    display: flex;
+}
+
+:host([hidden])
+{
+    display: none
+}
