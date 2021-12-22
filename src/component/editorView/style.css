@@ -7,6 +7,7 @@
 {
     /* Variables */
     --editor-border-color: var(--border-color);
+    --content-background-color: var(--secondary-color);
     --status-bar-height: 40px;
     --status-bar-background-color: var(--primary-color);
 
@@ -36,6 +37,9 @@
     /* Size */
     flex-grow: 1;
     width: 100%;
+
+    /* Style */
+    background-color: var(--content-background-color);
 }
 
 .status-bar
