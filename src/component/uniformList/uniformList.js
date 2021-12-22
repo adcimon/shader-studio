@@ -7,11 +7,17 @@ const css = `<link type="text/css" rel="stylesheet" href="./src/component/unifor
 const html = `
 <div class="list">
 </div>
+<button class="add-button">
+    <svg viewBox="0 0 512 512">
+        <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M256 112v288M400 256H112"/>
+    </svg>
+</button>
 `;
 
 export class UniformList extends HTMLElement
 {
     list = null;
+    addButton = null;
 
     constructor()
     {
@@ -28,11 +34,8 @@ export class UniformList extends HTMLElement
     {
         this.list = this.shadowRoot.querySelector(".list");
 
-        for( let i = 0; i < 3; i++ )
-        {
-            let item = new UniformItem();
-            this.list.appendChild(item);
-        }
+        this.addButton = this.shadowRoot.querySelector(".add-button");
+        this.addButton.addEventListener("click", this.addUniform.bind(this));
     }
 
     disconnectedCallback()

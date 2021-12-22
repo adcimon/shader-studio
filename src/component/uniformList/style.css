@@ -11,6 +11,9 @@
     /* Layout */
     display: block;
 
+    /* Position */
+    position: relative;
+
     /* Size */
     width: 100%;
     height: 100%;
@@ -33,4 +36,23 @@
     /* Size */
     width: 100%;
     height: 100%;
+}
+
+.add-button
+{
+    /* Position */
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+
+    /* Size */
+    width: 35px;
+    height: 35px;
+
+    /* Space */
+    margin-bottom: 10px;
+
+    /* Style */
+    border: none;
+    border-radius: 10px;
 }
