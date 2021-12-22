@@ -7,19 +7,26 @@
 {
     /* Variables*/
     --item-height: 50px;
+    --item-border-color: var(--border-color);
 
     /* Layout */
     display: flex;
+    align-items: center;
+    justify-content: center;
+
+    /* Size */
+    width: 100%;
+    height: var(--item-height);
+
+    /* Space */
+    gap: 5px;
+
+    /* Style */
+    border: 1px solid var(--item-border-color);
+    overflow: scroll;
 }
 
 :host([hidden])
 {
     display: none
-}
-
-.item
-{
-    /* Size */
-    width: 100%;
-    height: var(--item-height);
 }
