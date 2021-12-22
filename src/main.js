@@ -12,6 +12,7 @@ import { EditorView } from './component/editorView/editorView.js';
 import { NavigationMenu } from './component/navigationMenu/navigationMenu.js';
 import { ShaderEditor } from './component/shaderEditor/shaderEditor.js';
 import { UniformList } from './component/uniformList/uniformList.js';
+import { UniformItem } from './component/uniformItem/uniformItem.js';
 
 var renderView, navigationMenu, shaderEditor, uniformList;
 var gl, renderer, shader, quad;
