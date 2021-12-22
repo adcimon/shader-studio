@@ -29,4 +29,8 @@
     /* Layout */
     display: flex;
     flex-direction: column;
+
+    /* Size */
+    width: 100%;
+    height: 100%;
 }

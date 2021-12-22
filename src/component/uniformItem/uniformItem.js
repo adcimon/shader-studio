@@ -4,6 +4,11 @@ const css = `<link type="text/css" rel="stylesheet" href="./src/component/unifor
 
 const html = `
 <div class="item">
+    <select class="type">
+        <option value="float">float</option>
+    </select>
+    <input class="name" type="text"></input>
+    <input class="value" type="number" value="1.0" step="0.1"></input>
 </div>
 `;
 
