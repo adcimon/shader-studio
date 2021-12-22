@@ -3,13 +3,11 @@
 const css = `<link type="text/css" rel="stylesheet" href="./src/component/uniformItem/style.css">`;
 
 const html = `
-<div class="item">
-    <select class="type">
-        <option value="float">float</option>
-    </select>
-    <input class="name" type="text"></input>
-    <input class="value" type="number" value="1.0" step="0.1"></input>
-</div>
+<select class="type">
+    <option value="float">float</option>
+</select>
+<input class="name" type="text"></input>
+<input class="value" type="number" value="1.0" step="0.1"></input>
 `;
 
 export class UniformItem extends HTMLElement
