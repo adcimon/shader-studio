@@ -30,3 +30,9 @@
 {
     display: none
 }
+
+.value
+{
+    /* Size */
+    width: 65px;
+}
