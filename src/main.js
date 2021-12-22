@@ -35,7 +35,7 @@ function initializeInterface()
     shaderEditor.setCode(Fragments[0]);
     shaderEditor.addEventListener("compile", compile);
 
-    uniformList = new UniformList();
+    uniformList = document.body.querySelector("uniform-list");
 
     navigationMenu = document.body.querySelector("navigation-menu");
     navigationMenu.addEventListener("itemselect", function( event )
