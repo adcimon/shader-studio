@@ -53,6 +53,9 @@ export class RenderView extends HTMLElement
         let rect = this.canvas.getBoundingClientRect();
         this.canvas.width = rect.width;
         this.canvas.height = rect.height;
+
+        let event = new CustomEvent("resize");
+        this.dispatchEvent(event);
     }
 }
 

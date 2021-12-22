@@ -14,7 +14,7 @@ import { ShaderEditor } from './component/shaderEditor/shaderEditor.js';
 import { UniformList } from './component/uniformList/uniformList.js';
 import { UniformItem } from './component/uniformItem/uniformItem.js';
 
-var renderView, navigationMenu, shaderEditor, uniformList;
+var renderView, editorView, navigationMenu, shaderEditor, uniformList;
 var gl, renderer, shader, quad;
 
 window.addEventListener("load", main);
@@ -24,6 +24,8 @@ function main()
 {
     initializeInterface();
     initializeRenderer();
+    renderView.resize();
+    compile();
 }
 
 function exit()
@@ -32,9 +34,11 @@ function exit()
 
 function initializeInterface()
 {
+    editorView = document.body.querySelector("editor-view");
+    editorView.addEventListener("compile", compile);
+
     shaderEditor = document.body.querySelector("shader-editor");
     shaderEditor.setCode(Fragments[0]);
-    shaderEditor.addEventListener("compile", compile);
 
     uniformList = document.body.querySelector("uniform-list");
 
@@ -59,7 +63,10 @@ function initializeInterface()
     });
 
     renderView = document.body.querySelector("render-view");
-    renderView.resize();
+    renderView.addEventListener("resize", function( event )
+    {
+        shader.setVector2("u_resolution", renderView.getWidth(), renderView.getHeight());
+    });
 }
 
 function initializeRenderer()
@@ -79,11 +86,6 @@ function initializeRenderer()
     renderer.start(render);
 }
 
-function setUniforms()
-{
-    shader.setVector2("u_resolution", renderView.getWidth(), renderView.getHeight());
-}
-
 function compile()
 {
     shader.compile(shaderEditor.getCode());
@@ -98,4 +100,9 @@ function render( time, deltaTime )
     shader.setFloat("u_deltaTime", deltaTime);
 
     quad.draw();
+}
+
+function setUniforms()
+{
+    shader.setVector2("u_resolution", renderView.getWidth(), renderView.getHeight());
 }

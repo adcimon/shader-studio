@@ -5,6 +5,11 @@
 
 :host
 {
+    /* Variables */
+    --editor-border-color: var(--border-color);
+    --status-bar-height: 40px;
+    --status-bar-background-color: var(--primary-color);
+
     /* Layout */
     display: flex;
     align-items: center;
@@ -20,15 +25,49 @@
     display: none
 }
 
-.top
+.nav-bar
 {
     /* Size */
     width: 100%;
 }
 
-.bottom
+.content
 {
     /* Size */
     flex-grow: 1;
     width: 100%;
+}
+
+.status-bar
+{
+    /* Layout */
+    display: flex;
+    align-items: center;
+
+    /* Size */
+    width: 100%;
+    height: var(--status-bar-height);
+
+    /* Style */
+    background-color: var(--status-bar-background-color);
+    border-top: 2px solid var(--editor-border-color);
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.compile-button
+{
+    /* Layout */
+    display: flex;
+
+    /* Size */
+    width: 30px;
+    height: 30px;
+
+    /* Space */
+    margin-left: 10px;
+
+    /* Style */
+    border: none;
+    border-radius: 25%;
 }
