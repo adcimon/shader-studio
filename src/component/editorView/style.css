@@ -29,6 +29,7 @@
 .nav-bar
 {
     /* Size */
+    flex-shrink: 0;
     width: 100%;
 }
 
@@ -52,6 +53,7 @@
     align-items: center;
 
     /* Size */
+    flex-shrink: 0;
     width: 100%;
     height: var(--status-bar-height);
 
