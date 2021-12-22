@@ -3,7 +3,7 @@
 const css = `<link type="text/css" rel="stylesheet" href="./src/component/uniformList/style.css">`;
 
 const html = `
-<div>
+<div class="list">
 </div>
 `;
 
