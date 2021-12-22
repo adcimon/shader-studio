@@ -36,7 +36,7 @@
 .content
 {
     /* Layout */
-    overflow: scroll;
+    overflow: auto;
 
     /* Size */
     flex-grow: 1;
