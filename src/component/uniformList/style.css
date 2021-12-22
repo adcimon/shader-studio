@@ -32,7 +32,7 @@
 {
     /* Layout */
     display: block;
-    overflow: scroll;
+    overflow-y: scroll;
 
     /* Size */
     width: 100%;
