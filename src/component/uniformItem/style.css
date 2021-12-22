@@ -5,6 +5,9 @@
 
 :host
 {
+    /* Variables*/
+    --item-height: 50px;
+
     /* Layout */
     display: flex;
 }
@@ -12,4 +15,11 @@
 :host([hidden])
 {
     display: none
+}
+
+.item
+{
+    /* Size */
+    width: 100%;
+    height: var(--item-height);
 }

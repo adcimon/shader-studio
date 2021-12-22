@@ -1,5 +1,7 @@
 "use strict";
 
+import { UniformItem } from "../uniformItem/uniformItem.js";
+
 const css = `<link type="text/css" rel="stylesheet" href="./src/component/uniformList/style.css">`;
 
 const html = `
@@ -9,6 +11,8 @@ const html = `
 
 export class UniformList extends HTMLElement
 {
+    list = null;
+
     constructor()
     {
         super();
@@ -22,6 +26,13 @@ export class UniformList extends HTMLElement
 
     connectedCallback()
     {
+        this.list = this.shadowRoot.querySelector(".list");
+
+        for( let i = 0; i < 3; i++ )
+        {
+            let item = new UniformItem();
+            this.list.appendChild(item);
+        }
     }
 
     disconnectedCallback()
