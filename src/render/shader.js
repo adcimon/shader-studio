@@ -49,66 +49,6 @@ export function Shader( gl )
     let program = null;
 
     /**
-     * Get the vertex position attribute name.
-     */
-    let getPositionAttribute = function()
-    {
-        return attributes.position.name;
-    };
-
-    /**
-     * Get the vertex texture coordinate attribute name.
-     */
-    let getTextureCoordinateAttribute = function()
-    {
-        return attributes.textureCoordinate.name;
-    };
-
-    /**
-     * Get the shader program.
-     */
-    let getProgram = function()
-    {
-        return program;
-    };
-
-    /**
-     * Set a int uniform value.
-     */
-    let setInt = function( name, value )
-    {
-        let uniform = gl.getUniformLocation(program, name);
-        gl.uniform1i(uniform, value);
-    };
-
-    /**
-     * Set a float uniform value.
-     */
-    let setFloat = function( name, value )
-    {
-        let uniform = gl.getUniformLocation(program, name);
-        gl.uniform1f(uniform, value);
-    };
-
-    /**
-     * Set a vector2 uniform value.
-     */
-    let setVector2 = function( name, value0, value1 )
-    {
-        let uniform = gl.getUniformLocation(program, name);
-        gl.uniform2f(uniform, value0, value1);
-    };
-
-    /**
-     * Set a texture uniform value.
-     */
-    let setTexture = function( name, texture )
-    {
-        let uniform = gl.getUniformLocation(program, name);
-        gl.uniform1i(uniform, texture.unit);
-    };
-
-    /**
      * Create the vertex source code.
      */
     let createVertexSource = function()
@@ -312,12 +252,88 @@ export function Shader( gl )
         }
     };
 
+    /**
+     * Get the vertex position attribute name.
+     */
+    let getPositionAttribute = function()
+    {
+        return attributes.position.name;
+    };
+
+    /**
+     * Get the vertex texture coordinate attribute name.
+     */
+    let getTextureCoordinateAttribute = function()
+    {
+        return attributes.textureCoordinate.name;
+    };
+
+    /**
+     * Get the shader program.
+     */
+    let getProgram = function()
+    {
+        return program;
+    };
+
+    /**
+     * Add a uniform.
+     */
+    let addUniform = function( type, name )
+    {
+        if( uniforms[name] )
+        {
+            return;
+        }
+
+        uniforms[name] = { };
+        uniforms[name]["type"] = type;
+        uniforms[name]["name"] = name;
+    };
+
+    /**
+     * Set a int uniform value.
+     */
+    let setInt = function( name, value )
+    {
+        let uniform = gl.getUniformLocation(program, name);
+        gl.uniform1i(uniform, value);
+    };
+
+    /**
+     * Set a float uniform value.
+     */
+    let setFloat = function( name, value )
+    {
+        let uniform = gl.getUniformLocation(program, name);
+        gl.uniform1f(uniform, value);
+    };
+
+    /**
+     * Set a vector2 uniform value.
+     */
+    let setVector2 = function( name, value0, value1 )
+    {
+        let uniform = gl.getUniformLocation(program, name);
+        gl.uniform2f(uniform, value0, value1);
+    };
+
+    /**
+     * Set a texture uniform value.
+     */
+    let setTexture = function( name, texture )
+    {
+        let uniform = gl.getUniformLocation(program, name);
+        gl.uniform1i(uniform, texture.unit);
+    };
+
     return {
         compile,
         use,
         getPositionAttribute,
         getTextureCoordinateAttribute,
         getProgram,
+        addUniform,
         setInt,
         setFloat,
         setVector2,
