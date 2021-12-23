@@ -17,7 +17,6 @@ const html = `
 export class UniformList extends HTMLElement
 {
     list = null;
-    items = [];
     addButton = null;
 
     constructor()
@@ -45,14 +44,22 @@ export class UniformList extends HTMLElement
 
     getUniforms()
     {
-        return this.items;
+        return this.list.querySelectorAll("uniform-item");
     }
 
     addUniform()
     {
         let item = new UniformItem();
+        item.addEventListener("removeuniform", (event) =>
+        {
+            let newEvent = new CustomEvent("removeuniform", { detail: { uniformItem: event.detail.uniformItem }});
+            this.dispatchEvent(newEvent);
+        });
         this.list.appendChild(item);
-        this.items.push(item);
+
+        let event = new CustomEvent("adduniform", { detail: { uniformItem: item }});
+        this.dispatchEvent(event);
+
         return item;
     }
 }

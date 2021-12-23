@@ -26,7 +26,7 @@ export function Shader( gl )
         ]
     };
 
-    let attributes = 
+    let attributes =
     {
         position:           { type: "vec3",     name: "a_position" },
         textureCoordinate:  { type: "vec2",     name: "a_texcoord" }
@@ -44,8 +44,7 @@ export function Shader( gl )
         resolution:         { type: "vec2",     name: "u_resolution" }
     };
 
-    let vertexSource = null;
-    let fragmentSource = null;
+    let newUniforms = { };
     let program = null;
 
     /**
@@ -64,83 +63,93 @@ export function Shader( gl )
     };
 
     /**
-     * Set vertex attributes.
+     * Add vertex attributes.
      */
-    let setAttributes = function()
+    let addAttributes = function( source )
     {
         let a = "";
-
-        for( let key in attributes )
+        Object.values(attributes).forEach(attribute =>
         {
-            let attribute = attributes[key];
             a += "attribute " + attribute.type + " " + attribute.name + ";" + "\n";
-        }
+        });
+        a += (Object.values(attributes).length > 0) ? "\n" : "";
 
-        a += "\n";
-        vertexSource = a + vertexSource;
+        return a + source;
     };
 
     /**
-     * Set vertex and fragment varyings.
+     * Add vertex and fragment varyings.
      */
-    let setVaryings = function()
+    let addVaryings = function( source )
     {
         let v = "";
-
-        for( let key in varyings )
+        Object.values(varyings).forEach(varying =>
         {
-            let varying = varyings[key];
             v += "varying " + varying.type + " " + varying.name + ";" + "\n";
-        }
+        });
+        v += (Object.values(varyings).length > 0) ? "\n" : "";
 
-        v += "\n";
-        vertexSource = v + vertexSource;
-        fragmentSource = v + fragmentSource;
+        return v + source;
     };
 
     /**
-     * Set fragment uniforms.
+     * Add fragment uniforms.
      */
-    let setUniforms = function()
+    let addUniforms = function( source )
     {
         let u = "";
-
-        for( let key in uniforms )
+        Object.values(uniforms).forEach(uniform =>
         {
-            let uniform = uniforms[key];
             u += "uniform " + uniform.type + " " + uniform.name + ";" + "\n";
-        }
+        });
+        u += (Object.values(uniforms).length > 0) ? "\n" : "";
 
-        u += "\n";
-        fragmentSource = u + fragmentSource;
+        return u + source;
     };
 
     /**
-     * Set vertex and fragment precision.
+     * Add new fragment uniforms.
      */
-    let setPrecision = function()
+    let addNewUniforms = function( source )
     {
-        // Vertex.
+        let u = "";
+        Object.values(newUniforms).forEach(uniform =>
+        {
+            u += "uniform " + uniform.type + " " + uniform.name + ";" + "\n";
+        });
+        u += (Object.values(newUniforms).length > 0) ? "\n" : "";
+
+        return u + source;
+    }
+
+    /**
+     * Add vertex precision.
+     */
+    let addVertexPrecision = function( source )
+    {
         let p = "";
-        for( let key in precisions.vertex )
+        precisions.vertex.forEach(precision =>
         {
-            let precision = precisions.vertex[key];
             p += "precision " + precision.precision + " " + precision.type + ";" + "\n";
-        }
+        });
+        p += (Object.values(precisions.vertex).length > 0) ? "\n" : "";
 
-        p += "\n";
-        vertexSource = p + vertexSource;
+        return p + source;
+    };
 
-        // Fragment.
-        p = "";
-        for( let key in precisions.fragment )
+    /**
+     * Add fragment precision.
+     */
+    let addFragmentPrecision = function( source )
+    {
+        let p = "";
+        precisions.fragment.forEach(precision =>
         {
-            let precision = precisions.fragment[key];
             p += "precision " + precision.precision + " " + precision.type + ";" + "\n";
-        }
+        });
+        p += (Object.values(precisions.fragment).length > 0) ? "\n" : "";
 
-        p += "\n";
-        fragmentSource = p + fragmentSource;
+        return p + source;
     };
 
     /**
@@ -203,22 +212,26 @@ export function Shader( gl )
         program = createProgram();
     
         // Generate vertex and fragment sources.
-        vertexSource = createVertexSource();
-        fragmentSource = source;
-        setUniforms();
-        setVaryings();
-        setAttributes();
-        setPrecision();
+        let vert = createVertexSource();
+        let frag = source;
+
+        frag = addNewUniforms(frag);
+        frag = addUniforms(frag);
+        vert = addVaryings(vert);
+        frag = addVaryings(frag);
+        vert = addAttributes(vert);
+        vert = addVertexPrecision(vert);
+        frag = addFragmentPrecision(frag);
     
         // Create the vertex shader.
-        let vertexShader = createShader(vertexSource, gl.VERTEX_SHADER);
+        let vertexShader = createShader(vert, gl.VERTEX_SHADER);
         if( !vertexShader )
         {
             return false;
         }
 
         // Create the fragment shader.
-        let fragmentShader = createShader(fragmentSource, gl.FRAGMENT_SHADER);
+        let fragmentShader = createShader(frag, gl.FRAGMENT_SHADER);
         if( !fragmentShader )
         {
             return false;
@@ -235,8 +248,8 @@ export function Shader( gl )
         // Link the program.
         gl.linkProgram(program);
 
-        console.log(vertexSource);
-        console.log(fragmentSource);
+        console.log(vert);
+        console.log(frag);
 
         return true;
     };
@@ -281,18 +294,39 @@ export function Shader( gl )
      */
     let addUniform = function( type, name )
     {
-        if( name === "" || uniforms[name] )
+        if( typeof name !== "string" || name === "" || (name in newUniforms) )
         {
             return;
         }
 
-        uniforms[name] = { };
-        uniforms[name]["type"] = type;
-        uniforms[name]["name"] = name;
+        newUniforms[name] = { };
+        newUniforms[name]["type"] = type;
+        newUniforms[name]["name"] = name;
     };
 
     /**
-     * Set a int uniform value.
+     * Remove a uniform.
+     */
+    let removeUniform = function( name )
+    {
+        if( typeof name !== "string" || name === "" || !(name in newUniforms) )
+        {
+            return;
+        }
+
+        delete newUniforms[name];
+    };
+
+    /**
+     * Clear the uniforms.
+     */
+    let clearUniforms = function()
+    {
+        newUniforms = { };
+    };
+
+    /**
+     * Set an int uniform value.
      */
     let setInt = function( name, value )
     {
@@ -334,6 +368,8 @@ export function Shader( gl )
         getTextureCoordinateAttribute,
         getProgram,
         addUniform,
+        removeUniform,
+        clearUniforms,
         setInt,
         setFloat,
         setVector2,

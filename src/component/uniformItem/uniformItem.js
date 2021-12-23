@@ -8,7 +8,7 @@ const html = `
 </select>
 <input class="name-input" type="text" placeholder="name"></input>
 <input class="value-input" type="number" value="1.0" step="0.1"></input>
-<button class="delete-button">
+<button class="remove-button">
     <svg viewBox="0 0 512 512">
         <path d="M112 112l20 320c.95 18.49 14.4 32 32 32h184c17.67 0 30.87-13.51 32-32l20-320" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/>
         <path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" d="M80 112h352"/>
@@ -40,10 +40,13 @@ export class UniformItem extends HTMLElement
         this.nameInput = this.shadowRoot.querySelector(".name-input");
         this.valueInput = this.shadowRoot.querySelector(".value-input");
 
-        let deleteButton = this.shadowRoot.querySelector(".delete-button");
-        deleteButton.addEventListener("click", (event) =>
+        let removeButton = this.shadowRoot.querySelector(".remove-button");
+        removeButton.addEventListener("click", () =>
         {
-            this.parentNode.removeChild(this);
+            this.parentElement.removeChild(this);
+
+            let event = new CustomEvent("removeuniform", { detail: { uniformItem: this }});
+            this.dispatchEvent(event);
         });
 
         this.nameInput.focus();
