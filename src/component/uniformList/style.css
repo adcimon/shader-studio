@@ -25,7 +25,7 @@
 
 :host([hidden])
 {
-    display: none
+    display: none;
 }
 
 .list
