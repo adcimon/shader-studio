@@ -1,0 +1,73 @@
+*
+{
+    box-sizing: border-box;
+}
+
+:host
+{
+    /* Variables*/
+    --button-size: 25px;
+    --view-size: 50%;
+    --view-background-color: var(--secondary-color);
+    --view-border-color: var(--border-color);
+
+    /* Layout */
+    display: block;
+
+    /* Size */
+    width: var(--button-size);
+    height: var(--button-size);
+}
+
+:host([hidden])
+{
+    display: none;
+}
+
+.array-button
+{
+    /* Layout */
+    display: flex;
+
+    /* Size */
+    width: 100%;
+    height: 100%;
+
+    /* Style */
+    border: none;
+    border-radius: 5px; 
+}
+
+.array-view
+{
+    /* Layout */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    /* Position */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    /* Size */
+    width: var(--view-size);
+    height: var(--view-size);
+
+    /* Style */
+    background-color: var(--view-background-color);
+    border: 2px solid var(--view-border-color);
+    border-radius: 10px;
+}
+
+.array-view[hidden]
+{
+    display: none;
+}
+
+.array-view * > input
+{
+    /* Size */
+    width: 50px;
+}
