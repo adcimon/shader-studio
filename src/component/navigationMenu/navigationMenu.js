@@ -78,12 +78,12 @@ export class NavigationMenu extends HTMLElement
             item.classList.add("active");
         });
 
-        let event = new CustomEvent("itemselect", { detail:
+        let newEvent = new CustomEvent("itemselect", { detail:
         {
             item: item,
             name: item.getAttribute("name")
         }});
-        this.dispatchEvent(event);
+        this.dispatchEvent(newEvent);
     }
 }
 

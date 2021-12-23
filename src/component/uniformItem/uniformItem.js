@@ -38,15 +38,21 @@ export class UniformItem extends HTMLElement
     {
         this.typeSelect = this.shadowRoot.querySelector(".type-select");
         this.nameInput = this.shadowRoot.querySelector(".name-input");
+
         this.valueInput = this.shadowRoot.querySelector(".value-input");
+        this.valueInput.addEventListener("change", () =>
+        {
+            let newEvent = new CustomEvent("valuechange", { detail: { uniformItem: this, value: this.valueInput.value }});
+            this.dispatchEvent(newEvent);
+        });
 
         let removeButton = this.shadowRoot.querySelector(".remove-button");
         removeButton.addEventListener("click", () =>
         {
             this.parentElement.removeChild(this);
 
-            let event = new CustomEvent("removeuniform", { detail: { uniformItem: this }});
-            this.dispatchEvent(event);
+            let newEvent = new CustomEvent("removeuniform", { detail: { uniformItem: this }});
+            this.dispatchEvent(newEvent);
         });
 
         this.nameInput.focus();
