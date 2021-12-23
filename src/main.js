@@ -41,9 +41,17 @@ function initializeInterface()
     shaderEditor.setCode(Fragments[0]);
 
     uniformList = document.body.querySelector("uniform-list");
+    uniformList.addEventListener("adduniform", (event) =>
+    {
+    });
+    uniformList.addEventListener("removeuniform", (event) =>
+    {
+        let name = event.detail.uniformItem.getName();
+        shader.removeUniform(name);
+    });
 
     navigationMenu = document.body.querySelector("navigation-menu");
-    navigationMenu.addEventListener("itemselect", function( event )
+    navigationMenu.addEventListener("itemselect", (event) =>
     {
         switch( event.detail.name )
         {
@@ -63,7 +71,7 @@ function initializeInterface()
     });
 
     renderView = document.body.querySelector("render-view");
-    renderView.addEventListener("resize", (event) =>
+    renderView.addEventListener("resize", () =>
     {
         shader.setVector2("u_resolution", renderView.getWidth(), renderView.getHeight());
     });
@@ -107,6 +115,8 @@ function render( time, deltaTime )
 
 function addUniforms()
 {
+    shader.clearUniforms();
+
     let uniforms = uniformList.getUniforms();
     uniforms.forEach(uniform =>
     {
@@ -121,15 +131,17 @@ function setUniforms()
     shader.setVector2("u_resolution", renderView.getWidth(), renderView.getHeight());
 
     let uniforms = uniformList.getUniforms();
-    uniforms.forEach(uniform =>
-    {
-        let type = uniform.getType();
-        let name = uniform.getName();
-        let value = uniform.getValue();
+    uniforms.forEach(uniform => setUniform(uniform));
+}
 
-        switch( type )
-        {
-            case "float": shader.setFloat(name, value); break;
-        }
-    });
+function setUniform( uniformItem )
+{
+    let type = uniformItem.getType();
+    let name = uniformItem.getName();
+    let value = uniformItem.getValue();
+
+    switch( type )
+    {
+        case "float": shader.setFloat(name, value); break;
+    }
 }
