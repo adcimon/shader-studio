@@ -23,7 +23,7 @@
 
 :host([hidden])
 {
-    display: none
+    display: none;
 }
 
 .nav-bar
