@@ -34,11 +34,11 @@ export class EditorView extends HTMLElement
     connectedCallback()
     {
         const compileButton = this.shadowRoot.querySelector(".compile-button");
-        compileButton.addEventListener("click", function()
+        compileButton.addEventListener("click", () =>
         {
             let event = new CustomEvent("compile");
             this.dispatchEvent(event);
-        }.bind(this));
+        });
     }
 
     disconnectedCallback()

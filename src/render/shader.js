@@ -281,7 +281,7 @@ export function Shader( gl )
      */
     let addUniform = function( type, name )
     {
-        if( uniforms[name] )
+        if( name === "" || uniforms[name] )
         {
             return;
         }

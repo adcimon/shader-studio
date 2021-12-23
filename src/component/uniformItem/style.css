@@ -31,8 +31,22 @@
     display: none
 }
 
-.value
+.value-input
 {
     /* Size */
     width: 65px;
+}
+
+.delete-button
+{
+    /* Layout */
+    display: flex;
+
+    /* Size */
+    width: 25px;
+    height: 25px;
+
+    /* Style */
+    border: none;
+    border-radius: 5px;
 }

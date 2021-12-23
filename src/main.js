@@ -63,7 +63,7 @@ function initializeInterface()
     });
 
     renderView = document.body.querySelector("render-view");
-    renderView.addEventListener("resize", function( event )
+    renderView.addEventListener("resize", (event) =>
     {
         shader.setVector2("u_resolution", renderView.getWidth(), renderView.getHeight());
     });
