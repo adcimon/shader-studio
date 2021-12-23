@@ -43,10 +43,23 @@ function initializeInterface()
     uniformList = document.body.querySelector("uniform-list");
     uniformList.addEventListener("adduniform", (event) =>
     {
+        event.detail.uniformItem.addEventListener("typechange", () =>
+        {
+            shader.removeUniform(event.detail.uniformItem.getName());
+            addUniform(event.detail.uniformItem);
+            compile();
+            setUniform(event.detail.uniformItem);
+        });
+
         event.detail.uniformItem.addEventListener("valuechange", () =>
         {
             setUniform(event.detail.uniformItem);
         });
+    });
+    uniformList.addEventListener("removeuniform", (event) =>
+    {
+        shader.removeUniform(event.detail.uniformItem.getName());
+        compile();
     });
 
     navigationMenu = document.body.querySelector("navigation-menu");
@@ -111,25 +124,19 @@ function render( time, deltaTime )
     quad.draw();
 }
 
+function addUniform( uniformItem )
+{
+    let type = uniformItem.getType();
+    let name = uniformItem.getName();
+    shader.addUniform(type, name);
+}
+
 function addUniforms()
 {
     shader.clearUniforms();
 
     let uniforms = uniformList.getUniforms();
-    uniforms.forEach(uniform =>
-    {
-        let type = uniform.getType();
-        let name = uniform.getName();
-        shader.addUniform(type, name);
-    });
-}
-
-function setUniforms()
-{
-    shader.setVector2("u_resolution", renderView.getWidth(), renderView.getHeight());
-
-    let uniforms = uniformList.getUniforms();
-    uniforms.forEach(uniform => setUniform(uniform));
+    uniforms.forEach(uniform => addUniform(uniform));
 }
 
 function setUniform( uniformItem )
@@ -140,6 +147,15 @@ function setUniform( uniformItem )
 
     switch( type )
     {
-        case "float": shader.setFloat(name, value); break;
+        case "int":     shader.setInt(name, value);     break;
+        case "float":   shader.setFloat(name, value);   break;
     }
+}
+
+function setUniforms()
+{
+    shader.setVector2("u_resolution", renderView.getWidth(), renderView.getHeight());
+
+    let uniforms = uniformList.getUniforms();
+    uniforms.forEach(uniform => setUniform(uniform));
 }

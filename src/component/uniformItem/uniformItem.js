@@ -4,7 +4,8 @@ const css = `<link type="text/css" rel="stylesheet" href="./src/component/unifor
 
 const html = `
 <select class="type-select">
-    <option value="float">float</option>
+    <option value="int">int</option>
+    <option value="float" selected>float</option>
 </select>
 <input class="name-input" type="text" placeholder="name"></input>
 <input class="value-input" type="number" value="1.0" step="0.1"></input>
@@ -38,15 +39,41 @@ export class UniformItem extends HTMLElement
     {
         this.typeSelect = this.shadowRoot.querySelector(".type-select");
         this.nameInput = this.shadowRoot.querySelector(".name-input");
-
         this.valueInput = this.shadowRoot.querySelector(".value-input");
+        let removeButton = this.shadowRoot.querySelector(".remove-button");
+
+        this.typeSelect.addEventListener("change", () =>
+        {
+            switch( this.typeSelect.value )
+            {
+                case "int":
+                {
+                    this.valueInput.step = 1;
+                    this.valueInput.value = Math.floor(this.valueInput.value);
+                    break;
+                }
+                case "float":
+                {
+                    this.valueInput.step = 0.1;
+                    break;
+                }
+            }
+
+            let newEvent = new CustomEvent("typechange", { detail: { uniformItem: this, value: this.typeSelect.value }});
+            this.dispatchEvent(newEvent);
+        });
+
         this.valueInput.addEventListener("change", () =>
         {
+            if( this.typeSelect.value === "int" )
+            {
+                this.valueInput.value = Math.floor(this.valueInput.value);
+            }
+
             let newEvent = new CustomEvent("valuechange", { detail: { uniformItem: this, value: this.valueInput.value }});
             this.dispatchEvent(newEvent);
         });
 
-        let removeButton = this.shadowRoot.querySelector(".remove-button");
         removeButton.addEventListener("click", () =>
         {
             this.parentElement.removeChild(this);
