@@ -24,7 +24,6 @@ export class RenderView extends HTMLElement
     connectedCallback()
     {
         this.canvas = this.shadowRoot.querySelector("canvas");
-
         window.addEventListener("resize", this.resize.bind(this));
     }
 
