@@ -31,29 +31,10 @@
     display: none;
 }
 
-button[hidden]
-{
-    display: none;
-}
-
 .value-input
 {
     /* Size */
     width: 65px;
-}
-
-.array-input
-{
-    /* Layout */
-    display: flex;
-
-    /* Size */
-    width: 25px;
-    height: 25px;
-
-    /* Style */
-    border: none;
-    border-radius: 5px; 
 }
 
 .remove-button
