@@ -43,11 +43,10 @@ function initializeInterface()
     uniformList = document.body.querySelector("uniform-list");
     uniformList.addEventListener("adduniform", (event) =>
     {
-    });
-    uniformList.addEventListener("removeuniform", (event) =>
-    {
-        let name = event.detail.uniformItem.getName();
-        shader.removeUniform(name);
+        event.detail.uniformItem.addEventListener("valuechange", () =>
+        {
+            setUniform(event.detail.uniformItem);
+        });
     });
 
     navigationMenu = document.body.querySelector("navigation-menu");
@@ -108,7 +107,6 @@ function render( time, deltaTime )
 {
     shader.setFloat("u_time", time);
     shader.setFloat("u_deltaTime", deltaTime);
-    setUniforms();
 
     quad.draw();
 }

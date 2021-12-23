@@ -57,8 +57,8 @@ export class UniformList extends HTMLElement
         });
         this.list.appendChild(item);
 
-        let event = new CustomEvent("adduniform", { detail: { uniformItem: item }});
-        this.dispatchEvent(event);
+        let newEvent = new CustomEvent("adduniform", { detail: { uniformItem: item }});
+        this.dispatchEvent(newEvent);
 
         return item;
     }
