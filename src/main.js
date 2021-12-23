@@ -88,6 +88,8 @@ function initializeRenderer()
 
 function compile()
 {
+    addUniforms();
+
     shader.compile(shaderEditor.getCode());
     shader.use();
 
@@ -98,11 +100,36 @@ function render( time, deltaTime )
 {
     shader.setFloat("u_time", time);
     shader.setFloat("u_deltaTime", deltaTime);
+    setUniforms();
 
     quad.draw();
+}
+
+function addUniforms()
+{
+    let uniforms = uniformList.getUniforms();
+    uniforms.forEach(uniform =>
+    {
+        let type = uniform.getType();
+        let name = uniform.getName();
+        shader.addUniform(type, name);
+    });
 }
 
 function setUniforms()
 {
     shader.setVector2("u_resolution", renderView.getWidth(), renderView.getHeight());
+
+    let uniforms = uniformList.getUniforms();
+    uniforms.forEach(uniform =>
+    {
+        let type = uniform.getType();
+        let name = uniform.getName();
+        let value = uniform.getValue();
+
+        switch( type )
+        {
+            case "float": shader.setFloat(name, value); break;
+        }
+    });
 }

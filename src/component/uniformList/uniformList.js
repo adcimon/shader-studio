@@ -17,6 +17,7 @@ const html = `
 export class UniformList extends HTMLElement
 {
     list = null;
+    items = [];
     addButton = null;
 
     constructor()
@@ -42,10 +43,16 @@ export class UniformList extends HTMLElement
     {
     }
 
+    getUniforms()
+    {
+        return this.items;
+    }
+
     addUniform()
     {
         let item = new UniformItem();
         this.list.appendChild(item);
+        this.items.push(item);
         return item;
     }
 }
