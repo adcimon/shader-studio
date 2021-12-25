@@ -61,5 +61,5 @@
 .add-button:hover
 {
     /* Style */
-    background-color: var(--active-color);
+    background-color: var(--selection-color);
 }

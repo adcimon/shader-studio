@@ -7,7 +7,6 @@
 {
     /* Variables*/
     --item-height: 50px;
-    --item-border-color: var(--border-color);
 
     /* Layout */
     display: flex;
@@ -23,7 +22,7 @@
     gap: 5px;
 
     /* Style */
-    border: 1px solid var(--item-border-color);
+    border: 1px solid var(--border-color);
 }
 
 :host([hidden])
@@ -46,7 +45,7 @@ select
 select:hover
 {
     /* Style */
-    border: 1px solid var(--active-color);
+    border: 1px solid var(--selection-color);
 }
 
 input
@@ -64,7 +63,7 @@ input
 input:hover
 {
     /* Style */
-    border: 1px solid var(--active-color);
+    border: 1px solid var(--selection-color);
 }
 
 .value-input
@@ -90,5 +89,5 @@ input:hover
 .remove-button:hover
 {
     /* Style */
-    background-color: var(--active-color);
+    background-color: var(--selection-color);
 }

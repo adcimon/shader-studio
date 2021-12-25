@@ -6,10 +6,7 @@
 :host
 {
     /* Variables */
-    --editor-border-color: var(--border-color);
-    --content-background-color: var(--secondary-color);
     --status-bar-height: 40px;
-    --status-bar-background-color: var(--primary-color);
 
     /* Layout */
     display: flex;
@@ -43,7 +40,7 @@
     width: 100%;
 
     /* Style */
-    background-color: var(--content-background-color);
+    background-color: var(--secondary-color);
 }
 
 .status-bar
@@ -58,8 +55,8 @@
     height: var(--status-bar-height);
 
     /* Style */
-    background-color: var(--status-bar-background-color);
-    border-top: 2px solid var(--editor-border-color);
+    background-color: var(--primary-color);
+    border-top: 2px solid var(--border-color);
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
 }
@@ -84,5 +81,5 @@
 .compile-button:hover
 {
     /* Style */
-    background-color: var(--active-color);
+    background-color: var(--selection-color);
 }
