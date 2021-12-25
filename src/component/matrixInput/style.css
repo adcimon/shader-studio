@@ -7,7 +7,7 @@
 {
     /* Variables*/
     --button-size: 25px;
-    --view-size: 50%;
+    --view-size: 30%;
     --view-background-color: var(--secondary-color);
     --view-border-color: var(--border-color);
 
@@ -66,8 +66,44 @@
     display: none;
 }
 
+.matrix-view td[column="0"]::before
+{
+    /* Space */
+    margin-right: 5px;
+
+    /* Style */
+    content: ""attr(row)"";
+    color: white;
+    text-shadow: 1px 1px 1px black;
+}
+
+.matrix-view td
+{
+    /* Position */
+    position: relative;
+
+    /* Space */
+    padding: 5px;
+}
+
+.matrix-view tr[row="0"] td::after
+{
+    /* Position */
+    position: absolute;
+    transform: translate(-30px, -20px);
+
+    /* Style */
+    content: ""attr(column)"";
+    color: white;
+    text-shadow: 1px 1px 1px black;
+}
+
 .matrix-view * > input
 {
     /* Size */
     width: 50px;
+
+    /* Style */
+    border: none;
+    border-radius: 5px;
 }
