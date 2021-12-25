@@ -19,28 +19,28 @@ const html = `
 <div class="matrix-view" hidden>
     <table>
         <tr row="0">
-            <td column="0"><input type="number" value="1" step="0.1"></input></td>
-            <td column="1"><input type="number" value="0" step="0.1"></input></td>
-            <td column="2"><input type="number" value="0" step="0.1"></input></td>
-            <td column="3"><input type="number" value="0" step="0.1"></input></td>
+            <td row="0" column="0"><input type="number" value="1" step="0.1"></input></td>
+            <td row="0" column="1"><input type="number" value="0" step="0.1"></input></td>
+            <td row="0" column="2"><input type="number" value="0" step="0.1"></input></td>
+            <td row="0" column="3"><input type="number" value="0" step="0.1"></input></td>
         </tr>
         <tr row="1">
-            <td column="0"><input type="number" value="0" step="0.1"></input></td>
-            <td column="1"><input type="number" value="1" step="0.1"></input></td>
-            <td column="2"><input type="number" value="0" step="0.1"></input></td>
-            <td column="3"><input type="number" value="0" step="0.1"></input></td>
+            <td row="1" column="0"><input type="number" value="0" step="0.1"></input></td>
+            <td row="1" column="1"><input type="number" value="1" step="0.1"></input></td>
+            <td row="1" column="2"><input type="number" value="0" step="0.1"></input></td>
+            <td row="1" column="3"><input type="number" value="0" step="0.1"></input></td>
         </tr>
         <tr row="2">
-            <td column="0"><input type="number" value="0" step="0.1"></input></td>
-            <td column="1"><input type="number" value="0" step="0.1"></input></td>
-            <td column="2"><input type="number" value="1" step="0.1"></input></td>
-            <td column="3"><input type="number" value="0" step="0.1"></input></td>
+            <td row="2" column="0"><input type="number" value="0" step="0.1"></input></td>
+            <td row="2" column="1"><input type="number" value="0" step="0.1"></input></td>
+            <td row="2" column="2"><input type="number" value="1" step="0.1"></input></td>
+            <td row="2" column="3"><input type="number" value="0" step="0.1"></input></td>
         </tr>
         <tr row="3">
-            <td column="0"><input type="number" value="0" step="0.1"></input></td>
-            <td column="1"><input type="number" value="0" step="0.1"></input></td>
-            <td column="2"><input type="number" value="0" step="0.1"></input></td>
-            <td column="3"><input type="number" value="1" step="0.1"></input></td>
+            <td row="3" column="0"><input type="number" value="0" step="0.1"></input></td>
+            <td row="3" column="1"><input type="number" value="0" step="0.1"></input></td>
+            <td row="3" column="2"><input type="number" value="0" step="0.1"></input></td>
+            <td row="3" column="3"><input type="number" value="1" step="0.1"></input></td>
         </tr>
     </table>
 </div>
