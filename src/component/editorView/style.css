@@ -80,3 +80,9 @@
     border: none;
     border-radius: 25%;
 }
+
+.compile-button:hover
+{
+    /* Style */
+    background-color: var(--active-color);
+}

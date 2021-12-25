@@ -5,11 +5,6 @@
 
 :host
 {
-    /* Variables */
-    --editor-background-color: var(--secondary-color);
-    --editor-border-color: var(--border-color);
-    --selection-color: var(--text-selection-color);
-
     /* Layout */
     display: block;
 
@@ -66,20 +61,21 @@
 
 .codeflask textarea
 {
+    overflow-y: scroll;
     color: transparent;
 }
 
 .codeflask.codeflask--has-line-numbers::before
 {
-    background: var(--editor-background-color) !important;
-    border-right: 2px solid var(--editor-border-color);
+    background: var(--secondary-color) !important;
+    border-right: 2px solid var(--border-color);
 }
 
 /* Theme */
 
 .codeflask
 {
-    background: var(--editor-background-color);
+    background: var(--secondary-color);
     color: #d4d4d4;
 }
 

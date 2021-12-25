@@ -6,7 +6,7 @@
 :host
 {
     /* Variables */
-    --padding: 10px;
+    --padding: 5px;
 
     /* Layout */
     display: flex;
