@@ -344,12 +344,57 @@ export function Shader( gl )
     };
 
     /**
-     * Set a vector2 uniform value.
+     * Set a vec2 uniform value.
      */
-    let setVector2 = function( name, value0, value1 )
+    let setVector2 = function( name, value )
     {
         let uniform = gl.getUniformLocation(program, name);
-        gl.uniform2f(uniform, value0, value1);
+        gl.uniform2fv(uniform, value);
+    };
+
+    /**
+     * Set a vec3 uniform value.
+     */
+    let setVector3 = function( name, value )
+    {
+        let uniform = gl.getUniformLocation(program, name);
+        gl.uniform3fv(uniform, value);
+    };
+
+    /**
+     * Set a vec4 uniform value.
+     */
+    let setVector4 = function( name, value )
+    {
+        let uniform = gl.getUniformLocation(program, name);
+        gl.uniform4fv(uniform, value);
+    };
+
+    /**
+     * Set a mat2x2 uniform value.
+     */
+    let setMatrix2x2 = function( name, value )
+    {
+        let uniform = gl.getUniformLocation(program, name);
+        gl.uniformMatrix2fv(uniform, false, value);
+    };
+
+    /**
+     * Set a mat3x3 uniform value.
+     */
+    let setMatrix3x3 = function( name, value )
+    {
+        let uniform = gl.getUniformLocation(program, name);
+        gl.uniformMatrix3fv(uniform, false, value);
+    };
+
+    /**
+     * Set a mat4x4 uniform value.
+     */
+    let setMatrix4x4 = function( name, value )
+    {
+        let uniform = gl.getUniformLocation(program, name);
+        gl.uniformMatrix4fv(uniform, false, value);
     };
 
     /**
@@ -373,6 +418,11 @@ export function Shader( gl )
         setInt,
         setFloat,
         setVector2,
+        setVector3,
+        setVector4,
+        setMatrix2x2,
+        setMatrix3x3,
+        setMatrix4x4,
         setTexture
     };
 }

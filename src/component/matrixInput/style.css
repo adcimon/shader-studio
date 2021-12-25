@@ -24,7 +24,7 @@
     display: none;
 }
 
-.array-button
+.matrix-button
 {
     /* Layout */
     display: flex;
@@ -38,7 +38,7 @@
     border-radius: 5px; 
 }
 
-.array-view
+.matrix-view
 {
     /* Layout */
     display: flex;
@@ -61,12 +61,12 @@
     border-radius: 10px;
 }
 
-.array-view[hidden]
+.matrix-view[hidden]
 {
     display: none;
 }
 
-.array-view * > input
+.matrix-view * > input
 {
     /* Size */
     width: 50px;
