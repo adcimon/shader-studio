@@ -13,7 +13,7 @@ import { NavigationMenu } from './component/navigationMenu/navigationMenu.js';
 import { ShaderEditor } from './component/shaderEditor/shaderEditor.js';
 import { UniformList } from './component/uniformList/uniformList.js';
 import { UniformItem } from './component/uniformItem/uniformItem.js';
-import { ArrayInput } from './component/arrayInput/arrayInput.js';
+import { MatrixInput } from './component/matrixInput/matrixInput.js';
 
 var renderView, editorView, navigationMenu, shaderEditor, uniformList;
 var gl, renderer, shader, quad;
@@ -46,20 +46,29 @@ function initializeInterface()
     {
         event.detail.uniformItem.addEventListener("typechange", () =>
         {
-            shader.removeUniform(event.detail.uniformItem.getName());
-            addUniform(event.detail.uniformItem);
-            compile();
-            setUniform(event.detail.uniformItem);
+            let uniformItem = event.detail.uniformItem;
+
+            shader.removeUniform(uniformItem.getName());
+            addUniform(uniformItem);
+
+            if( uniformItem.getName() !== "" )
+            {
+                compile();
+            }
+
+            setUniform(uniformItem);
         });
 
         event.detail.uniformItem.addEventListener("valuechange", () =>
         {
-            setUniform(event.detail.uniformItem);
+            let uniformItem = event.detail.uniformItem;
+            setUniform(uniformItem);
         });
     });
     uniformList.addEventListener("removeuniform", (event) =>
     {
-        shader.removeUniform(event.detail.uniformItem.getName());
+        let uniformItem = event.detail.uniformItem;
+        shader.removeUniform(uniformItem.getName());
         compile();
     });
 
@@ -86,7 +95,7 @@ function initializeInterface()
     renderView = document.body.querySelector("render-view");
     renderView.addEventListener("resize", () =>
     {
-        shader.setVector2("u_resolution", renderView.getWidth(), renderView.getHeight());
+        shader.setVector2("u_resolution", [renderView.getWidth(), renderView.getHeight()]);
     });
 }
 
@@ -136,8 +145,8 @@ function addUniforms()
 {
     shader.clearUniforms();
 
-    let uniforms = uniformList.getUniforms();
-    uniforms.forEach(uniform => addUniform(uniform));
+    let uniformItems = uniformList.getUniforms();
+    uniformItems.forEach(uniform => addUniform(uniform));
 }
 
 function setUniform( uniformItem )
@@ -148,15 +157,21 @@ function setUniform( uniformItem )
 
     switch( type )
     {
-        case "int":     shader.setInt(name, value);     break;
-        case "float":   shader.setFloat(name, value);   break;
+        case "int":     shader.setInt(name, value);                 break;
+        case "float":   shader.setFloat(name, value);               break;
+        case "vec2":    shader.setVector2(name, value);             break;
+        case "vec3":    shader.setVector3(name, value);             break;
+        case "vec4":    shader.setVector4(name, value);             break;
+        case "mat2":    shader.setMatrix2x2(name, value.flat(2));   break;
+        case "mat3":    shader.setMatrix3x3(name, value.flat(2));   break;
+        case "mat4":    shader.setMatrix4x4(name, value.flat(2));   break;
     }
 }
 
 function setUniforms()
 {
-    shader.setVector2("u_resolution", renderView.getWidth(), renderView.getHeight());
+    shader.setVector2("u_resolution", [renderView.getWidth(), renderView.getHeight()]);
 
-    let uniforms = uniformList.getUniforms();
-    uniforms.forEach(uniform => setUniform(uniform));
+    let uniformItems = uniformList.getUniforms();
+    uniformItems.forEach(uniform => setUniform(uniform));
 }
