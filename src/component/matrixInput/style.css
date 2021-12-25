@@ -40,7 +40,7 @@
 .matrix-button:hover
 {
     /* Style */
-    background-color: var(--active-color);
+    background-color: var(--selection-color);
 }
 
 .matrix-view
@@ -122,5 +122,5 @@ input
 input:hover
 {
     /* Style */
-    border: 1px solid var(--active-color);
+    border: 1px solid var(--selection-color);
 }
