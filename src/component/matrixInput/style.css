@@ -7,9 +7,8 @@
 {
     /* Variables*/
     --button-size: 25px;
-    --view-size: 30%;
-    --view-background-color: var(--secondary-color);
-    --view-border-color: var(--border-color);
+    --input-width: 60px;
+    --view-size: 35%;
 
     /* Layout */
     display: block;
@@ -38,6 +37,12 @@
     border-radius: 5px; 
 }
 
+.matrix-button:hover
+{
+    /* Style */
+    background-color: var(--active-color);
+}
+
 .matrix-view
 {
     /* Layout */
@@ -56,9 +61,10 @@
     height: var(--view-size);
 
     /* Style */
-    background-color: var(--view-background-color);
-    border: 2px solid var(--view-border-color);
+    background-color: var(--secondary-color);
+    border: 2px solid var(--border-color);
     border-radius: 10px;
+    box-shadow: 5px 5px 15px 5px black;
 }
 
 .matrix-view[hidden]
@@ -98,12 +104,23 @@
     text-shadow: 1px 1px 1px black;
 }
 
-.matrix-view * > input
+input
 {
     /* Size */
-    width: 50px;
+    width: var(--input-width);
+
+    /* Space */
+    padding: 5px;
 
     /* Style */
-    border: none;
+    background-color: var(--secondary-color);
+    border: 1px solid var(--border-color);
     border-radius: 5px;
+    color: var(--font-color);
+}
+
+input:hover
+{
+    /* Style */
+    border: 1px solid var(--active-color);
 }
