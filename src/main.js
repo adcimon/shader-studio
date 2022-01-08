@@ -4,7 +4,7 @@ import { Renderer } from './render/renderer.js';
 import { Shader } from './render/shader.js';
 import { Texture } from './render/texture.js';
 import { Quad } from './render/quad.js';
-import { Fragments } from './render/fragments.js';
+import { ShaderSource } from './render/shaders.js';
 
 import { MainView } from './component/mainView/mainView.js';
 import { RenderView } from './component/renderView/renderView.js';
@@ -39,7 +39,7 @@ function initializeInterface()
     editorView.addEventListener("compile", compile);
 
     shaderEditor = document.body.querySelector("shader-editor");
-    shaderEditor.setCode(Fragments[0]);
+    shaderEditor.setCode(ShaderSource);
 
     uniformList = document.body.querySelector("uniform-list");
     uniformList.addEventListener("adduniform", (event) =>

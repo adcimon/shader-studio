@@ -87,13 +87,24 @@ export class MatrixInput extends HTMLElement
     {
     }
 
+    getInputRow( input )
+    {
+        let row = Array.from(input.parentNode.parentNode.parentNode.children).indexOf(input.parentNode.parentNode);
+        return row;
+    }
+
+    getInputColumn( input )
+    {
+        let column = Array.from(input.parentNode.parentNode.children).indexOf(input.parentNode);
+        return column;
+    }
+
     getValues()
     {
         let values = [];
         this.inputs.forEach(input =>
         {
-            let row = input.parentElement.parentElement.getAttribute("row");
-            //let column = input.parentElement.getAttribute("column");
+            let row = this.getInputRow(input);
 
             if( typeof values[row] === "undefined" )
             {
@@ -147,6 +158,98 @@ export class MatrixInput extends HTMLElement
     {
         let values = this.getValues();
         return values;
+    }
+
+    showVector2()
+    {
+        this.inputs.forEach(input =>
+        {
+            let r = this.getInputRow(input);
+            let c = this.getInputColumn(input);
+            if( r === 0 && (c === 0 || c === 1) )
+            {
+                input.parentNode.hidden = false;
+            }
+            else
+            {
+                input.parentNode.hidden = true;
+            }
+        });
+    }
+
+    showVector3()
+    {
+        this.inputs.forEach(input =>
+        {
+            let r = this.getInputRow(input);
+            let c = this.getInputColumn(input);
+            if( r === 0 && (c === 0 || c === 1 || c === 2) )
+            {
+                input.parentNode.hidden = false;
+            }
+            else
+            {
+                input.parentNode.hidden = true;
+            }
+        });
+    }
+
+    showVector4()
+    {
+        this.inputs.forEach(input =>
+        {
+            let r = this.getInputRow(input);
+            if( r === 0 )
+            {
+                input.parentNode.hidden = false;
+            }
+            else
+            {
+                input.parentNode.hidden = true;
+            }
+        });
+    }
+
+    showMatrix2()
+    {
+        this.inputs.forEach(input =>
+        {
+            let r = this.getInputRow(input);
+            let c = this.getInputColumn(input);
+            if( (r === 0 || r === 1) && (c === 0 || c === 1) )
+            {
+                input.parentNode.hidden = false;
+            }
+            else
+            {
+                input.parentNode.hidden = true;
+            }
+        });
+    }
+
+    showMatrix3()
+    {
+        this.inputs.forEach(input =>
+        {
+            let r = this.getInputRow(input);
+            let c = this.getInputColumn(input);
+            if( (r === 0 || r === 1 || r === 2) && (c === 0 || c === 1 || c === 2) )
+            {
+                input.parentNode.hidden = false;
+            }
+            else
+            {
+                input.parentNode.hidden = true;
+            }
+        });
+    }
+
+    showMatrix4()
+    {
+        this.inputs.forEach(input =>
+        {
+            input.parentNode.hidden = false;
+        });
     }
 }
 
