@@ -7,7 +7,7 @@
 {
     /* Variables */
     --background-color: var(--secondary-color);
-    --add-button-size: 35px;
+    --add-button-size: 40px;
 
     /* Layout */
     display: block;
@@ -36,7 +36,7 @@
 
     /* Size */
     width: 100%;
-    height: calc(90% - var(--add-button-size));
+    height: calc(95% - var(--add-button-size));
 }
 
 .add-button
@@ -54,12 +54,20 @@
     margin-bottom: 10px;
 
     /* Style */
+    background-color: green;
     border: none;
-    border-radius: 10px;
+    border-radius: 100%;
+    transition: 0.2s;
 }
 
 .add-button:hover
 {
     /* Style */
     background-color: var(--selection-color);
+}
+
+.add-button svg
+{
+    /* Style */
+    color: white;
 }

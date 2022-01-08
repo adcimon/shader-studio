@@ -1,6 +1,5 @@
 :root
 {
-    --background: radial-gradient(circle, hsla(204, 98%, 56%, 1) 24%, hsla(217, 83%, 7%, 1) 100%);
     --font-color: #d4d4d4;
     --primary-color: rgba(28, 28, 28, 1);
     --secondary-color: rgba(36, 36, 36, 1);
@@ -30,6 +29,7 @@ html, body
     margin: 0;
 
     /* Style */
-    background: var(--background);
+    background-image: url("../assets/background.jpg");
+    background-size: cover;
     overflow: hidden;
 }
