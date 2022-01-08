@@ -78,12 +78,13 @@ input:hover
     display: flex;
 
     /* Size */
-    width: 25px;
-    height: 25px;
+    width: 30px;
+    height: 30px;
 
     /* Style */
     border: none;
     border-radius: 5px;
+    transition: 0.2s;
 }
 
 .remove-button:hover

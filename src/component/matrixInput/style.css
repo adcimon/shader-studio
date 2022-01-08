@@ -6,7 +6,7 @@
 :host
 {
     /* Variables*/
-    --button-size: 25px;
+    --button-size: 30px;
     --input-width: 60px;
     --view-size: 35%;
 
@@ -34,7 +34,8 @@
 
     /* Style */
     border: none;
-    border-radius: 5px; 
+    border-radius: 5px;
+    transition: 0.2s;
 }
 
 .matrix-button:hover

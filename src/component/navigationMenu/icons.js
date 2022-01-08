@@ -3,15 +3,7 @@
 export const ShaderIcon =
 `
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" version="1.1" id="svg2" xml:space="preserve" width="85.333336" height="85.333336" viewBox="0 0 85.333336 85.333336" sodipodi:docname="shader.ai">
-  <metadata id="metadata8">
-    <rdf:RDF>
-      <cc:Work rdf:about="">
-        <dc:format>image/svg+xml</dc:format>
-        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-      </cc:Work>
-    </rdf:RDF>
-  </metadata>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" id="svg2" xml:space="preserve" width="85.333336" height="85.333336" viewBox="0 0 85.333336 85.333336">
   <defs id="defs6">
     <clipPath clipPathUnits="userSpaceOnUse" id="clipPath18">
       <path d="M 0,0 H 64 V 64 H 0 Z" id="path16" />
@@ -53,7 +45,6 @@ export const ShaderIcon =
       <path d="m 33.104,12.896 h 8 v 8 h -8 z" id="path156" />
     </clipPath>
   </defs>
-  <sodipodi:namedview pagecolor="#ffffff" bordercolor="#666666" borderopacity="1" objecttolerance="10" gridtolerance="10" guidetolerance="10" inkscape:pageopacity="0" inkscape:pageshadow="2" inkscape:window-width="640" inkscape:window-height="480" id="namedview4" />
   <g id="g10" inkscape:groupmode="layer" inkscape:label="shader" transform="matrix(1.3333333,0,0,-1.3333333,0,85.333333)">
     <g id="g12">
       <g id="g14" clip-path="url(#clipPath18)">
@@ -171,15 +162,7 @@ export const ShaderIcon =
 export const UniformsIcon =
 `
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" version="1.1" id="svg2" xml:space="preserve" width="85.333336" height="85.333336" viewBox="0 0 85.333336 85.333336" sodipodi:docname="uniforms.ai">
-  <metadata id="metadata8">
-    <rdf:RDF>
-      <cc:Work rdf:about="">
-        <dc:format>image/svg+xml</dc:format>
-        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-      </cc:Work>
-    </rdf:RDF>
-  </metadata>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" id="svg2" xml:space="preserve" width="85.333336" height="85.333336" viewBox="0 0 85.333336 85.333336">
   <defs id="defs6">
     <clipPath clipPathUnits="userSpaceOnUse" id="clipPath18">
       <path d="M 0,0 H 64 V 64 H 0 Z" id="path16" />
@@ -203,7 +186,6 @@ export const UniformsIcon =
       <path d="m 48,22 h -8 v -8 h 8 z" id="path92" />
     </clipPath>
   </defs>
-  <sodipodi:namedview pagecolor="#ffffff" bordercolor="#666666" borderopacity="1" objecttolerance="10" gridtolerance="10" guidetolerance="10" inkscape:pageopacity="0" inkscape:pageshadow="2" inkscape:window-width="640" inkscape:window-height="480" id="namedview4" />
   <g id="g10" inkscape:groupmode="layer" inkscape:label="uniforms" transform="matrix(1.3333333,0,0,-1.3333333,0,85.333333)">
     <g id="g12">
       <g id="g14" clip-path="url(#clipPath18)">
@@ -211,13 +193,13 @@ export const UniformsIcon =
           <path d="m 0,0 c 17.673,0 32,-14.327 32,-32 0,-17.673 -14.327,-32 -32,-32 -17.673,0 -32,14.327 -32,32 0,17.673 14.327,32 32,32" style="fill:transparent;fill-opacity:1;fill-rule:nonzero;stroke:none" id="path22" />
         </g>
         <g id="g24" transform="translate(52,32)">
-          <path d="m 0,0 c 0,-1.105 -0.895,-2 -2,-2 h -32 c -1.105,0 -2,0.895 -2,2 0,1.105 0.895,2 2,2 H -2 C -0.895,2 0,1.105 0,0" style="fill:#4f5d73;fill-opacity:1;fill-rule:nonzero;stroke:none" id="path26" />
+          <path d="m 0,0 c 0,-1.105 -0.895,-2 -2,-2 h -32 c -1.105,0 -2,0.895 -2,2 0,1.105 0.895,2 2,2 H -2 C -0.895,2 0,1.105 0,0" style="fill:#e0995e;fill-opacity:1;fill-rule:nonzero;stroke:none" id="path26" />
         </g>
         <g id="g28" transform="translate(52,46)">
-          <path d="m 0,0 c 0,-1.105 -0.895,-2 -2,-2 h -32 c -1.105,0 -2,0.895 -2,2 0,1.105 0.895,2 2,2 H -2 C -0.895,2 0,1.105 0,0" style="fill:#4f5d73;fill-opacity:1;fill-rule:nonzero;stroke:none" id="path30" />
+          <path d="m 0,0 c 0,-1.105 -0.895,-2 -2,-2 h -32 c -1.105,0 -2,0.895 -2,2 0,1.105 0.895,2 2,2 H -2 C -0.895,2 0,1.105 0,0" style="fill:#e0995e;fill-opacity:1;fill-rule:nonzero;stroke:none" id="path30" />
         </g>
         <g id="g32" transform="translate(52,18)">
-          <path d="m 0,0 c 0,-1.105 -0.895,-2 -2,-2 h -32 c -1.105,0 -2,0.895 -2,2 0,1.105 0.895,2 2,2 H -2 C -0.895,2 0,1.105 0,0" style="fill:#4f5d73;fill-opacity:1;fill-rule:nonzero;stroke:none" id="path34" />
+          <path d="m 0,0 c 0,-1.105 -0.895,-2 -2,-2 h -32 c -1.105,0 -2,0.895 -2,2 0,1.105 0.895,2 2,2 H -2 C -0.895,2 0,1.105 0,0" style="fill:#e0995e;fill-opacity:1;fill-rule:nonzero;stroke:none" id="path34" />
         </g>
         <g id="g36">
           <g id="g38" />
@@ -262,13 +244,13 @@ export const UniformsIcon =
           </g>
         </g>
         <g id="g108" transform="translate(36,49.8643)">
-          <path d="m 0,0 c 2.209,0 4,-1.791 4,-4 0,-2.209 -1.791,-4 -4,-4 -2.209,0 -4,1.791 -4,4 0,2.209 1.791,4 4,4" style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none" id="path110" />
+          <path d="m 0,0 c 2.209,0 4,-1.791 4,-4 0,-2.209 -1.791,-4 -4,-4 -2.209,0 -4,1.791 -4,4 0,2.209 1.791,4 4,4" style="fill:#c75c5c;fill-opacity:1;fill-rule:nonzero;stroke:none" id="path110" />
         </g>
         <g id="g112" transform="translate(25,36)">
-          <path d="m 0,0 c 2.209,0 4,-1.791 4,-4 0,-2.209 -1.791,-4 -4,-4 -2.209,0 -4,1.791 -4,4 0,2.209 1.791,4 4,4" style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none" id="path114" />
+          <path d="m 0,0 c 2.209,0 4,-1.791 4,-4 0,-2.209 -1.791,-4 -4,-4 -2.209,0 -4,1.791 -4,4 0,2.209 1.791,4 4,4" style="fill:#76c2af;fill-opacity:1;fill-rule:nonzero;stroke:none" id="path114" />
         </g>
         <g id="g116" transform="translate(42,22)">
-          <path d="m 0,0 c 2.209,0 4,-1.791 4,-4 0,-2.209 -1.791,-4 -4,-4 -2.209,0 -4,1.791 -4,4 0,2.209 1.791,4 4,4" style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none" id="path118" />
+          <path d="m 0,0 c 2.209,0 4,-1.791 4,-4 0,-2.209 -1.791,-4 -4,-4 -2.209,0 -4,1.791 -4,4 0,2.209 1.791,4 4,4" style="fill:#4f5d73;fill-opacity:1;fill-rule:nonzero;stroke:none" id="path118" />
         </g>
       </g>
     </g>

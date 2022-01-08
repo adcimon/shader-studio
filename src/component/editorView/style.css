@@ -75,7 +75,8 @@
 
     /* Style */
     border: none;
-    border-radius: 25%;
+    border-radius: 5px;
+    transition: 0.2s;
 }
 
 .compile-button:hover

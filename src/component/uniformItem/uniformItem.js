@@ -55,6 +55,7 @@ export class UniformItem extends HTMLElement
         this.typeSelect.addEventListener("change", this.dispatchTypeChange.bind(this));
         this.valueInput.addEventListener("change", this.dispatchValueChange.bind(this));
         this.matrixInput.addEventListener("valuechange", this.dispatchValueChange.bind(this));
+        this.matrixInput.addEventListener("click", this.dispatchClickMatrixInput.bind(this));
         this.removeButton.addEventListener("click", this.dispatchRemoveUniform.bind(this));
 
         this.nameInput.focus();
@@ -161,6 +162,31 @@ export class UniformItem extends HTMLElement
 
         let newEvent = new CustomEvent("valuechange", { detail: { uniformItem: this, value: value }});
         this.dispatchEvent(newEvent);
+    }
+
+    dispatchClickMatrixInput()
+    {
+        switch( this.typeSelect.value )
+        {
+            case "vec2":
+                this.matrixInput.showVector2();
+                break;
+            case "vec3":
+                this.matrixInput.showVector3();
+                break;
+            case "vec4":
+                this.matrixInput.showVector4();
+                break;
+            case "mat2":
+                this.matrixInput.showMatrix2();
+                break;
+            case "mat3":
+                this.matrixInput.showMatrix3();
+                break;
+            case "mat4":
+                this.matrixInput.showMatrix4();
+                break;
+        }
     }
 
     dispatchRemoveUniform()
