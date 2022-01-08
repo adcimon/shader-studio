@@ -1,6 +1,7 @@
 "use strict";
 
 import { UniformItem } from "../uniformItem/uniformItem.js";
+import { AddIcon } from './icons.js';
 
 const css = `<link type="text/css" rel="stylesheet" href="./src/component/uniformList/style.css">`;
 
@@ -8,9 +9,7 @@ const html = `
 <div class="list">
 </div>
 <button class="add-button">
-    <svg viewBox="0 0 512 512">
-        <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M256 112v288M400 256H112"/>
-    </svg>
+    ${AddIcon}
 </button>
 `;
 

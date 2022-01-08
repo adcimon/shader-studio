@@ -6,7 +6,8 @@
 :host
 {
     /* Variables */
-    --item-width: 70px;
+    --icon-size: 35px;
+    --item-width: 90px;
     --indicator-size: 70px;
 
     /* Layout */
@@ -109,8 +110,8 @@
 .nav-menu ul li a .nav-icon svg
 {
     /* Size */
-    width: 25px;
-    height: 25px;
+    width: var(--icon-size);
+    height: var(--icon-size);
 }
 
 .nav-menu ul li.active a .nav-icon
@@ -130,12 +131,12 @@
 
     /* Text */
     font-size: 0.75em;
-    font-weight: 400;
+    font-weight: bold;
     letter-spacing: 0.05em;
 
     /* Style */
     border-radius: 12px;
-    color: var(--primary-color);
+    color: var(--font-color);
     opacity: 0;
     transform: translateY(15px);
     transition: 0.5s;
