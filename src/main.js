@@ -35,12 +35,15 @@ function exit()
 
 function initializeInterface()
 {
+    // Editor view.
     editorView = document.body.querySelector("editor-view");
     editorView.addEventListener("compile", compile);
 
+    // Shader editor.
     shaderEditor = document.body.querySelector("shader-editor");
     shaderEditor.setCode(ShaderSource);
 
+    // Uniform list.
     uniformList = document.body.querySelector("uniform-list");
     uniformList.addEventListener("adduniform", (event) =>
     {
@@ -72,6 +75,7 @@ function initializeInterface()
         compile();
     });
 
+    // Navigation menu.
     navigationMenu = document.body.querySelector("navigation-menu");
     navigationMenu.addEventListener("itemselect", (event) =>
     {
@@ -92,6 +96,7 @@ function initializeInterface()
         }
     });
 
+    // Render view.
     renderView = document.body.querySelector("render-view");
     renderView.addEventListener("resize", () =>
     {
