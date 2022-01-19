@@ -8,6 +8,7 @@ export function Texture( gl, unit )
     }
 
     let texture = gl.createTexture();
+    let pixels = null;
 
     let initialize = function()
     {
@@ -29,17 +30,9 @@ export function Texture( gl, unit )
         gl.texImage2D(target, level, internalFormat, width, height, border, format, type, pixels);
     };
 
-    let setPixels = function( pixels )
+    let setSource = function( source )
     {
-        gl.activeTexture(gl.TEXTURE0 + unit);
-        gl.bindTexture(gl.TEXTURE_2D, texture);
-    
-        let target = gl.TEXTURE_2D;
-        let level = 0;
-        let internalFormat = gl.RGBA;
-        let format = gl.RGBA;
-        let type = gl.UNSIGNED_BYTE;
-        gl.texImage2D(target, level, internalFormat, format, type, pixels);
+        pixels = source;
     };
 
     let setMinFilter = function( filter )
@@ -112,13 +105,31 @@ export function Texture( gl, unit )
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, value);
     };
 
+    let update = function()
+    {
+        gl.activeTexture(gl.TEXTURE0 + unit);
+        gl.bindTexture(gl.TEXTURE_2D, texture);
+
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+
+        let target = gl.TEXTURE_2D;
+        let level = 0;
+        let internalFormat = gl.RGBA;
+        let format = gl.RGBA;
+        let type = gl.UNSIGNED_BYTE;
+        gl.texImage2D(target, level, internalFormat, format, type, pixels);
+    };
+
     initialize();
 
     return {
-        setPixels,
+        setSource,
         setMinFilter,
         setMagFilter,
         setWrapS,
-        setWrapT
+        setWrapT,
+        update
     };
 }

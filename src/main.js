@@ -3,6 +3,7 @@
 import { Renderer } from './render/renderer.js';
 import { Shader } from './render/shader.js';
 import { Texture } from './render/texture.js';
+import { TextureUnits } from './render/textureUnits.js';
 import { Quad } from './render/quad.js';
 import { ShaderSource } from './render/shaders.js';
 
@@ -14,9 +15,12 @@ import { ShaderEditor } from './component/shaderEditor/shaderEditor.js';
 import { UniformList } from './component/uniformList/uniformList.js';
 import { UniformItem } from './component/uniformItem/uniformItem.js';
 import { MatrixInput } from './component/matrixInput/matrixInput.js';
+import { WebcamInput } from './component/webcamInput/webcamInput.js';
 
 var renderView, editorView, navigationMenu, shaderEditor, uniformList;
 var gl, renderer, shader, quad;
+var textures = { };
+var textureUnits = new TextureUnits(16);
 
 window.addEventListener("load", main);
 window.addEventListener("beforeunload", exit);
@@ -136,6 +140,13 @@ function render( time, deltaTime )
     shader.setFloat("u_time", time);
     shader.setFloat("u_deltaTime", deltaTime);
 
+    // Update textures.
+    for( let name in textures )
+    {
+        let texture = textures[name];
+        texture.update();
+    }
+
     quad.draw();
 }
 
@@ -143,7 +154,20 @@ function addUniform( uniformItem )
 {
     let type = uniformItem.getType();
     let name = uniformItem.getName();
-    shader.addUniform(type, name);
+
+    switch( type )
+    {
+        case "webcam":
+        {
+            shader.addUniform("sampler2D", name);
+            break;
+        }
+        default:
+        {
+            shader.addUniform(type, name);
+            break;
+        }
+    }
 }
 
 function addUniforms()
@@ -170,6 +194,26 @@ function setUniform( uniformItem )
         case "mat2":    shader.setMatrix2x2(name, value.flat(2));   break;
         case "mat3":    shader.setMatrix3x3(name, value.flat(2));   break;
         case "mat4":    shader.setMatrix4x4(name, value.flat(2));   break;
+        case "webcam":
+        {
+            let texture = null;
+            if( !(name in textures) )
+            {
+                let freeUnit = textureUnits.getUnit();
+                textureUnits.useUnit(freeUnit);
+                texture = new Texture(gl, freeUnit);
+                textures[name] = texture;
+            }
+            else
+            {
+                texture = textures[name];
+            }
+
+            texture.setSource(value);
+            shader.setTexture(name, texture);
+
+            break;
+        }
     }
 }
 

@@ -3,7 +3,7 @@
 const css = `<link type="text/css" rel="stylesheet" href="./src/component/matrixInput/style.css">`;
 
 const html = `
-<button class="matrix-button">
+<button>
     <svg viewBox="0 0 512 512">
         <rect x="64" y="64" width="80" height="80" rx="40" ry="40" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/>
         <rect x="216" y="64" width="80" height="80" rx="40" ry="40" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/>
@@ -16,7 +16,7 @@ const html = `
         <rect x="368" y="368" width="80" height="80" rx="40" ry="40" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/>
     </svg>
 </button>
-<div class="matrix-view" hidden>
+<div class="window" hidden>
     <table>
         <tr row="0">
             <td row="0" column="0"><input type="number" value="1" step="0.1"></input></td>
@@ -48,8 +48,8 @@ const html = `
 
 export class MatrixInput extends HTMLElement
 {
-    matrixButton = null;
-    matrixView = null;
+    button = null;
+    window = null;
     inputs = [];
 
     constructor()
@@ -65,11 +65,11 @@ export class MatrixInput extends HTMLElement
 
     connectedCallback()
     {
-        this.matrixButton = this.shadowRoot.querySelector(".matrix-button");
-        this.matrixView = this.shadowRoot.querySelector(".matrix-view");
-        this.matrixButton.addEventListener("click", () =>
+        this.button = this.shadowRoot.querySelector("button");
+        this.window = this.shadowRoot.querySelector(".window");
+        this.button.addEventListener("click", () =>
         {
-            this.matrixView.hidden = !this.matrixView.hidden;
+            this.window.hidden = !this.window.hidden;
         });
 
         this.inputs = this.shadowRoot.querySelectorAll("input");

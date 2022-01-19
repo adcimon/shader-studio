@@ -7,8 +7,8 @@
 {
     /* Variables*/
     --button-size: 30px;
-    --input-width: 60px;
-    --view-size: 35%;
+    --input-width: 100px;
+    --window-size: 35%;
 
     /* Layout */
     display: block;
@@ -23,7 +23,7 @@
     display: none;
 }
 
-button
+.button
 {
     /* Layout */
     display: flex;
@@ -38,7 +38,7 @@ button
     transition: 0.2s;
 }
 
-button:hover
+.button:hover
 {
     /* Style */
     background-color: var(--selection-color);
@@ -50,6 +50,7 @@ button:hover
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
 
     /* Position */
     position: fixed;
@@ -58,8 +59,8 @@ button:hover
     transform: translate(-50%, -50%);
 
     /* Size */
-    width: var(--view-size);
-    height: var(--view-size);
+    width: var(--window-size);
+    height: var(--window-size);
 
     /* Style */
     background-color: var(--secondary-color);
@@ -73,43 +74,25 @@ button:hover
     display: none;
 }
 
-.window td[column="0"]::before
+.window *
 {
     /* Space */
-    margin-right: 5px;
-
-    /* Style */
-    content: ""attr(row)"";
-    color: white;
-    text-shadow: 1px 1px 1px black;
+    margin: 10px;
 }
 
-.window td
-{
-    /* Position */
-    position: relative;
-
-    /* Space */
-    padding: 5px;
-}
-
-.window tr[row="0"] td::after
-{
-    /* Position */
-    position: absolute;
-    transform: translate(-30px, -20px);
-
-    /* Style */
-    content: ""attr(column)"";
-    color: white;
-    text-shadow: 1px 1px 1px black;
-}
-
-input
+video
 {
     /* Size */
-    width: var(--input-width);
+    max-width: 90%;
+    height: 90%;
 
+    /* Style */
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+}
+
+select
+{
     /* Space */
     padding: 5px;
 
@@ -120,7 +103,7 @@ input
     color: var(--font-color);
 }
 
-input:hover
+select:hover
 {
     /* Style */
     border: 1px solid var(--selection-color);
