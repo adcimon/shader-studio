@@ -16,10 +16,20 @@ void main()
 }
 `;
 
+const FrameShader =
+`
+void main()
+{
+    vec4 color = texture2D(u_frame, v_texcoord);
+    gl_FragColor = color;
+}
+`;
+
 const Shaders =
 [
     ScreenTexcoordShader,
-    SineTimeShader
+    SineTimeShader,
+    FrameShader
 ];
 
 //export const ShaderSource = HeaderComment + Shaders[Math.floor(Math.random() * Shaders.length)];

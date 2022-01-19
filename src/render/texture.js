@@ -110,6 +110,8 @@ export function Texture( gl, unit )
         gl.activeTexture(gl.TEXTURE0 + unit);
         gl.bindTexture(gl.TEXTURE_2D, texture);
 
+        // Turn off mip maps and set wrapping to clamp to edge so it will work regardless of the dimensions of the video.
+        // Needed in WebGL1 but not WebGL2 if the image is not power-of-2 in both dimensions.
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
