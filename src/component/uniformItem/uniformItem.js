@@ -12,10 +12,12 @@ const html = `
     <option value="mat2">mat2</option>
     <option value="mat3">mat3</option>
     <option value="mat4">mat4</option>
+    <option value="webcam">webcam</option>
 </select>
 <input class="name-input" type="text" placeholder="name"></input>
 <input class="value-input" type="number" value="1.0" step="0.1"></input>
 <matrix-input class="matrix-input" hidden></matrix-input>
+<webcam-input class="webcam-input" hidden></webcam-input>
 <button class="remove-button">
     <svg viewBox="0 0 512 512">
         <path d="M112 112l20 320c.95 18.49 14.4 32 32 32h184c17.67 0 30.87-13.51 32-32l20-320" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/>
@@ -31,6 +33,7 @@ export class UniformItem extends HTMLElement
     nameInput = null;
     valueInput = null;
     matrixInput = null;
+    webcamInput = null;
     removeButton = null;
 
     constructor()
@@ -50,12 +53,14 @@ export class UniformItem extends HTMLElement
         this.nameInput = this.shadowRoot.querySelector(".name-input");
         this.valueInput = this.shadowRoot.querySelector(".value-input");
         this.matrixInput = this.shadowRoot.querySelector(".matrix-input");
+        this.webcamInput = this.shadowRoot.querySelector(".webcam-input");
         this.removeButton = this.shadowRoot.querySelector(".remove-button");
 
         this.typeSelect.addEventListener("change", this.dispatchTypeChange.bind(this));
         this.valueInput.addEventListener("change", this.dispatchValueChange.bind(this));
         this.matrixInput.addEventListener("valuechange", this.dispatchValueChange.bind(this));
         this.matrixInput.addEventListener("click", this.dispatchClickMatrixInput.bind(this));
+        this.webcamInput.addEventListener("valuechange", this.dispatchValueChange.bind(this));
         this.removeButton.addEventListener("click", this.dispatchRemoveUniform.bind(this));
 
         this.nameInput.focus();
@@ -87,6 +92,7 @@ export class UniformItem extends HTMLElement
             case "mat2":    return this.matrixInput.getMatrix2x2();
             case "mat3":    return this.matrixInput.getMatrix3x3();
             case "mat4":    return this.matrixInput.getMatrix4x4();
+            case "webcam":  return this.webcamInput.getVideo();
         }
     }
 
@@ -98,6 +104,7 @@ export class UniformItem extends HTMLElement
             {
                 this.valueInput.hidden = false;
                 this.matrixInput.hidden = true;
+                this.webcamInput.hidden = true;
                 this.valueInput.step = 1;
                 this.valueInput.value = Math.floor(this.valueInput.value);
                 break;
@@ -106,6 +113,7 @@ export class UniformItem extends HTMLElement
             {
                 this.valueInput.hidden = false;
                 this.matrixInput.hidden = true;
+                this.webcamInput.hidden = true;
                 this.valueInput.step = 0.1;
                 break;
             }
@@ -118,6 +126,14 @@ export class UniformItem extends HTMLElement
             {
                 this.valueInput.hidden = true;
                 this.matrixInput.hidden = false;
+                this.webcamInput.hidden = true;
+                break;
+            }
+            case "webcam":
+            {
+                this.valueInput.hidden = true;
+                this.matrixInput.hidden = true;
+                this.webcamInput.hidden = false;
                 break;
             }
         }
@@ -157,6 +173,9 @@ export class UniformItem extends HTMLElement
                 break;
             case "mat4":
                 value = this.matrixInput.getMatrix4x4();
+                break;
+            case "webcam":
+                value = this.webcamInput.getVideo();
                 break;
         }
 
