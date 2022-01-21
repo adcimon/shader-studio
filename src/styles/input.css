@@ -1,0 +1,17 @@
+input
+{
+    /* Space */
+    padding: 5px;
+
+    /* Style */
+    background-color: var(--secondary-color);
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    color: var(--font-color);
+}
+
+input:hover
+{
+    /* Style */
+    border: 1px solid var(--selection-color);
+}

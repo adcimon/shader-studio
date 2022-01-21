@@ -1,9 +1,15 @@
 "use strict";
 
-const css = `<link type="text/css" rel="stylesheet" href="./src/component/matrixInput/style.css">`;
+const css =
+`
+<link type="text/css" rel="stylesheet" href="./src/styles/button.css">
+<link type="text/css" rel="stylesheet" href="./src/styles/input.css">
+<link type="text/css" rel="stylesheet" href="./src/component/matrixInput/style.css">
+`;
 
-const html = `
-<button>
+const html =
+`
+<button id="button">
     <svg viewBox="0 0 512 512">
         <rect x="64" y="64" width="80" height="80" rx="40" ry="40" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/>
         <rect x="216" y="64" width="80" height="80" rx="40" ry="40" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/>
@@ -16,7 +22,7 @@ const html = `
         <rect x="368" y="368" width="80" height="80" rx="40" ry="40" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/>
     </svg>
 </button>
-<div class="window" hidden>
+<div id="window" hidden>
     <table>
         <tr row="0">
             <td row="0" column="0"><input type="number" value="1" step="0.1"></input></td>
@@ -65,8 +71,8 @@ export class MatrixInput extends HTMLElement
 
     connectedCallback()
     {
-        this.button = this.shadowRoot.querySelector("button");
-        this.window = this.shadowRoot.querySelector(".window");
+        this.button = this.shadowRoot.querySelector("#button");
+        this.window = this.shadowRoot.querySelector("#window");
         this.button.addEventListener("click", () =>
         {
             this.window.hidden = !this.window.hidden;

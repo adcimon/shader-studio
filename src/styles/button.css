@@ -1,0 +1,26 @@
+button
+{
+    /* Layout */
+    display: flex;
+
+    /* Size */
+    width: 30px;
+    height: 30px;
+
+    /* Style */
+    border: none;
+    border-radius: 5px;
+    transition: 0.2s;
+}
+
+button:hover
+{
+    /* Style */
+    background-color: var(--selection-color);
+}
+
+button svg
+{
+    /* Style */
+    color: black;
+}
