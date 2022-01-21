@@ -28,7 +28,7 @@
     display: none;
 }
 
-.list
+#list
 {
     /* Layout */
     display: block;
@@ -39,7 +39,7 @@
     height: calc(95% - var(--add-button-size));
 }
 
-.add-button
+#addButton
 {
     /* Position */
     position: absolute;
@@ -55,18 +55,16 @@
 
     /* Style */
     background-color: green;
-    border: none;
     border-radius: 100%;
-    transition: 0.2s;
 }
 
-.add-button:hover
+#addButton:hover
 {
     /* Style */
     background-color: var(--selection-color);
 }
 
-.add-button svg
+#addButton svg
 {
     /* Style */
     color: white;

@@ -1,12 +1,16 @@
 "use strict";
 
-const css = `<link type="text/css" rel="stylesheet" href="./src/component/mainView/style.css">`;
+const css =
+`
+<link type="text/css" rel="stylesheet" href="./src/component/mainView/style.css">
+`;
 
-const html = `
-<div class="left">
+const html =
+`
+<div id="left">
     <slot name="left"/>
 </div>
-<div class="right">
+<div id="right">
     <slot name="right"/>
 </div>
 `;

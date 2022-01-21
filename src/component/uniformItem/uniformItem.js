@@ -1,9 +1,16 @@
 "use strict";
 
-const css = `<link type="text/css" rel="stylesheet" href="./src/component/uniformItem/style.css">`;
+const css =
+`
+<link type="text/css" rel="stylesheet" href="./src/styles/button.css">
+<link type="text/css" rel="stylesheet" href="./src/styles/input.css">
+<link type="text/css" rel="stylesheet" href="./src/styles/select.css">
+<link type="text/css" rel="stylesheet" href="./src/component/uniformItem/style.css">
+`;
 
-const html = `
-<select class="type-select">
+const html =
+`
+<select id="typeSelect">
     <option value="int">int</option>
     <option value="float" selected>float</option>
     <option value="vec2">vec2</option>
@@ -14,11 +21,11 @@ const html = `
     <option value="mat4">mat4</option>
     <option value="webcam">webcam</option>
 </select>
-<input class="name-input" type="text" placeholder="name"></input>
-<input class="value-input" type="number" value="1.0" step="0.1"></input>
-<matrix-input class="matrix-input" hidden></matrix-input>
-<webcam-input class="webcam-input" hidden></webcam-input>
-<button class="remove-button">
+<input id="nameInput" type="text" placeholder="name"></input>
+<input id="valueInput" type="number" value="1.0" step="0.1"></input>
+<matrix-input id="matrixInput" hidden></matrix-input>
+<webcam-input id="webcamInput" hidden></webcam-input>
+<button id="removeButton">
     <svg viewBox="0 0 512 512">
         <path d="M112 112l20 320c.95 18.49 14.4 32 32 32h184c17.67 0 30.87-13.51 32-32l20-320" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/>
         <path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" d="M80 112h352"/>
@@ -49,12 +56,12 @@ export class UniformItem extends HTMLElement
 
     connectedCallback()
     {
-        this.typeSelect = this.shadowRoot.querySelector(".type-select");
-        this.nameInput = this.shadowRoot.querySelector(".name-input");
-        this.valueInput = this.shadowRoot.querySelector(".value-input");
-        this.matrixInput = this.shadowRoot.querySelector(".matrix-input");
-        this.webcamInput = this.shadowRoot.querySelector(".webcam-input");
-        this.removeButton = this.shadowRoot.querySelector(".remove-button");
+        this.typeSelect = this.shadowRoot.querySelector("#typeSelect");
+        this.nameInput = this.shadowRoot.querySelector("#nameInput");
+        this.valueInput = this.shadowRoot.querySelector("#valueInput");
+        this.matrixInput = this.shadowRoot.querySelector("#matrixInput");
+        this.webcamInput = this.shadowRoot.querySelector("#webcamInput");
+        this.removeButton = this.shadowRoot.querySelector("#removeButton");
 
         this.typeSelect.addEventListener("change", this.dispatchTypeChange.bind(this));
         this.valueInput.addEventListener("change", this.dispatchValueChange.bind(this));

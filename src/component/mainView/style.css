@@ -22,7 +22,7 @@
     display: none;
 }
 
-.left
+#left
 {
     /* Size */
     width: 50%;
@@ -32,7 +32,7 @@
     padding: var(--padding);
 }
 
-.right
+#right
 {
     /* Size */
     width: 50%;

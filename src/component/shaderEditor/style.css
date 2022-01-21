@@ -28,7 +28,7 @@
     background: var(--text-selection-color);
 }
 
-.editor
+#editor
 {
     /* Layout */
     display: block;

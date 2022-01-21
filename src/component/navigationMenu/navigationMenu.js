@@ -2,9 +2,13 @@
 
 import { ShaderIcon, UniformsIcon } from './icons.js';
 
-const css = `<link type="text/css" rel="stylesheet" href="./src/component/navigationMenu/style.css">`;
+const css =
+`
+<link type="text/css" rel="stylesheet" href="./src/component/navigationMenu/style.css">
+`;
 
-const html = `
+const html =
+`
 <div class="nav-menu">
     <ul>
         <li class="nav-item active" name="shader">

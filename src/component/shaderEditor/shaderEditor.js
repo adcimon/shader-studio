@@ -2,10 +2,14 @@
 
 import CodeFlask from './codeflask.module.js';
 
-const css = `<link type="text/css" rel="stylesheet" href="./src/component/shaderEditor/style.css">`;
+const css =
+`
+<link type="text/css" rel="stylesheet" href="./src/component/shaderEditor/style.css">
+`;
 
-const html = `
-<div class="editor">
+const html =
+`
+<div id="editor">
 </div>
 `;
 
@@ -27,7 +31,7 @@ export class ShaderEditor extends HTMLElement
 
     connectedCallback()
     {
-        const editor = this.shadowRoot.querySelector(".editor");
+        const editor = this.shadowRoot.querySelector("#editor");
         this.flask = new CodeFlask(editor,
         {
             language: "js",

@@ -17,7 +17,7 @@
     <link rel="icon" href="assets/favicon/favicon.ico" type="image/x-icon"/>
     <link rel="manifest" href="manifest.json">
 
-    <link type="text/css" rel="stylesheet" href="css/style.css">
+    <link type="text/css" rel="stylesheet" href="src/styles/style.css">
     <script type="module" src="src/main.js"></script>
 
 </head>
@@ -27,7 +27,7 @@
     <main-view>
         <render-view slot="left"></render-view>
         <editor-view slot="right">
-            <navigation-menu slot="nav-bar"></navigation-menu>
+            <navigation-menu slot="top"></navigation-menu>
             <shader-editor slot="content"></shader-editor>
             <uniform-list slot="content" hidden></uniform-list>
         </editor-view>

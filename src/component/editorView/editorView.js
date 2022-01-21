@@ -2,17 +2,22 @@
 
 import { CompileIcon } from './icons.js';
 
-const css = `<link type="text/css" rel="stylesheet" href="./src/component/editorView/style.css">`;
+const css =
+`
+<link type="text/css" rel="stylesheet" href="./src/styles/button.css">
+<link type="text/css" rel="stylesheet" href="./src/component/editorView/style.css">
+`;
 
-const html = `
-<div class="nav-bar">
-    <slot name="nav-bar"/>
+const html =
+`
+<div id="navBar">
+    <slot name="top"/>
 </div>
-<div class="content">
+<div id="content">
     <slot name="content"/>
 </div>
-<div class="status-bar">
-    <button class="compile-button">
+<div id="statusBar">
+    <button id="compileButton">
         ${CompileIcon}
     </button>
 </div>
@@ -33,7 +38,7 @@ export class EditorView extends HTMLElement
 
     connectedCallback()
     {
-        const compileButton = this.shadowRoot.querySelector(".compile-button");
+        const compileButton = this.shadowRoot.querySelector("#compileButton");
         compileButton.addEventListener("click", () =>
         {
             let event = new CustomEvent("compile");

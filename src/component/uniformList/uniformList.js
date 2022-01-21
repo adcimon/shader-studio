@@ -3,12 +3,17 @@
 import { UniformItem } from "../uniformItem/uniformItem.js";
 import { AddIcon } from './icons.js';
 
-const css = `<link type="text/css" rel="stylesheet" href="./src/component/uniformList/style.css">`;
+const css =
+`
+<link type="text/css" rel="stylesheet" href="./src/styles/button.css">
+<link type="text/css" rel="stylesheet" href="./src/component/uniformList/style.css">
+`;
 
-const html = `
-<div class="list">
+const html =
+`
+<div id="list">
 </div>
-<button class="add-button">
+<button id="addButton">
     ${AddIcon}
 </button>
 `;
@@ -31,9 +36,9 @@ export class UniformList extends HTMLElement
 
     connectedCallback()
     {
-        this.list = this.shadowRoot.querySelector(".list");
+        this.list = this.shadowRoot.querySelector("#list");
 
-        this.addButton = this.shadowRoot.querySelector(".add-button");
+        this.addButton = this.shadowRoot.querySelector("#addButton");
         this.addButton.addEventListener("click", this.addUniform.bind(this));
     }
 

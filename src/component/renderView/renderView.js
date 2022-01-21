@@ -1,14 +1,18 @@
 "use strict";
 
-const css = `<link type="text/css" rel="stylesheet" href="./src/component/renderView/style.css">`;
+const css =
+`
+<link type="text/css" rel="stylesheet" href="./src/component/renderView/style.css">
+`;
 
-const html = `
-<div class="render-container">
-    <canvas>Your browser does not support the HTML5 canvas element.</canvas>
-    <video autoplay controls>Your browser does not support the HTML5 video element.</video>
+const html =
+`
+<div id="renderContainer">
+    <canvas id="canvas">Your browser does not support the HTML5 canvas element.</canvas>
+    <video id="video" autoplay controls>Your browser does not support the HTML5 video element.</video>
 </div>
-<div class="status-bar">
-    <span class="resolution-label"></span>
+<div id="statusBar">
+    <span id="resolutionLabel"></span>
 </div>
 `;
 
@@ -31,9 +35,9 @@ export class RenderView extends HTMLElement
 
     connectedCallback()
     {
-        this.canvas = this.shadowRoot.querySelector("canvas");
-        this.video = this.shadowRoot.querySelector("video");
-        this.resolutionLabel = this.shadowRoot.querySelector(".resolution-label");
+        this.canvas = this.shadowRoot.querySelector("#canvas");
+        this.video = this.shadowRoot.querySelector("#video");
+        this.resolutionLabel = this.shadowRoot.querySelector("#resolutionLabel");
 
         window.addEventListener("resize", this.resize.bind(this));
 

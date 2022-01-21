@@ -30,65 +30,8 @@
     display: none;
 }
 
-select
-{
-    /* Space */
-    padding: 5px;
-
-    /* Style */
-    background-color: var(--secondary-color);
-    border: 1px solid var(--border-color);
-    border-radius: 5px;
-    color: var(--font-color);
-}
-
-select:hover
-{
-    /* Style */
-    border: 1px solid var(--selection-color);
-}
-
-input
-{
-    /* Space */
-    padding: 5px;
-
-    /* Style */
-    background-color: var(--secondary-color);
-    border: 1px solid var(--border-color);
-    border-radius: 5px;
-    color: var(--font-color);
-}
-
-input:hover
-{
-    /* Style */
-    border: 1px solid var(--selection-color);
-}
-
-.value-input
+#valueInput
 {
     /* Size */
     width: 65px;
-}
-
-.remove-button
-{
-    /* Layout */
-    display: flex;
-
-    /* Size */
-    width: 30px;
-    height: 30px;
-
-    /* Style */
-    border: none;
-    border-radius: 5px;
-    transition: 0.2s;
-}
-
-.remove-button:hover
-{
-    /* Style */
-    background-color: var(--selection-color);
 }
