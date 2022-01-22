@@ -35,3 +35,9 @@
     /* Size */
     width: 65px;
 }
+
+#removeButton:hover, #removeButton:active
+{
+    /* Style */
+    background-color: var(--cancel-color);
+}

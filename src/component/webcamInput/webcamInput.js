@@ -17,8 +17,15 @@ const html =
     </svg>
 </button>
 <div id="window" hidden>
-    <video id="video" autoplay loop muted playsinline></video>
-    <select id="deviceSelect"></select>
+    <div id="modal">
+        <button id="closeButton">
+            <svg viewBox="0 0 512 512">
+                <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M368 368L144 144M368 144L144 368" />
+            </svg>
+        </button>
+        <video id="video" autoplay loop muted playsinline></video>
+        <select id="deviceSelect"></select>
+    </div>
 </div>
 `;
 
@@ -26,6 +33,7 @@ export class WebcamInput extends HTMLElement
 {
     button = null;
     window = null;
+    closeButton = null;
     video = null;
     deviceSelect = null;
 
@@ -58,13 +66,19 @@ export class WebcamInput extends HTMLElement
     {
         this.button = this.shadowRoot.querySelector("#button");
         this.window = this.shadowRoot.querySelector("#window");
+        this.closeButton = this.shadowRoot.querySelector("#closeButton");
         this.video = this.shadowRoot.querySelector("#video");
         this.deviceSelect = this.shadowRoot.querySelector("#deviceSelect");
 
         this.button.addEventListener("click", () =>
         {
-            this.window.hidden = !this.window.hidden;
+            this.window.hidden = false;
             this.findDevices();
+        });
+
+        this.closeButton.addEventListener("click", () =>
+        {
+            this.window.hidden = true;
         });
 
         this.deviceSelect.addEventListener("change", () =>

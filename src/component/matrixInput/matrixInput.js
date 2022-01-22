@@ -23,32 +23,39 @@ const html =
     </svg>
 </button>
 <div id="window" hidden>
-    <table>
-        <tr row="0">
-            <td row="0" column="0"><input type="number" value="1" step="0.1"></input></td>
-            <td row="0" column="1"><input type="number" value="0" step="0.1"></input></td>
-            <td row="0" column="2"><input type="number" value="0" step="0.1"></input></td>
-            <td row="0" column="3"><input type="number" value="0" step="0.1"></input></td>
-        </tr>
-        <tr row="1">
-            <td row="1" column="0"><input type="number" value="0" step="0.1"></input></td>
-            <td row="1" column="1"><input type="number" value="1" step="0.1"></input></td>
-            <td row="1" column="2"><input type="number" value="0" step="0.1"></input></td>
-            <td row="1" column="3"><input type="number" value="0" step="0.1"></input></td>
-        </tr>
-        <tr row="2">
-            <td row="2" column="0"><input type="number" value="0" step="0.1"></input></td>
-            <td row="2" column="1"><input type="number" value="0" step="0.1"></input></td>
-            <td row="2" column="2"><input type="number" value="1" step="0.1"></input></td>
-            <td row="2" column="3"><input type="number" value="0" step="0.1"></input></td>
-        </tr>
-        <tr row="3">
-            <td row="3" column="0"><input type="number" value="0" step="0.1"></input></td>
-            <td row="3" column="1"><input type="number" value="0" step="0.1"></input></td>
-            <td row="3" column="2"><input type="number" value="0" step="0.1"></input></td>
-            <td row="3" column="3"><input type="number" value="1" step="0.1"></input></td>
-        </tr>
-    </table>
+    <div id="modal">
+        <button id="closeButton">
+            <svg viewBox="0 0 512 512">
+                <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M368 368L144 144M368 144L144 368" />
+            </svg>
+        </button>
+        <table>
+            <tr row="0">
+                <td row="0" column="0"><input type="number" value="1" step="0.1"></input></td>
+                <td row="0" column="1"><input type="number" value="0" step="0.1"></input></td>
+                <td row="0" column="2"><input type="number" value="0" step="0.1"></input></td>
+                <td row="0" column="3"><input type="number" value="0" step="0.1"></input></td>
+            </tr>
+            <tr row="1">
+                <td row="1" column="0"><input type="number" value="0" step="0.1"></input></td>
+                <td row="1" column="1"><input type="number" value="1" step="0.1"></input></td>
+                <td row="1" column="2"><input type="number" value="0" step="0.1"></input></td>
+                <td row="1" column="3"><input type="number" value="0" step="0.1"></input></td>
+            </tr>
+            <tr row="2">
+                <td row="2" column="0"><input type="number" value="0" step="0.1"></input></td>
+                <td row="2" column="1"><input type="number" value="0" step="0.1"></input></td>
+                <td row="2" column="2"><input type="number" value="1" step="0.1"></input></td>
+                <td row="2" column="3"><input type="number" value="0" step="0.1"></input></td>
+            </tr>
+            <tr row="3">
+                <td row="3" column="0"><input type="number" value="0" step="0.1"></input></td>
+                <td row="3" column="1"><input type="number" value="0" step="0.1"></input></td>
+                <td row="3" column="2"><input type="number" value="0" step="0.1"></input></td>
+                <td row="3" column="3"><input type="number" value="1" step="0.1"></input></td>
+            </tr>
+        </table>
+    </div>
 </div>
 `;
 
@@ -56,6 +63,7 @@ export class MatrixInput extends HTMLElement
 {
     button = null;
     window = null;
+    closeButton = null;
     inputs = [];
 
     constructor()
@@ -73,9 +81,16 @@ export class MatrixInput extends HTMLElement
     {
         this.button = this.shadowRoot.querySelector("#button");
         this.window = this.shadowRoot.querySelector("#window");
+        this.closeButton = this.shadowRoot.querySelector("#closeButton");
+
         this.button.addEventListener("click", () =>
         {
-            this.window.hidden = !this.window.hidden;
+            this.window.hidden = false;
+        });
+
+        this.closeButton.addEventListener("click", () =>
+        {
+            this.window.hidden = true;
         });
 
         this.inputs = this.shadowRoot.querySelectorAll("input");

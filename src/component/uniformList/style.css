@@ -6,7 +6,6 @@
 :host
 {
     /* Variables */
-    --background-color: var(--secondary-color);
     --add-button-size: 40px;
 
     /* Layout */
@@ -20,7 +19,7 @@
     height: 100%;
 
     /* Style */
-    background-color: var(--background-color);
+    background-color: var(--secondary-color);
 }
 
 :host([hidden])
@@ -54,18 +53,11 @@
     margin-bottom: 10px;
 
     /* Style */
-    background-color: green;
     border-radius: 100%;
 }
 
-#addButton:hover
+#addButton:hover, #addButton:active
 {
     /* Style */
-    background-color: var(--selection-color);
-}
-
-#addButton svg
-{
-    /* Style */
-    color: white;
+    background-color: var(--accept-color);
 }

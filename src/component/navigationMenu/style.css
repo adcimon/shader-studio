@@ -145,7 +145,6 @@
 .nav-menu ul li.active a .nav-text
 {
     /* Style */
-    background: var(--text-selection-color);
     opacity: 1;
     transform: translateY(-4px);
 }

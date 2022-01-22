@@ -6,6 +6,8 @@
     --border-color: rgba(48, 48, 48, 1);
     --selection-color: hsla(207, 90%, 54%, 1);
     --text-selection-color: #add6ff26;
+    --accept-color: hsla(120, 100%, 25%, 1);
+    --cancel-color: hsla(0, 82%, 39%, 1);
 }
 
 *
