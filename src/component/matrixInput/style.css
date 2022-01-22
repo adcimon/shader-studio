@@ -8,7 +8,7 @@
     /* Variables*/
     --button-size: 30px;
     --input-width: 60px;
-    --view-size: 35%;
+    --modal-size: 35%;
 
     /* Layout */
     display: block;
@@ -28,6 +28,7 @@
     /* Layout */
     display: flex;
     align-items: center;
+    align-content: center;
     justify-content: center;
 
     /* Position */
@@ -35,10 +36,32 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    z-index: 100;
 
     /* Size */
-    width: var(--view-size);
-    height: var(--view-size);
+    width: 100%;
+    height: 100%;
+}
+
+#window[hidden]
+{
+    display: none;
+}
+
+#modal
+{
+    /* Layout */
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+
+    /* Position */
+    position: relative;
+
+    /* Size */
+    width: var(--modal-size);
+    height: var(--modal-size);
 
     /* Style */
     background-color: var(--secondary-color);
@@ -47,12 +70,24 @@
     box-shadow: 5px 5px 15px 5px black;
 }
 
-#window[hidden]
+#closeButton
 {
-    display: none;
+    /* Position */
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    /* Space */
+    margin: 5px;
 }
 
-#window td[column="0"]::before
+#closeButton:hover, #closeButton:active
+{
+    /* Style */
+    background-color: var(--cancel-color);
+}
+
+td[column="0"]::before
 {
     /* Space */
     margin-right: 5px;
@@ -63,7 +98,7 @@
     text-shadow: 1px 1px 1px black;
 }
 
-#window td
+td
 {
     /* Position */
     position: relative;
@@ -72,7 +107,7 @@
     padding: 5px;
 }
 
-#window tr[row="0"] td::after
+tr[row="0"] td::after
 {
     /* Position */
     position: absolute;

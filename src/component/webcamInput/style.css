@@ -8,7 +8,7 @@
     /* Variables*/
     --button-size: 30px;
     --input-width: 100px;
-    --window-size: 35%;
+    --modal-size: 35%;
 
     /* Layout */
     display: block;
@@ -28,18 +28,44 @@
     /* Layout */
     display: flex;
     align-items: center;
+    align-content: center;
     justify-content: center;
-    flex-direction: column;
 
     /* Position */
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    z-index: 100;
 
     /* Size */
-    width: var(--window-size);
-    height: var(--window-size);
+    width: 100%;
+    height: 100%;
+}
+
+#window[hidden]
+{
+    display: none;
+}
+
+#modal
+{
+    /* Layout */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+
+    /* Position */
+    position: relative;
+
+    /* Size */
+    width: var(--modal-size);
+    height: var(--modal-size);
+
+    /* Space */
+    gap: 5px;
 
     /* Style */
     background-color: var(--secondary-color);
@@ -48,15 +74,21 @@
     box-shadow: 5px 5px 15px 5px black;
 }
 
-#window[hidden]
+#closeButton
 {
-    display: none;
+    /* Position */
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    /* Space */
+    margin: 5px;
 }
 
-#window *
+#closeButton:hover, #closeButton:active
 {
-    /* Space */
-    margin: 10px;
+    /* Style */
+    background-color: var(--cancel-color);
 }
 
 #video
@@ -64,4 +96,13 @@
     /* Size */
     max-width: 90%;
     height: 90%;
+
+    /* Space */
+    margin-top: calc(var(--button-size) + 10px);
+}
+
+#deviceSelect
+{
+    /* Space */
+    margin-bottom: 10px;
 }
