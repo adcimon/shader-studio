@@ -99,7 +99,7 @@ export class UniformItem extends HTMLElement
             case "mat2":    return this.matrixInput.getMatrix2x2();
             case "mat3":    return this.matrixInput.getMatrix3x3();
             case "mat4":    return this.matrixInput.getMatrix4x4();
-            case "webcam":  return this.webcamInput.getVideo();
+            case "webcam":  return this.webcamInput.getValue();
         }
     }
 
@@ -182,7 +182,7 @@ export class UniformItem extends HTMLElement
                 value = this.matrixInput.getMatrix4x4();
                 break;
             case "webcam":
-                value = this.webcamInput.getVideo();
+                value = this.webcamInput.getValue();
                 break;
         }
 

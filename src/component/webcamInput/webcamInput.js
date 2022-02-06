@@ -1,5 +1,7 @@
 "use strict";
 
+import { WrapMode } from '../../render/wrapMode.js';
+
 const css =
 `
 <link type="text/css" rel="stylesheet" href="./src/styles/button.css">
@@ -25,6 +27,10 @@ const html =
         </button>
         <video id="video" autoplay loop muted playsinline></video>
         <select id="deviceSelect"></select>
+        <div>
+            <select id="wrapHorizontalSelect"></select>
+            <select id="wrapVerticalSelect"></select>
+        </div>
     </div>
 </div>
 `;
@@ -36,6 +42,8 @@ export class WebcamInput extends HTMLElement
     closeButton = null;
     video = null;
     deviceSelect = null;
+    wrapHorizontalSelect = null;
+    wrapVerticalSelect = null;
 
     devices = { };
     stream = null;
@@ -69,6 +77,9 @@ export class WebcamInput extends HTMLElement
         this.closeButton = this.shadowRoot.querySelector("#closeButton");
         this.video = this.shadowRoot.querySelector("#video");
         this.deviceSelect = this.shadowRoot.querySelector("#deviceSelect");
+        this.wrapHorizontalSelect = this.shadowRoot.querySelector("#wrapHorizontalSelect");
+        this.wrapVerticalSelect = this.shadowRoot.querySelector("#wrapVerticalSelect");
+        this.stream = new MediaStream();
 
         this.button.addEventListener("click", () =>
         {
@@ -88,7 +99,29 @@ export class WebcamInput extends HTMLElement
             this.findStream(deviceId);
         });
 
-        this.stream = new MediaStream();
+        Object.keys(WrapMode).forEach(key =>
+        {
+            let option = document.createElement("option");
+            option.value = WrapMode[key];
+            option.text = key;
+            this.wrapHorizontalSelect.appendChild(option);
+        });
+        this.wrapHorizontalSelect.addEventListener("change", () =>
+        {
+            this.dispatchValueChange();
+        });
+
+        Object.keys(WrapMode).forEach(key =>
+        {
+            let option = document.createElement("option");
+            option.value = WrapMode[key];
+            option.text = key;
+            this.wrapVerticalSelect.appendChild(option);
+        });
+        this.wrapVerticalSelect.addEventListener("change", () =>
+        {
+            this.dispatchValueChange();
+        });
     }
 
     disconnectedCallback()
@@ -103,6 +136,22 @@ export class WebcamInput extends HTMLElement
     getVideo()
     {
         return this.video;
+    }
+
+    getValue()
+    {
+        return {
+            stream:             this.stream,
+            video:              this.video,
+            wrapHorizontal:     this.wrapHorizontalSelect[this.wrapHorizontalSelect.selectedIndex].value,
+            wrapVertical:       this.wrapVerticalSelect[this.wrapVerticalSelect.selectedIndex].value
+        }
+    }
+
+    dispatchValueChange()
+    {
+        let newEvent = new CustomEvent("valuechange", { detail: { webcamInput: this, value: this.getValue() }});
+        this.dispatchEvent(newEvent);
     }
 
     async findDevices()
@@ -161,8 +210,7 @@ export class WebcamInput extends HTMLElement
         this.stream = stream;
         this.video.srcObject = stream;
 
-        let newEvent = new CustomEvent("valuechange", { detail: { webcamInput: this, value: this.stream }});
-        this.dispatchEvent(newEvent);
+        this.dispatchValueChange();
     };
 
     async errorStream( error )

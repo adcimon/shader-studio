@@ -403,7 +403,7 @@ export function Shader( gl )
     let setTexture = function( name, texture )
     {
         let uniform = gl.getUniformLocation(program, name);
-        gl.uniform1i(uniform, texture.unit);
+        gl.uniform1i(uniform, texture.getUnit());
     };
 
     return {
