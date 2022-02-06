@@ -17,18 +17,22 @@ export function TextureManager( gl, size )
 
     let getUnit = function()
     {
-        return units.findIndex(used => used === false);
+        let unit = units.findIndex(used => used === false);
+        console.log("Texture manager get unit", unit);
+        return unit;
     };
 
     let useUnit = function( unit )
     {
         if( units[unit] === true )
         {
+            console.log("Texture manager use unit", unit, "used");
             return false;
         }
         else
         {
             units[unit] = true;
+            console.log("Texture manager use unit", unit, "not used");
             return true;
         }
     };

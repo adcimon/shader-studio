@@ -1,5 +1,7 @@
 "use strict";
 
+import { WrapMode } from "./wrapMode.js";
+
 export function Texture( gl, unit )
 {
     if( !(gl instanceof WebGLRenderingContext) )
@@ -10,13 +12,25 @@ export function Texture( gl, unit )
     let texture = gl.createTexture();
     let pixels = null;
 
+    let minFilter = gl.LINEAR;
+    let magFilter = gl.LINEAR;
+    let wrapHorizontal = gl.CLAMP_TO_EDGE;
+    let wrapVertical = gl.CLAMP_TO_EDGE;
+    let verticalFlip = false;
+
     let initialize = function()
     {
-        // Active the texture unit.
         gl.activeTexture(gl.TEXTURE0 + unit);
-
-        // Bind the texture to the texture unit.
         gl.bindTexture(gl.TEXTURE_2D, texture);
+
+        // Turn off mip maps. Allowed modes are gl.NEAREST and gl.LINEAR (default is gl.NEAREST_MIPMAP_LINEAR).
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+
+        // Set wrapping to clamp to edge so it will work regardless of the dimensions of the video.
+        // Needed in WebGL1 but not WebGL2 if the image is not power-of-2 in both dimensions.
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
 
         let target = gl.TEXTURE_2D;
         let level = 0;
@@ -30,79 +44,80 @@ export function Texture( gl, unit )
         gl.texImage2D(target, level, internalFormat, width, height, border, format, type, pixels);
     };
 
+    let getUnit = function()
+    {
+        return unit;
+    };
+
     let setSource = function( source )
     {
+        // TODO: Validate source type.
         pixels = source;
     };
 
     let setMinFilter = function( filter )
-    {
-        gl.activeTexture(gl.TEXTURE0 + unit);
-        gl.bindTexture(gl.TEXTURE_2D, texture);
-    
-        let value = gl.NEAREST_MIPMAP_LINEAR;
-    
+    {  
+        let value = gl.NEAREST;
         switch( filter )
         {
-            case "linear": value = gl.LINEAR; break;
             case "nearest": value = gl.NEAREST; break;
-            case "nearest_mipmap_nearest": value = gl.NEAREST_MIPMAP_NEAREST; break;
-            case "linear_mipmap_nearest": value = gl.LINEAR_MIPMAP_NEAREST; break;
-            case "nearest_mipmap_linear": value = gl.NEAREST_MIPMAP_LINEAR; break;
-            case "linear_mipmap_linear": value = gl.LINEAR_MIPMAP_LINEAR; break;
+            case "linear": value = gl.LINEAR; break;
         }
-    
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, value);
+
+        minFilter = value;
     };
 
     let setMagFilter = function( filter )
-    {
-        gl.activeTexture(gl.TEXTURE0 + unit);
-        gl.bindTexture(gl.TEXTURE_2D, texture);
-    
-        let value = gl.LINEAR;
-    
+    {   
+        let value = gl.NEAREST;
         switch( filter )
         {
-            case "linear": value = gl.LINEAR; break;
             case "nearest": value = gl.NEAREST; break;
+            case "linear": value = gl.LINEAR; break;
         }
-    
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, value);
+
+        magFilter = value;
     };
 
-    let setWrapS = function( wrap )
-    {
-        gl.activeTexture(gl.TEXTURE0 + unit);
-        gl.bindTexture(gl.TEXTURE_2D, texture);
-    
+    /**
+     * Set the horizontal wrapping function for texture coordinate s (u).
+     */
+    let setWrapHorizontal = function( wrapMode )
+    {    
         let value = gl.REPEAT;
-    
-        switch( wrap )
+        switch( wrapMode )
         {
-            case "repeat": value = gl.REPEAT; break;
-            case "clamp_to_edge": value = gl.CLAMP_TO_EDGE; break;
-            case "mirrored_repeat": value = gl.MIRRORED_REPEAT; break;
+            case WrapMode.Repeat:           value = gl.REPEAT;              break;
+            case WrapMode.ClampToEdge:      value = gl.CLAMP_TO_EDGE;       break;
+            case WrapMode.MirroredRepeat:   value = gl.MIRRORED_REPEAT;     break;
         }
-    
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, value);
+
+        wrapHorizontal = value;
+
+        console.log("Texture at", unit, "horizontal wrap mode", wrapMode, wrapHorizontal);
     };
 
-    let setWrapT = function( wrap )
-    {
-        gl.activeTexture(gl.TEXTURE0 + unit);
-        gl.bindTexture(gl.TEXTURE_2D, texture);
-    
+    /**
+     * Set the vertical wrapping function for texture coordinate t (v).
+     */
+    let setWrapVertical = function( wrapMode )
+    {    
         let value = gl.REPEAT;
-    
-        switch( wrap )
+        switch( wrapMode )
         {
-            case "repeat": value = gl.REPEAT; break;
-            case "clamp_to_edge": value = gl.CLAMP_TO_EDGE; break;
-            case "mirrored_repeat": value = gl.MIRRORED_REPEAT; break;
+            case WrapMode.Repeat:           value = gl.REPEAT;              break;
+            case WrapMode.ClampToEdge:      value = gl.CLAMP_TO_EDGE;       break;
+            case WrapMode.MirroredRepeat:   value = gl.MIRRORED_REPEAT;     break;
         }
-    
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, value);
+
+        wrapVertical = value;
+
+        console.log("Texture at", unit, "vertical wrap mode", wrapMode, wrapVertical);
+    };
+
+    let flip = function( enable )
+    {
+        verticalFlip = enable;
     };
 
     let update = function()
@@ -110,11 +125,11 @@ export function Texture( gl, unit )
         gl.activeTexture(gl.TEXTURE0 + unit);
         gl.bindTexture(gl.TEXTURE_2D, texture);
 
-        // Turn off mip maps and set wrapping to clamp to edge so it will work regardless of the dimensions of the video.
-        // Needed in WebGL1 but not WebGL2 if the image is not power-of-2 in both dimensions.
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+        // gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, minFilter);
+        // gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, magFilter);
+        // gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, wrapHorizontal);
+        // gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, wrapVertical);
+        // gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, verticalFlip);
 
         let target = gl.TEXTURE_2D;
         let level = 0;
@@ -127,11 +142,13 @@ export function Texture( gl, unit )
     initialize();
 
     return {
+        getUnit,
         setSource,
         setMinFilter,
         setMagFilter,
-        setWrapS,
-        setWrapT,
+        setWrapHorizontal,
+        setWrapVertical,
+        flip,
         update
     };
 }

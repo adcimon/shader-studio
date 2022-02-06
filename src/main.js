@@ -3,7 +3,6 @@
 import { Renderer } from './render/renderer.js';
 import { TextureManager } from './render/textureManager.js';
 import { Shader } from './render/shader.js';
-import { Texture } from './render/texture.js';
 import { Quad } from './render/quad.js';
 import { ShaderSource } from './render/shaders.js';
 
@@ -112,6 +111,12 @@ function initializeRenderer()
     renderer = new Renderer(renderView.getCanvas());
     gl = renderer.getContext();
 
+    let maxTotalTextures = gl.getParameter(gl.MAX_COMBINED_TEXTURE_IMAGE_UNITS);
+    console.log("Maximum total textures:", maxTotalTextures);
+
+    let maxFragmentTextures = gl.getParameter(gl.MAX_TEXTURE_IMAGE_UNITS);
+    console.log("Maximum fragment textures:", maxFragmentTextures);
+
     // Texture manager.
     textureManager = new TextureManager(gl, 16);
 
@@ -193,9 +198,10 @@ function setUniform( uniformItem )
         case "webcam":
         {
             let texture = textureManager.getTexture(name) || textureManager.newTexture(name);
-            texture.setSource(value);
+            texture.setSource(value.video);
+            texture.setWrapHorizontal(value.wrapHorizontal);
+            texture.setWrapVertical(value.wrapVertical);
             shader.setTexture(name, texture);
-
             break;
         }
     }
