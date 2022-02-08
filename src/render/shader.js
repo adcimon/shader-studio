@@ -400,10 +400,10 @@ export function Shader( gl )
     /**
      * Set a texture uniform value.
      */
-    let setTexture = function( name, texture )
+    let setTexture = function( name, unit )
     {
         let uniform = gl.getUniformLocation(program, name);
-        gl.uniform1i(uniform, texture.getUnit());
+        gl.uniform1i(uniform, unit);
     };
 
     return {
