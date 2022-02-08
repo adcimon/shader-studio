@@ -1,6 +1,6 @@
 "use strict";
 
-import { WrapMode } from '../../render/wrapMode.js';
+import { clone } from '../../utils.js';
 
 const css =
 `
@@ -27,10 +27,6 @@ const html =
         </button>
         <video id="video" autoplay loop muted playsinline></video>
         <select id="deviceSelect"></select>
-        <div>
-            <select id="wrapHorizontalSelect"></select>
-            <select id="wrapVerticalSelect"></select>
-        </div>
     </div>
 </div>
 `;
@@ -42,12 +38,10 @@ export class WebcamInput extends HTMLElement
     closeButton = null;
     video = null;
     deviceSelect = null;
-    wrapHorizontalSelect = null;
-    wrapVerticalSelect = null;
 
-    devices = { };
     stream = null;
-
+    devices = { };
+    previousConstraints = null;
     constraints =
     {
         video:
@@ -77,14 +71,24 @@ export class WebcamInput extends HTMLElement
         this.closeButton = this.shadowRoot.querySelector("#closeButton");
         this.video = this.shadowRoot.querySelector("#video");
         this.deviceSelect = this.shadowRoot.querySelector("#deviceSelect");
-        this.wrapHorizontalSelect = this.shadowRoot.querySelector("#wrapHorizontalSelect");
-        this.wrapVerticalSelect = this.shadowRoot.querySelector("#wrapVerticalSelect");
         this.stream = new MediaStream();
 
         this.button.addEventListener("click", () =>
         {
             this.window.hidden = false;
-            this.findDevices();
+
+            // Find devices and stream on enter the first time.
+            if( this.deviceSelect.selectedIndex === -1 )
+            {
+                this.findDevices().then(() =>
+                {
+                    console.log(this.deviceSelect.selectedIndex);
+                    this.deviceSelect.selectedIndex = 0;
+                    let device = this.deviceSelect.options[this.deviceSelect.selectedIndex].value;
+                    let deviceId = this.devices[device];
+                    this.findStream(deviceId);
+                });
+            }
         });
 
         this.closeButton.addEventListener("click", () =>
@@ -97,30 +101,6 @@ export class WebcamInput extends HTMLElement
             let device = this.deviceSelect.options[this.deviceSelect.selectedIndex].value;
             let deviceId = this.devices[device];
             this.findStream(deviceId);
-        });
-
-        Object.keys(WrapMode).forEach(key =>
-        {
-            let option = document.createElement("option");
-            option.value = WrapMode[key];
-            option.text = key;
-            this.wrapHorizontalSelect.appendChild(option);
-        });
-        this.wrapHorizontalSelect.addEventListener("change", () =>
-        {
-            this.dispatchValueChange();
-        });
-
-        Object.keys(WrapMode).forEach(key =>
-        {
-            let option = document.createElement("option");
-            option.value = WrapMode[key];
-            option.text = key;
-            this.wrapVerticalSelect.appendChild(option);
-        });
-        this.wrapVerticalSelect.addEventListener("change", () =>
-        {
-            this.dispatchValueChange();
         });
     }
 
@@ -142,9 +122,7 @@ export class WebcamInput extends HTMLElement
     {
         return {
             stream:             this.stream,
-            video:              this.video,
-            wrapHorizontal:     this.wrapHorizontalSelect[this.wrapHorizontalSelect.selectedIndex].value,
-            wrapVertical:       this.wrapVerticalSelect[this.wrapVerticalSelect.selectedIndex].value
+            video:              this.video
         }
     }
 
@@ -156,12 +134,12 @@ export class WebcamInput extends HTMLElement
 
     async findDevices()
     {
-        return this.getDevices().then(this.gotDevices.bind(this)).catch(this.errorDevices.bind(this));
+        return this.getDevices();
     }
 
     async getDevices()
     {
-        return window.navigator.mediaDevices.enumerateDevices();
+        return window.navigator.mediaDevices.enumerateDevices().then(this.gotDevices.bind(this)).catch(this.errorDevices.bind(this));
     }
 
     async gotDevices( deviceInfos )
@@ -200,8 +178,14 @@ export class WebcamInput extends HTMLElement
 
     async findStream( deviceId )
     {
-        this.stopStream();
+        this.previousConstraints = clone(this.constraints);
         this.constraints.video.deviceId = deviceId;
+        return this.getStream();
+    }
+
+    async getStream()
+    {
+        this.stopStream();
         return window.navigator.mediaDevices.getUserMedia(this.constraints).then(this.gotStream.bind(this)).catch(this.errorStream.bind(this));
     }
 
@@ -211,12 +195,19 @@ export class WebcamInput extends HTMLElement
         this.video.srcObject = stream;
 
         this.dispatchValueChange();
-    };
+    }
 
     async errorStream( error )
     {
         console.log(error);
-    };
+
+        if( this.previousConstraints )
+        {
+            this.constraints = clone(this.previousConstraints);
+            this.previousConstraints = null;
+            this.getStream();
+        }
+    }
 
     stopStream()
     {

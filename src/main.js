@@ -15,6 +15,7 @@ import { UniformList } from './component/uniformList/uniformList.js';
 import { UniformItem } from './component/uniformItem/uniformItem.js';
 import { MatrixInput } from './component/matrixInput/matrixInput.js';
 import { WebcamInput } from './component/webcamInput/webcamInput.js';
+import { TextureInput } from './component/textureInput/textureInput.js';
 
 var renderView, editorView, navigationMenu, shaderEditor, uniformList;
 var gl, renderer, textureManager, shader, quad;
@@ -46,9 +47,10 @@ function initializeInterface()
         event.detail.uniformItem.addEventListener("typechange", () =>
         {
             let item = event.detail.uniformItem;
-            //shader.removeUniform(item.getName());
-            //addUniform(item);
-            //setUniform(item);
+            textureManager.deleteTexture(item.getUuid());
+            shader.removeUniform(item.getName());
+            addUniform(item);
+            setUniform(item);
         });
 
         event.detail.uniformItem.addEventListener("valuechange", () =>
@@ -193,12 +195,8 @@ function setUniform( item )
         {
             let texture = textureManager.getTexture(uuid) || textureManager.newTexture(uuid);
             let unit = textureManager.getUnit(uuid);
-
             texture.setSource(value.video);
-            //texture.setWrapHorizontal(value.wrapHorizontal);
-            //texture.setWrapVertical(value.wrapVertical);
             shader.setTexture(name, unit);
-
             break;
         }
     }

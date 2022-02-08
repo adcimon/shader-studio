@@ -1,6 +1,14 @@
 "use strict";
 
 /**
+ * Return a clone of the object.
+ */
+export function clone( object )
+{
+    return JSON.parse(JSON.stringify(object));
+}
+
+/**
  * Generate a universally unique identifier.
  * Reference: RFC 4122 https://www.ietf.org/rfc/rfc4122.txt
  */
