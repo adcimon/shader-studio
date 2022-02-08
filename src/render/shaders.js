@@ -16,12 +16,23 @@ void main()
 }
 `;
 
-const FrameShader =
+const WebcamShader =
 `
 void main()
 {
-    vec4 color = texture2D(u_frame, v_texcoord);
-    gl_FragColor = color;
+    vec4 c = texture2D(u_frame, v_texcoord);
+    gl_FragColor = c;
+}
+`;
+
+const WebcamMixShader =
+`
+void main()
+{
+    vec4 c1 = texture2D(u_frame1, v_texcoord);
+    vec4 c2 = texture2D(u_frame2, v_texcoord);
+
+    gl_FragColor = mix(c1, c2, x);
 }
 `;
 
@@ -29,7 +40,8 @@ const Shaders =
 [
     ScreenTexcoordShader,
     SineTimeShader,
-    FrameShader
+    WebcamShader,
+    WebcamMixShader,
 ];
 
 //export const ShaderSource = HeaderComment + Shaders[Math.floor(Math.random() * Shaders.length)];

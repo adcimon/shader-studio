@@ -1,5 +1,7 @@
 "use strict";
 
+import { uuid } from '../../utils.js';
+
 const css =
 `
 <link type="text/css" rel="stylesheet" href="./src/styles/button.css">
@@ -36,6 +38,7 @@ const html =
 
 export class UniformItem extends HTMLElement
 {
+    uuid = null;
     typeSelect = null;
     nameInput = null;
     valueInput = null;
@@ -52,6 +55,8 @@ export class UniformItem extends HTMLElement
 
         this.attachShadow({ mode: "open" });
         this.shadowRoot.appendChild(template.content.cloneNode(true));
+
+        this.uuid = uuid();
     }
 
     connectedCallback()
@@ -75,6 +80,11 @@ export class UniformItem extends HTMLElement
 
     disconnectedCallback()
     {
+    }
+
+    getUuid()
+    {
+        return this.uuid;
     }
 
     getType()

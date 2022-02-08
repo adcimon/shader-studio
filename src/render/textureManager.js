@@ -2,97 +2,117 @@
 
 import { Texture } from './texture.js';
 
-export function TextureManager( gl, size )
+export function TextureManager( gl )
 {
-    let units = [];
-    let textures = { };
+    let units = []; // (index, unit)
+    let textures = { }; // (uuid, texture)
+    let textureUnits = { }; // (uuid, unit)
 
     let initialize = function()
     {
-        for( let i = 0; i < size; i++ )
+        let maxTotalTextures = gl.getParameter(gl.MAX_COMBINED_TEXTURE_IMAGE_UNITS);
+        console.log("Maximum total textures:", maxTotalTextures);
+    
+        let maxFragmentTextures = gl.getParameter(gl.MAX_TEXTURE_IMAGE_UNITS);
+        console.log("Maximum fragment textures:", maxFragmentTextures);
+
+        for( let i = 0; i < maxFragmentTextures; i++ )
         {
             units.push(false);
         }
     };
 
-    let getUnit = function()
+    let getTexture = function( uuid )
     {
-        let unit = units.findIndex(used => used === false);
-        console.log("Texture manager get unit", unit);
-        return unit;
+        return textures[uuid];
     };
 
-    let useUnit = function( unit )
+    let newTexture = function( uuid )
     {
-        if( units[unit] === true )
-        {
-            console.log("Texture manager use unit", unit, "used");
-            return false;
-        }
-        else
-        {
-            units[unit] = true;
-            console.log("Texture manager use unit", unit, "not used");
-            return true;
-        }
-    };
-
-    let freeUnit = function()
-    {
-        if( units[unit] === false )
-        {
-            return false;
-        }
-        else
-        {
-            units[unit] = false;
-            return true;
-        }
-    };
-
-    let newTexture = function( name )
-    {
-        if( name in textures )
+        if( uuid in textures )
         {
             return null;
         }
 
-        let freeUnit = getUnit();
-        if( freeUnit === -1 )
-        {
-            return null;
-        }
-
-        if( !useUnit(freeUnit) )
-        {
-            return null;
-        }
-
-        let texture = new Texture(gl, freeUnit);
-        textures[name] = texture;
+        let texture = new Texture(gl);
+        textures[uuid] = texture;
 
         return texture;
     };
 
-    let getTexture = function( name )
+    let deleteTexture = function( uuid )
     {
-        return textures[name];
+        if( !(uuid in textures) )
+        {
+            return false;
+        }
+
+        delete textures[uuid];
+        if( uuid in textureUnits )
+        {
+            let unit = textureUnits[uuid];
+            delete textureUnits[uuid];
+            units[unit] = false;
+        }
+
+        return true;
+    };
+
+    let getUnit = function( uuid )
+    {
+        if( !(uuid in textures) )
+        {
+            return -1;
+        }
+
+        if( uuid in textureUnits )
+        {
+            return textureUnits[uuid];
+        }
+
+        let unit = units.findIndex(used => used === false);
+        if( unit >= 0 )
+        {
+            console.log("Get texture unit", unit, "success");
+            units[unit] = true;
+            textureUnits[uuid] = unit;
+            return unit;
+        }
+        else
+        {
+            console.log("Get texture unit", unit, "failure");
+            return -1;
+        }
+    };
+
+    let clearUnits = function()
+    {
+        for( let index in units )
+        {
+            units[index] = false;
+        }
+
+        textureUnits = { };
     };
 
     let updateTextures = function()
     {
-        for( let name in textures )
+        for( let uuid in textures )
         {
-            let texture = textures[name];
-            texture.update();
+            let texture = textures[uuid];
+            let unit = textureUnits[uuid];
+            texture.update(unit);
         }
     };
 
     initialize();
 
     return {
-        newTexture,
         getTexture,
+        newTexture,
+        deleteTexture,
+        getUnit,
+        clearUnits,
         updateTextures
     };
 }

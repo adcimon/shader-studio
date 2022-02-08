@@ -20,18 +20,13 @@ var renderView, editorView, navigationMenu, shaderEditor, uniformList;
 var gl, renderer, textureManager, shader, quad;
 
 window.addEventListener("load", main);
-window.addEventListener("beforeunload", exit);
 
 function main()
 {
     initializeInterface();
     initializeRenderer();
-    renderView.resize();
-    compile();
-}
 
-function exit()
-{
+    renderView.resize();
 }
 
 function initializeInterface()
@@ -50,30 +45,23 @@ function initializeInterface()
     {
         event.detail.uniformItem.addEventListener("typechange", () =>
         {
-            let uniformItem = event.detail.uniformItem;
-
-            shader.removeUniform(uniformItem.getName());
-            addUniform(uniformItem);
-
-            if( uniformItem.getName() !== "" )
-            {
-                compile();
-            }
-
-            setUniform(uniformItem);
+            let item = event.detail.uniformItem;
+            //shader.removeUniform(item.getName());
+            //addUniform(item);
+            //setUniform(item);
         });
 
         event.detail.uniformItem.addEventListener("valuechange", () =>
         {
-            let uniformItem = event.detail.uniformItem;
-            setUniform(uniformItem);
+            let item = event.detail.uniformItem;
+            setUniform(item);
         });
     });
     uniformList.addEventListener("removeuniform", (event) =>
     {
-        let uniformItem = event.detail.uniformItem;
-        shader.removeUniform(uniformItem.getName());
-        compile();
+        let item = event.detail.uniformItem;
+        textureManager.deleteTexture(item.getUuid());
+        shader.removeUniform(item.getName());
     });
 
     // Navigation menu.
@@ -111,34 +99,19 @@ function initializeRenderer()
     renderer = new Renderer(renderView.getCanvas());
     gl = renderer.getContext();
 
-    let maxTotalTextures = gl.getParameter(gl.MAX_COMBINED_TEXTURE_IMAGE_UNITS);
-    console.log("Maximum total textures:", maxTotalTextures);
-
-    let maxFragmentTextures = gl.getParameter(gl.MAX_TEXTURE_IMAGE_UNITS);
-    console.log("Maximum fragment textures:", maxFragmentTextures);
-
     // Texture manager.
-    textureManager = new TextureManager(gl, 16);
+    textureManager = new TextureManager(gl);
 
     // Shader.
     shader = new Shader(gl);
     compile();
+    setUniforms();
 
     // Quad.
     quad = new Quad(gl);
     quad.bindBuffers(shader);
 
     renderer.start(render);
-}
-
-function compile()
-{
-    addUniforms();
-
-    shader.compile(shaderEditor.getCode());
-    shader.use();
-
-    setUniforms();
 }
 
 function render( time, deltaTime )
@@ -151,10 +124,30 @@ function render( time, deltaTime )
     quad.draw();
 }
 
-function addUniform( uniformItem )
+function compile()
 {
-    let type = uniformItem.getType();
-    let name = uniformItem.getName();
+    textureManager.clearUnits();
+
+    addUniforms();
+
+    shader.compile(shaderEditor.getCode());
+    shader.use();
+
+    setUniforms();
+}
+
+function addUniforms()
+{
+    shader.clearUniforms();
+
+    let items = uniformList.getUniforms();
+    items.forEach(item => addUniform(item));
+}
+
+function addUniform( item )
+{
+    let type = item.getType();
+    let name = item.getName();
 
     switch( type )
     {
@@ -171,19 +164,20 @@ function addUniform( uniformItem )
     }
 }
 
-function addUniforms()
+function setUniforms()
 {
-    shader.clearUniforms();
+    shader.setVector2("u_resolution", [renderView.getWidth(), renderView.getHeight()]);
 
-    let uniformItems = uniformList.getUniforms();
-    uniformItems.forEach(uniform => addUniform(uniform));
+    let items = uniformList.getUniforms();
+    items.forEach(item => setUniform(item));
 }
 
-function setUniform( uniformItem )
+function setUniform( item )
 {
-    let type = uniformItem.getType();
-    let name = uniformItem.getName();
-    let value = uniformItem.getValue();
+    let uuid = item.getUuid();
+    let type = item.getType();
+    let name = item.getName();
+    let value = item.getValue();
 
     switch( type )
     {
@@ -197,20 +191,15 @@ function setUniform( uniformItem )
         case "mat4":    shader.setMatrix4x4(name, value.flat(2));   break;
         case "webcam":
         {
-            let texture = textureManager.getTexture(name) || textureManager.newTexture(name);
+            let texture = textureManager.getTexture(uuid) || textureManager.newTexture(uuid);
+            let unit = textureManager.getUnit(uuid);
+
             texture.setSource(value.video);
-            texture.setWrapHorizontal(value.wrapHorizontal);
-            texture.setWrapVertical(value.wrapVertical);
-            shader.setTexture(name, texture);
+            //texture.setWrapHorizontal(value.wrapHorizontal);
+            //texture.setWrapVertical(value.wrapVertical);
+            shader.setTexture(name, unit);
+
             break;
         }
     }
-}
-
-function setUniforms()
-{
-    shader.setVector2("u_resolution", [renderView.getWidth(), renderView.getHeight()]);
-
-    let uniformItems = uniformList.getUniforms();
-    uniformItems.forEach(uniform => setUniform(uniform));
 }

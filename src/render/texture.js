@@ -2,7 +2,7 @@
 
 import { WrapMode } from "./wrapMode.js";
 
-export function Texture( gl, unit )
+export function Texture( gl )
 {
     if( !(gl instanceof WebGLRenderingContext) )
     {
@@ -18,41 +18,13 @@ export function Texture( gl, unit )
     let wrapVertical = gl.CLAMP_TO_EDGE;
     let verticalFlip = false;
 
-    let initialize = function()
-    {
-        gl.activeTexture(gl.TEXTURE0 + unit);
-        gl.bindTexture(gl.TEXTURE_2D, texture);
-
-        // Turn off mip maps. Allowed modes are gl.NEAREST and gl.LINEAR (default is gl.NEAREST_MIPMAP_LINEAR).
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-
-        // Set wrapping to clamp to edge so it will work regardless of the dimensions of the video.
-        // Needed in WebGL1 but not WebGL2 if the image is not power-of-2 in both dimensions.
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-
-        let target = gl.TEXTURE_2D;
-        let level = 0;
-        let internalFormat = gl.RGBA;
-        let width = 1;
-        let height = 1;
-        let border = 0;
-        let format = gl.RGBA;
-        let type = gl.UNSIGNED_BYTE;
-        let pixels = new Uint8Array([0, 0, 0, 255]);
-        gl.texImage2D(target, level, internalFormat, width, height, border, format, type, pixels);
-    };
-
-    let getUnit = function()
-    {
-        return unit;
-    };
-
     let setSource = function( source )
     {
-        // TODO: Validate source type.
-        pixels = source;
+        // Validate source type.
+        if( source instanceof HTMLImageElement || source instanceof HTMLVideoElement )
+        {
+            pixels = source;
+        }
     };
 
     let setMinFilter = function( filter )
@@ -94,7 +66,7 @@ export function Texture( gl, unit )
 
         wrapHorizontal = value;
 
-        console.log("Texture at", unit, "horizontal wrap mode", wrapMode, wrapHorizontal);
+        console.log("Horizontal wrap mode", wrapMode, wrapHorizontal);
     };
 
     /**
@@ -112,7 +84,7 @@ export function Texture( gl, unit )
 
         wrapVertical = value;
 
-        console.log("Texture at", unit, "vertical wrap mode", wrapMode, wrapVertical);
+        console.log("Vertical wrap mode", wrapMode, wrapVertical);
     };
 
     let flip = function( enable )
@@ -120,7 +92,7 @@ export function Texture( gl, unit )
         verticalFlip = enable;
     };
 
-    let update = function()
+    let update = function( unit )
     {
         gl.activeTexture(gl.TEXTURE0 + unit);
         gl.bindTexture(gl.TEXTURE_2D, texture);
@@ -131,18 +103,36 @@ export function Texture( gl, unit )
         // gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, wrapVertical);
         // gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, verticalFlip);
 
+        // Turn off mip maps. Allowed modes are gl.NEAREST and gl.LINEAR (default is gl.NEAREST_MIPMAP_LINEAR).
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+
+        // Set wrapping to clamp to edge so it will work regardless of the dimensions of the video.
+        // Needed in WebGL1 but not WebGL2 if the image is not power-of-2 in both dimensions.
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+
         let target = gl.TEXTURE_2D;
         let level = 0;
         let internalFormat = gl.RGBA;
         let format = gl.RGBA;
         let type = gl.UNSIGNED_BYTE;
-        gl.texImage2D(target, level, internalFormat, format, type, pixels);
+        //let pixels = new Uint8Array([0, 0, 0, 255]);
+
+        if( pixels instanceof HTMLImageElement )
+        {
+            let width = pixels.width;
+            let height = pixels.height;
+            let border = 0;
+            gl.texImage2D(target, level, internalFormat, width, height, border, format, type, pixels);
+        }
+        else if( pixels instanceof HTMLVideoElement )
+        {
+            gl.texImage2D(target, level, internalFormat, format, type, pixels);
+        }
     };
 
-    initialize();
-
     return {
-        getUnit,
         setSource,
         setMinFilter,
         setMagFilter,
