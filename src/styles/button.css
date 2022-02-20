@@ -23,6 +23,12 @@ button:hover, button:active
     background-color: var(--selection-color);
 }
 
+button[hidden]
+{
+    /* Layout */
+    display: none;
+}
+
 button svg
 {
     /* Style */

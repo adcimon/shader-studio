@@ -70,6 +70,36 @@
     border-bottom-right-radius: 10px;
 }
 
+#resetButton
+{
+    /* Space */
+    margin-left: 10px;
+}
+
+#resumeButton
+{
+    /* Space */
+    margin-left: 10px;
+}
+
+#pauseButton
+{
+    /* Space */
+    margin-left: 10px;
+}
+
+#timeLabel
+{
+    /* Space */
+    margin-left: 10px;
+
+    /* Text */
+    font-size: 14px;
+
+    /* Style */
+    color: var(--font-color);
+}
+
 #resolutionLabel
 {
     /* Space */

@@ -1,7 +1,10 @@
 "use strict";
 
+import { ResetIcon, ResumeIcon, PauseIcon } from './icons.js';
+
 const css =
 `
+<link type="text/css" rel="stylesheet" href="./src/styles/button.css">
 <link type="text/css" rel="stylesheet" href="./src/component/renderView/style.css">
 `;
 
@@ -12,6 +15,16 @@ const html =
     <video id="video" autoplay controls>Your browser does not support the HTML5 video element.</video>
 </div>
 <div id="statusBar">
+    <button id="resetButton">
+        ${ResetIcon}
+    </button>
+    <button id="resumeButton" hidden>
+        ${ResumeIcon}
+    </button>
+    <button id="pauseButton">
+        ${PauseIcon}
+    </button>
+    <span id="timeLabel">0.0</span>
     <span id="resolutionLabel"></span>
 </div>
 `;
@@ -20,6 +33,10 @@ export class RenderView extends HTMLElement
 {
     canvas = null;
     video = null;
+    resetButton = null;
+    resumeButton = null;
+    pauseButton = null;
+    timeLabel = null;
     resolutionLabel = null;
 
     constructor()
@@ -37,7 +54,37 @@ export class RenderView extends HTMLElement
     {
         this.canvas = this.shadowRoot.querySelector("#canvas");
         this.video = this.shadowRoot.querySelector("#video");
+        this.resetButton = this.shadowRoot.querySelector("#resetButton");
+        this.resumeButton = this.shadowRoot.querySelector("#resumeButton");
+        this.pauseButton = this.shadowRoot.querySelector("#pauseButton");
+        this.timeLabel = this.shadowRoot.querySelector("#timeLabel");
         this.resolutionLabel = this.shadowRoot.querySelector("#resolutionLabel");
+
+        this.resetButton.addEventListener("click", () =>
+        {
+            this.setTime(0);
+
+            let newEvent = new CustomEvent("resettime");
+            this.dispatchEvent(newEvent);
+        });
+
+        this.resumeButton.addEventListener("click", () =>
+        {
+            this.resumeButton.hidden = true;
+            this.pauseButton.hidden = false;
+
+            let newEvent = new CustomEvent("resumetime");
+            this.dispatchEvent(newEvent);
+        });
+
+        this.pauseButton.addEventListener("click", () =>
+        {
+            this.resumeButton.hidden = false;
+            this.pauseButton.hidden = true;
+
+            let newEvent = new CustomEvent("pausetime");
+            this.dispatchEvent(newEvent);
+        });
 
         window.addEventListener("resize", this.resize.bind(this));
 
@@ -66,6 +113,11 @@ export class RenderView extends HTMLElement
     getCanvas()
     {
         return this.canvas;
+    }
+
+    setTime( time )
+    {
+        this.timeLabel.innerHTML = (Math.round(time * 100) / 100).toFixed(2);
     }
 
     resize()
