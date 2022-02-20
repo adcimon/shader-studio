@@ -1,6 +1,6 @@
 "use strict";
 
-import { ResetIcon, ResumeIcon, PauseIcon } from './icons.js';
+import { ResetIcon, ResumeIcon, PauseIcon, PicInPicIcon } from './icons.js';
 
 const css =
 `
@@ -25,7 +25,11 @@ const html =
         ${PauseIcon}
     </button>
     <span id="timeLabel">0.0</span>
+
     <span id="resolutionLabel"></span>
+    <button id="picinpicButton">
+        ${PicInPicIcon}
+    </button>
 </div>
 `;
 
@@ -36,6 +40,7 @@ export class RenderView extends HTMLElement
     resetButton = null;
     resumeButton = null;
     pauseButton = null;
+    picinpicButton = null;
     timeLabel = null;
     resolutionLabel = null;
 
@@ -57,8 +62,16 @@ export class RenderView extends HTMLElement
         this.resetButton = this.shadowRoot.querySelector("#resetButton");
         this.resumeButton = this.shadowRoot.querySelector("#resumeButton");
         this.pauseButton = this.shadowRoot.querySelector("#pauseButton");
+        this.picinpicButton = this.shadowRoot.querySelector("#picinpicButton");
         this.timeLabel = this.shadowRoot.querySelector("#timeLabel");
         this.resolutionLabel = this.shadowRoot.querySelector("#resolutionLabel");
+
+        // Picture in picture is not fully supported across browsers.
+        if( !document.pictureInPictureEnabled )
+        {
+            console.log("Picture in picture is not supported.");
+            this.picinpicButton.hidden = true;
+        }
 
         this.resetButton.addEventListener("click", () =>
         {
@@ -84,6 +97,11 @@ export class RenderView extends HTMLElement
 
             let newEvent = new CustomEvent("pausetime");
             this.dispatchEvent(newEvent);
+        });
+
+        this.picinpicButton.addEventListener("click", () =>
+        {
+            this.video.requestPictureInPicture();
         });
 
         window.addEventListener("resize", this.resize.bind(this));
