@@ -93,6 +93,18 @@ function initializeInterface()
     {
         shader.setVector2("u_resolution", [renderView.getWidth(), renderView.getHeight()]);
     });
+    renderView.addEventListener("resettime", () =>
+    {
+        renderer.reset();
+    });
+    renderView.addEventListener("resumetime", () =>
+    {
+        renderer.resume();
+    });
+    renderView.addEventListener("pausetime", () =>
+    {
+        renderer.pause();
+    });
 }
 
 function initializeRenderer()
@@ -118,6 +130,8 @@ function initializeRenderer()
 
 function render( time, deltaTime )
 {
+    renderView.setTime(time);
+
     shader.setFloat("u_time", time);
     shader.setFloat("u_deltaTime", deltaTime);
 

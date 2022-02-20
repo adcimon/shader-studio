@@ -75,7 +75,7 @@ export function Renderer( canvas )
 
         if( !(func instanceof Function) )
         {
-            console.log("Renderer callback " + func + " is not a function.");
+            console.error("Renderer callback " + func + " is not a function.");
             return false;
         }
     
@@ -83,6 +83,47 @@ export function Renderer( canvas )
         tick();
 
         return true;
+    };
+
+    /**
+     * Pause the renderer.
+     */
+    let pause = function()
+    {
+        if( !handle )
+        {
+            return false;
+        }
+
+        window.cancelAnimationFrame(handle);
+        handle = null;
+
+        return true;
+    };
+
+    /**
+     * Resume the renderer.
+     */
+    let resume = function()
+    {
+        if( handle )
+        {
+            return false;
+        }
+
+        let now = window.Date.now();
+        lastUpdate = now;
+        tick();
+
+        return true;
+    };
+
+    /**
+     * Reset the renderer time.
+     */
+    let reset = function()
+    {
+        time = 0;
     };
 
     /**
@@ -105,6 +146,9 @@ export function Renderer( canvas )
     return {
         getContext,
         start,
+        pause,
+        resume,
+        reset,
         stop
     };
 }
