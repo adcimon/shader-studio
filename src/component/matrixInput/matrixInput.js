@@ -1,33 +1,24 @@
 "use strict";
 
+import { CloseIcon, AppsIcon } from '../.././icons.js';
+
 const css =
 `
 <link type="text/css" rel="stylesheet" href="./src/styles/button.css">
 <link type="text/css" rel="stylesheet" href="./src/styles/input.css">
+<link type="text/css" rel="stylesheet" href="./src/styles/modal.css">
 <link type="text/css" rel="stylesheet" href="./src/component/matrixInput/style.css">
 `;
 
 const html =
 `
 <button id="button">
-    <svg viewBox="0 0 512 512">
-        <rect x="64" y="64" width="80" height="80" rx="40" ry="40" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/>
-        <rect x="216" y="64" width="80" height="80" rx="40" ry="40" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/>
-        <rect x="368" y="64" width="80" height="80" rx="40" ry="40" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/>
-        <rect x="64" y="216" width="80" height="80" rx="40" ry="40" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/>
-        <rect x="216" y="216" width="80" height="80" rx="40" ry="40" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/>
-        <rect x="368" y="216" width="80" height="80" rx="40" ry="40" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/>
-        <rect x="64" y="368" width="80" height="80" rx="40" ry="40" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/>
-        <rect x="216" y="368" width="80" height="80" rx="40" ry="40" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/>
-        <rect x="368" y="368" width="80" height="80" rx="40" ry="40" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/>
-    </svg>
+    ${AppsIcon}
 </button>
 <div id="window" hidden>
     <div id="modal">
         <button id="closeButton">
-            <svg viewBox="0 0 512 512">
-                <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M368 368L144 144M368 144L144 368" />
-            </svg>
+            ${CloseIcon}
         </button>
         <table>
             <tr row="0">

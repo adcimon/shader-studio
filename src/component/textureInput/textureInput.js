@@ -8,6 +8,7 @@ const css =
 <link type="text/css" rel="stylesheet" href="./src/styles/button.css">
 <link type="text/css" rel="stylesheet" href="./src/styles/select.css">
 <link type="text/css" rel="stylesheet" href="./src/styles/video.css">
+<link type="text/css" rel="stylesheet" href="./src/styles/modal.css">
 <link type="text/css" rel="stylesheet" href="./src/component/textureInput/style.css">
 `;
 
@@ -22,7 +23,7 @@ const html =
             ${CloseIcon}
         </button>
 
-        <input id="imageInput" type="image" accept="image/*">
+        <input id="imageInput" type="file" accept="image/*" hidden>
         <img id="image"/>
 
         <div>
@@ -77,6 +78,17 @@ export class TextureInput extends HTMLElement
         this.imageInput.addEventListener("change", (event) =>
         {
             this.image.src = URL.createObjectURL(event.target.files[0]);
+        });
+
+        this.image.addEventListener("click", () =>
+        {
+            let clickEvent = new MouseEvent("click",
+            {
+                "view": window,
+                "bubbles": true,
+                "cancelable": false
+            });
+            this.imageInput.dispatchEvent(clickEvent);
         });
 
         Object.keys(WrapMode).forEach(key =>
