@@ -8,6 +8,7 @@ const css =
 <link type="text/css" rel="stylesheet" href="./src/styles/button.css">
 <link type="text/css" rel="stylesheet" href="./src/styles/select.css">
 <link type="text/css" rel="stylesheet" href="./src/styles/video.css">
+<link type="text/css" rel="stylesheet" href="./src/styles/modal.css">
 <link type="text/css" rel="stylesheet" href="./src/component/webcamInput/style.css">
 `;
 
@@ -117,8 +118,8 @@ export class WebcamInput extends HTMLElement
     getValue()
     {
         return {
-            stream:             this.stream,
-            video:              this.video
+            stream: this.stream,
+            video:  this.video
         }
     }
 
