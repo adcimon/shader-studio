@@ -1,7 +1,7 @@
 "use strict";
 
+import { AddIcon } from '../../icons.js';
 import { UniformItem } from "../uniformItem/uniformItem.js";
-import { AddIcon } from './icons.js';
 
 const css =
 `

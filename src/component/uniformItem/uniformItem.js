@@ -1,5 +1,6 @@
 "use strict";
 
+import { BinIcon } from '../.././icons.js';
 import { uuid } from '../../utils.js';
 
 const css =
@@ -22,17 +23,17 @@ const html =
     <option value="mat3">mat3</option>
     <option value="mat4">mat4</option>
     <option value="webcam">webcam</option>
+    <option value="texture">texture</option>
 </select>
+
 <input id="nameInput" type="text" placeholder="name"></input>
 <input id="valueInput" type="number" value="1.0" step="0.1"></input>
 <matrix-input id="matrixInput" hidden></matrix-input>
 <webcam-input id="webcamInput" hidden></webcam-input>
+<texture-input id="textureInput" hidden></texture-input>
+
 <button id="removeButton">
-    <svg viewBox="0 0 512 512">
-        <path d="M112 112l20 320c.95 18.49 14.4 32 32 32h184c17.67 0 30.87-13.51 32-32l20-320" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/>
-        <path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" d="M80 112h352"/>
-        <path d="M192 112V72h0a23.93 23.93 0 0124-24h80a23.93 23.93 0 0124 24h0v40M256 176v224M184 176l8 224M328 176l-8 224" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/>
-    </svg>
+    ${BinIcon}
 </button>
 `;
 
@@ -44,6 +45,7 @@ export class UniformItem extends HTMLElement
     valueInput = null;
     matrixInput = null;
     webcamInput = null;
+    textureInput = null;
     removeButton = null;
 
     constructor()
@@ -66,6 +68,7 @@ export class UniformItem extends HTMLElement
         this.valueInput = this.shadowRoot.querySelector("#valueInput");
         this.matrixInput = this.shadowRoot.querySelector("#matrixInput");
         this.webcamInput = this.shadowRoot.querySelector("#webcamInput");
+        this.textureInput = this.shadowRoot.querySelector("#textureInput");
         this.removeButton = this.shadowRoot.querySelector("#removeButton");
 
         this.typeSelect.addEventListener("change", this.dispatchTypeChange.bind(this));
@@ -73,6 +76,7 @@ export class UniformItem extends HTMLElement
         this.matrixInput.addEventListener("valuechange", this.dispatchValueChange.bind(this));
         this.matrixInput.addEventListener("click", this.dispatchClickMatrixInput.bind(this));
         this.webcamInput.addEventListener("valuechange", this.dispatchValueChange.bind(this));
+        this.textureInput.addEventListener("valuechange", this.dispatchValueChange.bind(this));
         this.removeButton.addEventListener("click", this.dispatchRemoveUniform.bind(this));
 
         this.nameInput.focus();
@@ -102,26 +106,30 @@ export class UniformItem extends HTMLElement
         switch( this.typeSelect.value )
         {
             case "int":
-            case "float":   return this.valueInput.value;
-            case "vec2":    return this.matrixInput.getVector2();
-            case "vec3":    return this.matrixInput.getVector3();
-            case "vec4":    return this.matrixInput.getVector4();
-            case "mat2":    return this.matrixInput.getMatrix2x2();
-            case "mat3":    return this.matrixInput.getMatrix3x3();
-            case "mat4":    return this.matrixInput.getMatrix4x4();
-            case "webcam":  return this.webcamInput.getValue();
+            case "float":       return this.valueInput.value;
+            case "vec2":        return this.matrixInput.getVector2();
+            case "vec3":        return this.matrixInput.getVector3();
+            case "vec4":        return this.matrixInput.getVector4();
+            case "mat2":        return this.matrixInput.getMatrix2x2();
+            case "mat3":        return this.matrixInput.getMatrix3x3();
+            case "mat4":        return this.matrixInput.getMatrix4x4();
+            case "webcam":      return this.webcamInput.getValue();
+            case "texture":     return this.textureInput.getValue();
         }
     }
 
     dispatchTypeChange()
     {
-        switch( this.typeSelect.value )
+        let type = this.typeSelect.value;
+
+        switch( type )
         {
             case "int":
             {
                 this.valueInput.hidden = false;
                 this.matrixInput.hidden = true;
                 this.webcamInput.hidden = true;
+                this.textureInput.hidden = true;
                 this.valueInput.step = 1;
                 this.valueInput.value = Math.floor(this.valueInput.value);
                 break;
@@ -131,6 +139,7 @@ export class UniformItem extends HTMLElement
                 this.valueInput.hidden = false;
                 this.matrixInput.hidden = true;
                 this.webcamInput.hidden = true;
+                this.textureInput.hidden = true;
                 this.valueInput.step = 0.1;
                 break;
             }
@@ -144,6 +153,7 @@ export class UniformItem extends HTMLElement
                 this.valueInput.hidden = true;
                 this.matrixInput.hidden = false;
                 this.webcamInput.hidden = true;
+                this.textureInput.hidden = true;
                 break;
             }
             case "webcam":
@@ -151,23 +161,34 @@ export class UniformItem extends HTMLElement
                 this.valueInput.hidden = true;
                 this.matrixInput.hidden = true;
                 this.webcamInput.hidden = false;
+                this.textureInput.hidden = true;
+                break;
+            }
+            case "texture":
+            {
+                this.valueInput.hidden = true;
+                this.matrixInput.hidden = true;
+                this.webcamInput.hidden = true;
+                this.textureInput.hidden = false;
                 break;
             }
         }
 
-        let newEvent = new CustomEvent("typechange", { detail: { uniformItem: this, value: this.typeSelect.value }});
+        let newEvent = new CustomEvent("typechange", { detail: { uniformItem: this, value: type }});
         this.dispatchEvent(newEvent);
     }
 
     dispatchValueChange()
     {
-        if( this.typeSelect.value === "int" )
+        let type = this.typeSelect.value;
+
+        if( type === "int" )
         {
             this.valueInput.value = Math.floor(this.valueInput.value);
         }
 
         let value = 0;
-        switch( this.typeSelect.value )
+        switch( type )
         {
             case "int":
             case "float":
@@ -194,6 +215,9 @@ export class UniformItem extends HTMLElement
             case "webcam":
                 value = this.webcamInput.getValue();
                 break;
+            case "texture":
+                value = this.textureInput.getValue();
+                break;
         }
 
         let newEvent = new CustomEvent("valuechange", { detail: { uniformItem: this, value: value }});
@@ -202,7 +226,9 @@ export class UniformItem extends HTMLElement
 
     dispatchClickMatrixInput()
     {
-        switch( this.typeSelect.value )
+        let type = this.typeSelect.value;
+
+        switch( type )
         {
             case "vec2":
                 this.matrixInput.showVector2();

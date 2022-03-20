@@ -1,6 +1,6 @@
 "use strict";
 
-import { ResetIcon, ResumeIcon, PauseIcon, PicInPicIcon } from './icons.js';
+import { ResetIcon, ResumeIcon, PauseIcon, PicInPicIcon } from '../../icons.js';
 
 const css =
 `

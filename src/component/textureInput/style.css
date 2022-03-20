@@ -90,3 +90,10 @@
     /* Style */
     background-color: var(--cancel-color);
 }
+
+#image
+{
+    /* Size */
+    max-width: 90%;
+    height: 90%;
+}

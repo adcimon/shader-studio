@@ -1,5 +1,6 @@
 "use strict";
 
+import { CloseIcon, CameraIcon } from '../../icons.js';
 import { clone } from '../../utils.js';
 
 const css =
@@ -13,17 +14,12 @@ const css =
 const html =
 `
 <button id="button">
-    <svg viewBox="0 0 512 512">
-        <path d="M374.79 308.78L457.5 367a16 16 0 0022.5-14.62V159.62A16 16 0 00457.5 145l-82.71 58.22A16 16 0 00368 216.3v79.4a16 16 0 006.79 13.08z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" />
-        <path d="M268 384H84a52.15 52.15 0 01-52-52V180a52.15 52.15 0 0152-52h184.48A51.68 51.68 0 01320 179.52V332a52.15 52.15 0 01-52 52z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32" />
-    </svg>
+    ${CameraIcon}
 </button>
 <div id="window" hidden>
     <div id="modal">
         <button id="closeButton">
-            <svg viewBox="0 0 512 512">
-                <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M368 368L144 144M368 144L144 368" />
-            </svg>
+            ${CloseIcon}
         </button>
         <video id="video" autoplay loop muted playsinline></video>
         <select id="deviceSelect"></select>

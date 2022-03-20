@@ -1,6 +1,6 @@
 "use strict";
 
-import { CompileIcon } from './icons.js';
+import { PlayIcon } from '../../icons.js';
 
 const css =
 `
@@ -18,7 +18,7 @@ const html =
 </div>
 <div id="statusBar">
     <button id="compileButton">
-        ${CompileIcon}
+        ${PlayIcon}
     </button>
 </div>
 `;
