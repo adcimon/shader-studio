@@ -1,6 +1,6 @@
 "use strict";
 
-import { ShaderIcon, UniformsIcon } from './icons.js';
+import { ShaderIcon, UniformsIcon } from '../../icons.js';
 
 const css =
 `
