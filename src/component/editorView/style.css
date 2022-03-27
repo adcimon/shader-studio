@@ -66,3 +66,10 @@
     /* Space */
     margin-left: 10px;
 }
+
+#downloadButton
+{
+    /* Space */
+    margin-left: auto;
+    margin-right: 10px;
+}

@@ -119,14 +119,7 @@ export function Texture( gl )
         let type = gl.UNSIGNED_BYTE;
         //let pixels = new Uint8Array([0, 0, 0, 255]);
 
-        if( pixels instanceof HTMLImageElement )
-        {
-            let width = pixels.width;
-            let height = pixels.height;
-            let border = 0;
-            gl.texImage2D(target, level, internalFormat, width, height, border, format, type, pixels);
-        }
-        else if( pixels instanceof HTMLVideoElement )
+        if( pixels instanceof HTMLImageElement || pixels instanceof HTMLVideoElement )
         {
             gl.texImage2D(target, level, internalFormat, format, type, pixels);
         }

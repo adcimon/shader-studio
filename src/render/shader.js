@@ -202,16 +202,10 @@ export function Shader( gl )
     };
 
     /**
-     * Compile the specified fragment shader.
+     * Generate vertex and fragment sources.
      */
-    let compile = function( source )
+    let generate = function( source )
     {
-        deleteProgram();
-
-        // Create the program.
-        program = createProgram();
-    
-        // Generate vertex and fragment sources.
         let vert = createVertexSource();
         let frag = source;
 
@@ -222,6 +216,25 @@ export function Shader( gl )
         vert = addAttributes(vert);
         vert = addVertexPrecision(vert);
         frag = addFragmentPrecision(frag);
+
+        return {
+            vert,
+            frag
+        };
+    };
+
+    /**
+     * Compile the specified fragment shader.
+     */
+    let compile = function( source )
+    {
+        deleteProgram();
+
+        // Create the program.
+        program = createProgram();
+    
+        // Generate vertex and fragment sources.
+        let { vert, frag } = generate(source);
     
         // Create the vertex shader.
         let vertexShader = createShader(vert, gl.VERTEX_SHADER);
@@ -266,6 +279,14 @@ export function Shader( gl )
     };
 
     /**
+     * Get the shader program.
+     */
+    let getProgram = function()
+    {
+        return program;
+    };
+
+    /**
      * Get the vertex position attribute name.
      */
     let getPositionAttribute = function()
@@ -279,14 +300,6 @@ export function Shader( gl )
     let getTextureCoordinateAttribute = function()
     {
         return attributes.textureCoordinate.name;
-    };
-
-    /**
-     * Get the shader program.
-     */
-    let getProgram = function()
-    {
-        return program;
     };
 
     /**
@@ -407,11 +420,12 @@ export function Shader( gl )
     };
 
     return {
+        generate,
         compile,
         use,
+        getProgram,
         getPositionAttribute,
         getTextureCoordinateAttribute,
-        getProgram,
         addUniform,
         removeUniform,
         clearUniforms,

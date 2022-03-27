@@ -9,7 +9,7 @@ const css =
 <link type="text/css" rel="stylesheet" href="./src/styles/select.css">
 <link type="text/css" rel="stylesheet" href="./src/styles/video.css">
 <link type="text/css" rel="stylesheet" href="./src/styles/modal.css">
-<link type="text/css" rel="stylesheet" href="./src/component/textureInput/style.css">
+<link type="text/css" rel="stylesheet" href="./src/component/imageInput/style.css">
 `;
 
 const html =
@@ -23,7 +23,7 @@ const html =
             ${CloseIcon}
         </button>
 
-        <input id="imageInput" type="file" accept="image/*" hidden>
+        <input id="fileInput" type="file" accept="image/*" hidden>
         <img id="image"/>
 
         <div>
@@ -34,12 +34,12 @@ const html =
 </div>
 `;
 
-export class TextureInput extends HTMLElement
+export class ImageInput extends HTMLElement
 {
     button = null;
     window = null;
     closeButton = null;
-    imageInput = null;
+    fileInput = null;
     image = null;
     wrapHorizontalSelect = null;
     wrapVerticalSelect = null;
@@ -60,7 +60,7 @@ export class TextureInput extends HTMLElement
         this.button = this.shadowRoot.querySelector("#button");
         this.window = this.shadowRoot.querySelector("#window");
         this.closeButton = this.shadowRoot.querySelector("#closeButton");
-        this.imageInput = this.shadowRoot.querySelector("#imageInput");
+        this.fileInput = this.shadowRoot.querySelector("#fileInput");
         this.image = this.shadowRoot.querySelector("#image");
         this.wrapHorizontalSelect = this.shadowRoot.querySelector("#wrapHorizontalSelect");
         this.wrapVerticalSelect = this.shadowRoot.querySelector("#wrapVerticalSelect");
@@ -75,7 +75,7 @@ export class TextureInput extends HTMLElement
             this.window.hidden = true;
         });
 
-        this.imageInput.addEventListener("change", (event) =>
+        this.fileInput.addEventListener("change", (event) =>
         {
             this.image.src = URL.createObjectURL(event.target.files[0]);
         });
@@ -88,7 +88,7 @@ export class TextureInput extends HTMLElement
                 "bubbles": true,
                 "cancelable": false
             });
-            this.imageInput.dispatchEvent(clickEvent);
+            this.fileInput.dispatchEvent(clickEvent);
         });
 
         Object.keys(WrapMode).forEach(key =>
@@ -123,6 +123,7 @@ export class TextureInput extends HTMLElement
     getValue()
     {
         return {
+            image:              this.image,
             wrapHorizontal:     this.wrapHorizontalSelect[this.wrapHorizontalSelect.selectedIndex].value,
             wrapVertical:       this.wrapVerticalSelect[this.wrapVerticalSelect.selectedIndex].value
         }
@@ -135,4 +136,4 @@ export class TextureInput extends HTMLElement
     }
 }
 
-window.customElements.define("texture-input", TextureInput);
+window.customElements.define("image-input", ImageInput);

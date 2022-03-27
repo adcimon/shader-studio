@@ -14,8 +14,10 @@ import { ShaderEditor } from './component/shaderEditor/shaderEditor.js';
 import { UniformList } from './component/uniformList/uniformList.js';
 import { UniformItem } from './component/uniformItem/uniformItem.js';
 import { MatrixInput } from './component/matrixInput/matrixInput.js';
+import { ImageInput } from './component/imageInput/imageInput.js';
 import { WebcamInput } from './component/webcamInput/webcamInput.js';
-import { TextureInput } from './component/textureInput/textureInput.js';
+
+import { downloadTextFile } from './utils.js';
 
 var renderView, editorView, navigationMenu, shaderEditor, uniformList;
 var gl, renderer, textureManager, shader, quad;
@@ -35,6 +37,13 @@ function initializeInterface()
     // Editor view.
     editorView = document.body.querySelector("editor-view");
     editorView.addEventListener("compile", compile);
+    editorView.addEventListener("download", () =>
+    {
+        let filename = "shader.glsl";
+        let sources = shader.generate(shaderEditor.getCode());
+        let text = sources.vert + "\n" + sources.frag;
+        downloadTextFile(filename, text);
+    });
 
     // Shader editor.
     shaderEditor = document.body.querySelector("shader-editor");
@@ -167,6 +176,7 @@ function addUniform( item )
 
     switch( type )
     {
+        case "image":
         case "webcam":
         {
             shader.addUniform("sampler2D", name);
@@ -205,6 +215,14 @@ function setUniform( item )
         case "mat2":    shader.setMatrix2x2(name, value.flat(2));   break;
         case "mat3":    shader.setMatrix3x3(name, value.flat(2));   break;
         case "mat4":    shader.setMatrix4x4(name, value.flat(2));   break;
+        case "image":
+        {
+            let texture = textureManager.getTexture(uuid) || textureManager.newTexture(uuid);
+            let unit = textureManager.getUnit(uuid);
+            texture.setSource(value.image);
+            shader.setTexture(name, unit);
+            break;
+        }
         case "webcam":
         {
             let texture = textureManager.getTexture(uuid) || textureManager.newTexture(uuid);

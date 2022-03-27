@@ -16,7 +16,7 @@ const html =
                 <span class="nav-icon">
                     ${ShaderIcon}
                 </span>
-                <span class="nav-text">SHADER</span>
+                <span class="nav-text">Shader</span>
             </a>
         </li>
         <li class="nav-item" name="uniforms">
@@ -24,7 +24,7 @@ const html =
                 <span class="nav-icon">
                     ${UniformsIcon}
                 </span>
-                <span class="nav-text">UNIFORMS</span>
+                <span class="nav-text">Uniforms</span>
             </a>
         </li>
         <div class="nav-indicator"></div>
