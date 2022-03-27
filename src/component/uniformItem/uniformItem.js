@@ -22,15 +22,15 @@ const html =
     <option value="mat2">mat2</option>
     <option value="mat3">mat3</option>
     <option value="mat4">mat4</option>
+    <option value="image">image</option>
     <option value="webcam">webcam</option>
-    <option value="texture">texture</option>
 </select>
 
 <input id="nameInput" type="text" placeholder="name"></input>
 <input id="valueInput" type="number" value="1.0" step="0.1"></input>
 <matrix-input id="matrixInput" hidden></matrix-input>
+<image-input id="imageInput" hidden></image-input>
 <webcam-input id="webcamInput" hidden></webcam-input>
-<texture-input id="textureInput" hidden></texture-input>
 
 <button id="removeButton">
     ${BinIcon}
@@ -44,8 +44,8 @@ export class UniformItem extends HTMLElement
     nameInput = null;
     valueInput = null;
     matrixInput = null;
+    imageInput = null;
     webcamInput = null;
-    textureInput = null;
     removeButton = null;
 
     constructor()
@@ -67,16 +67,16 @@ export class UniformItem extends HTMLElement
         this.nameInput = this.shadowRoot.querySelector("#nameInput");
         this.valueInput = this.shadowRoot.querySelector("#valueInput");
         this.matrixInput = this.shadowRoot.querySelector("#matrixInput");
+        this.imageInput = this.shadowRoot.querySelector("#imageInput");
         this.webcamInput = this.shadowRoot.querySelector("#webcamInput");
-        this.textureInput = this.shadowRoot.querySelector("#textureInput");
         this.removeButton = this.shadowRoot.querySelector("#removeButton");
 
         this.typeSelect.addEventListener("change", this.dispatchTypeChange.bind(this));
         this.valueInput.addEventListener("change", this.dispatchValueChange.bind(this));
         this.matrixInput.addEventListener("valuechange", this.dispatchValueChange.bind(this));
         this.matrixInput.addEventListener("click", this.dispatchClickMatrixInput.bind(this));
+        this.imageInput.addEventListener("valuechange", this.dispatchValueChange.bind(this));
         this.webcamInput.addEventListener("valuechange", this.dispatchValueChange.bind(this));
-        this.textureInput.addEventListener("valuechange", this.dispatchValueChange.bind(this));
         this.removeButton.addEventListener("click", this.dispatchRemoveUniform.bind(this));
 
         this.nameInput.focus();
@@ -113,8 +113,8 @@ export class UniformItem extends HTMLElement
             case "mat2":        return this.matrixInput.getMatrix2x2();
             case "mat3":        return this.matrixInput.getMatrix3x3();
             case "mat4":        return this.matrixInput.getMatrix4x4();
+            case "image":       return this.imageInput.getValue();
             case "webcam":      return this.webcamInput.getValue();
-            case "texture":     return this.textureInput.getValue();
         }
     }
 
@@ -129,7 +129,7 @@ export class UniformItem extends HTMLElement
                 this.valueInput.hidden = false;
                 this.matrixInput.hidden = true;
                 this.webcamInput.hidden = true;
-                this.textureInput.hidden = true;
+                this.imageInput.hidden = true;
                 this.valueInput.step = 1;
                 this.valueInput.value = Math.floor(this.valueInput.value);
                 break;
@@ -139,7 +139,7 @@ export class UniformItem extends HTMLElement
                 this.valueInput.hidden = false;
                 this.matrixInput.hidden = true;
                 this.webcamInput.hidden = true;
-                this.textureInput.hidden = true;
+                this.imageInput.hidden = true;
                 this.valueInput.step = 0.1;
                 break;
             }
@@ -153,7 +153,15 @@ export class UniformItem extends HTMLElement
                 this.valueInput.hidden = true;
                 this.matrixInput.hidden = false;
                 this.webcamInput.hidden = true;
-                this.textureInput.hidden = true;
+                this.imageInput.hidden = true;
+                break;
+            }
+            case "image":
+            {
+                this.valueInput.hidden = true;
+                this.matrixInput.hidden = true;
+                this.webcamInput.hidden = true;
+                this.imageInput.hidden = false;
                 break;
             }
             case "webcam":
@@ -161,15 +169,7 @@ export class UniformItem extends HTMLElement
                 this.valueInput.hidden = true;
                 this.matrixInput.hidden = true;
                 this.webcamInput.hidden = false;
-                this.textureInput.hidden = true;
-                break;
-            }
-            case "texture":
-            {
-                this.valueInput.hidden = true;
-                this.matrixInput.hidden = true;
-                this.webcamInput.hidden = true;
-                this.textureInput.hidden = false;
+                this.imageInput.hidden = true;
                 break;
             }
         }
@@ -212,11 +212,11 @@ export class UniformItem extends HTMLElement
             case "mat4":
                 value = this.matrixInput.getMatrix4x4();
                 break;
+            case "image":
+                value = this.imageInput.getValue();
+                break;
             case "webcam":
                 value = this.webcamInput.getValue();
-                break;
-            case "texture":
-                value = this.textureInput.getValue();
                 break;
         }
 

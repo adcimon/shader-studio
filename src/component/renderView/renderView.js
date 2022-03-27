@@ -69,7 +69,7 @@ export class RenderView extends HTMLElement
         // Picture in picture is not fully supported across browsers.
         if( !document.pictureInPictureEnabled )
         {
-            console.log("Picture in picture is not supported.");
+            console.log("Picture in picture is not supported");
             this.picinpicButton.hidden = true;
         }
 

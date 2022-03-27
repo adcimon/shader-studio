@@ -1,6 +1,6 @@
 "use strict";
 
-import { PlayIcon } from '../../icons.js';
+import { PlayIcon, DownloadIcon } from '../../icons.js';
 
 const css =
 `
@@ -20,11 +20,17 @@ const html =
     <button id="compileButton">
         ${PlayIcon}
     </button>
+    <button id="downloadButton">
+        ${DownloadIcon}
+    </button>
 </div>
 `;
 
 export class EditorView extends HTMLElement
 {
+    compileButton = null;
+    downloadButton = null;
+
     constructor()
     {
         super();
@@ -38,10 +44,18 @@ export class EditorView extends HTMLElement
 
     connectedCallback()
     {
-        const compileButton = this.shadowRoot.querySelector("#compileButton");
-        compileButton.addEventListener("click", () =>
+        this.compileButton = this.shadowRoot.querySelector("#compileButton");
+        this.downloadButton = this.shadowRoot.querySelector("#downloadButton");
+
+        this.compileButton.addEventListener("click", () =>
         {
             let event = new CustomEvent("compile");
+            this.dispatchEvent(event);
+        });
+
+        this.downloadButton.addEventListener("click", () =>
+        {
+            let event = new CustomEvent("download");
             this.dispatchEvent(event);
         });
     }
