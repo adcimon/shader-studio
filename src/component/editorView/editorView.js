@@ -1,6 +1,6 @@
 "use strict";
 
-import { PlayIcon, DownloadIcon } from '../../icons.js';
+import { PlayIcon, DownloadIcon, UploadIcon } from '../../icons.js';
 
 const css =
 `
@@ -17,19 +17,25 @@ const html =
     <slot name="content"/>
 </div>
 <div id="statusBar">
-    <button id="compileButton">
+    <button id="compileButton" title="Compile">
         ${PlayIcon}
     </button>
-    <button id="downloadButton">
-        ${DownloadIcon}
-    </button>
+    <div id="rightBar">
+        <button id="saveButton" title="Save">
+            ${DownloadIcon}
+        </button>
+        <button id="loadButton" title="Load">
+            ${UploadIcon}
+        </button>
+    </div>
 </div>
 `;
 
 export class EditorView extends HTMLElement
 {
     compileButton = null;
-    downloadButton = null;
+    saveButton = null;
+    loadButton = null;
 
     constructor()
     {
@@ -45,7 +51,8 @@ export class EditorView extends HTMLElement
     connectedCallback()
     {
         this.compileButton = this.shadowRoot.querySelector("#compileButton");
-        this.downloadButton = this.shadowRoot.querySelector("#downloadButton");
+        this.saveButton = this.shadowRoot.querySelector("#saveButton");
+        this.loadButton = this.shadowRoot.querySelector("#loadButton");
 
         this.compileButton.addEventListener("click", () =>
         {
@@ -53,9 +60,15 @@ export class EditorView extends HTMLElement
             this.dispatchEvent(event);
         });
 
-        this.downloadButton.addEventListener("click", () =>
+        this.saveButton.addEventListener("click", () =>
         {
-            let event = new CustomEvent("download");
+            let event = new CustomEvent("save");
+            this.dispatchEvent(event);
+        });
+
+        this.loadButton.addEventListener("click", () =>
+        {
+            let event = new CustomEvent("load");
             this.dispatchEvent(event);
         });
     }

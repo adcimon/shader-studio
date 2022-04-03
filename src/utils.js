@@ -9,6 +9,32 @@ export function clone( object )
 }
 
 /**
+ * Remove undefined and null values from the object.
+ */
+export function clean( object )
+{
+    Object.keys(object).forEach(function(key)
+    {
+        let value = object[key];
+        let type = typeof value;
+
+        if( type === "object" )
+        {
+            clean(value);
+
+            if( !Object.keys(value).length )
+            {
+                delete object[key]
+            }
+        }
+        else if( type === "undefined" || type === "null" )
+        {
+            delete object[key];
+        }
+    });
+}
+
+/**
  * Generate a universally unique identifier.
  * Reference: RFC 4122 https://www.ietf.org/rfc/rfc4122.txt
  */
