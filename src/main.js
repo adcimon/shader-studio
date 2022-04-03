@@ -17,7 +17,7 @@ import { MatrixInput } from './component/matrixInput/matrixInput.js';
 import { ImageInput } from './component/imageInput/imageInput.js';
 import { WebcamInput } from './component/webcamInput/webcamInput.js';
 
-import { downloadTextFile } from './utils.js';
+import { clean, downloadTextFile } from './utils.js';
 
 var renderView, editorView, navigationMenu, shaderEditor, uniformList;
 var gl, renderer, textureManager, shader, quad;
@@ -37,13 +37,8 @@ function initializeInterface()
     // Editor view.
     editorView = document.body.querySelector("editor-view");
     editorView.addEventListener("compile", compile);
-    editorView.addEventListener("download", () =>
-    {
-        let filename = "shader.glsl";
-        let sources = shader.generate(shaderEditor.getCode());
-        let text = sources.vert + "\n" + sources.frag;
-        downloadTextFile(filename, text);
-    });
+    editorView.addEventListener("save", save);
+    editorView.addEventListener("load", load);
 
     // Shader editor.
     shaderEditor = document.body.querySelector("shader-editor");
@@ -232,4 +227,43 @@ function setUniform( item )
             break;
         }
     }
+}
+
+function save()
+{
+    let filename = "shader.json";
+    let json = { };
+
+    // Version.
+    json.version = 1;
+
+    // Shader code.
+    json.code = shaderEditor.getCode();
+
+    // Generates sources.
+    let sources = shader.generate(shaderEditor.getCode());
+    json.vertex = sources.vert;
+    json.fragment = sources.frag;
+
+    // Uniforms.
+    json.uniforms = [];
+    let items = uniformList.getUniforms();
+    items.forEach(item =>
+    {
+        json.uniforms.push(
+        {
+            "type": item.getType(),
+            "name": item.getName(),
+            "value": item.getValue()
+        });
+    });
+
+    // Remove undefined and null values.
+    clean(json);
+
+    downloadTextFile(filename, JSON.stringify(json, null, "\t"));
+}
+
+function load()
+{
 }

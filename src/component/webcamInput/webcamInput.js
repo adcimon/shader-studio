@@ -117,9 +117,16 @@ export class WebcamInput extends HTMLElement
 
     getValue()
     {
+        let deviceIndex = this.deviceSelect.selectedIndex;
+        let device = (this.deviceSelect.selectedIndex in this.deviceSelect.options) ? this.deviceSelect.options[this.deviceSelect.selectedIndex].value : "";
+        let deviceId = (device in this.devices) ? this.devices[device] : "";
+
         return {
-            stream: this.stream,
-            video:  this.video
+            deviceIndex:    deviceIndex,
+            device:         device,
+            deviceId:       deviceId,
+            stream:         this.stream,
+            video:          this.video
         }
     }
 

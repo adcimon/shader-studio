@@ -13,7 +13,7 @@ const html =
 `
 <div id="list">
 </div>
-<button id="addButton">
+<button id="addButton" title="Add">
     ${AddIcon}
 </button>
 `;

@@ -44,6 +44,8 @@ export class ImageInput extends HTMLElement
     wrapHorizontalSelect = null;
     wrapVerticalSelect = null;
 
+    fileName = ""
+
     constructor()
     {
         super();
@@ -77,6 +79,7 @@ export class ImageInput extends HTMLElement
 
         this.fileInput.addEventListener("change", (event) =>
         {
+            this.fileName = event.target.files[0].name;
             this.image.src = URL.createObjectURL(event.target.files[0]);
         });
 
@@ -123,6 +126,7 @@ export class ImageInput extends HTMLElement
     getValue()
     {
         return {
+            fileName:           this.fileName,
             image:              this.image,
             wrapHorizontal:     this.wrapHorizontalSelect[this.wrapHorizontalSelect.selectedIndex].value,
             wrapVertical:       this.wrapVerticalSelect[this.wrapVerticalSelect.selectedIndex].value

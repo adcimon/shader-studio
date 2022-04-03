@@ -15,19 +15,19 @@ const html =
     <video id="video" autoplay controls>Your browser does not support the HTML5 video element.</video>
 </div>
 <div id="statusBar">
-    <button id="resetButton">
+    <button id="resetButton" title="Reset">
         ${ResetIcon}
     </button>
-    <button id="resumeButton" hidden>
+    <button id="resumeButton" title="Resume" hidden>
         ${ResumeIcon}
     </button>
-    <button id="pauseButton">
+    <button id="pauseButton" title="Pause">
         ${PauseIcon}
     </button>
     <span id="timeLabel">0.0</span>
 
     <span id="resolutionLabel"></span>
-    <button id="picinpicButton">
+    <button id="picinpicButton" title="Picture in picture">
         ${PicInPicIcon}
     </button>
 </div>
