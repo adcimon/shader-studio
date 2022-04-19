@@ -35,6 +35,17 @@ export function clean( object )
 }
 
 /**
+ * Convert a color from hexadecimal (#ffffff) to normalized RGB.
+ */
+export function hexToRgb( color )
+{
+    const r = parseInt(color.substr(1, 2), 16) / 255.0;
+    const g = parseInt(color.substr(3, 2), 16) / 255.0;
+    const b = parseInt(color.substr(5, 2), 16) / 255.0;
+    return [r, g, b];
+}
+
+/**
  * Generate a universally unique identifier.
  * Reference: RFC 4122 https://www.ietf.org/rfc/rfc4122.txt
  */

@@ -1,7 +1,7 @@
 "use strict";
 
 import { BinIcon } from '../.././icons.js';
-import { uuid } from '../../utils.js';
+import { hexToRgb, uuid } from '../../utils.js';
 
 const css =
 `
@@ -22,6 +22,7 @@ const html =
     <option value="mat2">mat2</option>
     <option value="mat3">mat3</option>
     <option value="mat4">mat4</option>
+    <option value="color">color</option>
     <option value="image">image</option>
     <option value="webcam">webcam</option>
 </select>
@@ -29,6 +30,7 @@ const html =
 <input id="nameInput" type="text" placeholder="name"></input>
 <input id="valueInput" type="number" value="1.0" step="0.1"></input>
 <matrix-input id="matrixInput" hidden></matrix-input>
+<input id="colorInput" type="color" value="#ffffff" hidden></input>
 <image-input id="imageInput" hidden></image-input>
 <webcam-input id="webcamInput" hidden></webcam-input>
 
@@ -44,6 +46,7 @@ export class UniformItem extends HTMLElement
     nameInput = null;
     valueInput = null;
     matrixInput = null;
+    colorInput = null;
     imageInput = null;
     webcamInput = null;
     removeButton = null;
@@ -67,6 +70,7 @@ export class UniformItem extends HTMLElement
         this.nameInput = this.shadowRoot.querySelector("#nameInput");
         this.valueInput = this.shadowRoot.querySelector("#valueInput");
         this.matrixInput = this.shadowRoot.querySelector("#matrixInput");
+        this.colorInput = this.shadowRoot.querySelector("#colorInput");
         this.imageInput = this.shadowRoot.querySelector("#imageInput");
         this.webcamInput = this.shadowRoot.querySelector("#webcamInput");
         this.removeButton = this.shadowRoot.querySelector("#removeButton");
@@ -75,6 +79,7 @@ export class UniformItem extends HTMLElement
         this.valueInput.addEventListener("change", this.dispatchValueChange.bind(this));
         this.matrixInput.addEventListener("valuechange", this.dispatchValueChange.bind(this));
         this.matrixInput.addEventListener("click", this.dispatchClickMatrixInput.bind(this));
+        this.colorInput.addEventListener("change", this.dispatchValueChange.bind(this));
         this.imageInput.addEventListener("valuechange", this.dispatchValueChange.bind(this));
         this.webcamInput.addEventListener("valuechange", this.dispatchValueChange.bind(this));
         this.removeButton.addEventListener("click", this.dispatchRemoveUniform.bind(this));
@@ -113,6 +118,7 @@ export class UniformItem extends HTMLElement
             case "mat2":        return this.matrixInput.getMatrix2x2();
             case "mat3":        return this.matrixInput.getMatrix3x3();
             case "mat4":        return this.matrixInput.getMatrix4x4();
+            case "color":       return hexToRgb(this.colorInput.value);
             case "image":       return this.imageInput.getValue();
             case "webcam":      return this.webcamInput.getValue();
         }
@@ -128,6 +134,7 @@ export class UniformItem extends HTMLElement
             {
                 this.valueInput.hidden = false;
                 this.matrixInput.hidden = true;
+                this.colorInput.hidden = true;
                 this.webcamInput.hidden = true;
                 this.imageInput.hidden = true;
                 this.valueInput.step = 1;
@@ -138,6 +145,7 @@ export class UniformItem extends HTMLElement
             {
                 this.valueInput.hidden = false;
                 this.matrixInput.hidden = true;
+                this.colorInput.hidden = true;
                 this.webcamInput.hidden = true;
                 this.imageInput.hidden = true;
                 this.valueInput.step = 0.1;
@@ -152,6 +160,16 @@ export class UniformItem extends HTMLElement
             {
                 this.valueInput.hidden = true;
                 this.matrixInput.hidden = false;
+                this.colorInput.hidden = true;
+                this.webcamInput.hidden = true;
+                this.imageInput.hidden = true;
+                break;
+            }
+            case "color":
+            {
+                this.valueInput.hidden = true;
+                this.matrixInput.hidden = true;
+                this.colorInput.hidden = false;
                 this.webcamInput.hidden = true;
                 this.imageInput.hidden = true;
                 break;
@@ -160,6 +178,7 @@ export class UniformItem extends HTMLElement
             {
                 this.valueInput.hidden = true;
                 this.matrixInput.hidden = true;
+                this.colorInput.hidden = true;
                 this.webcamInput.hidden = true;
                 this.imageInput.hidden = false;
                 break;
@@ -168,6 +187,7 @@ export class UniformItem extends HTMLElement
             {
                 this.valueInput.hidden = true;
                 this.matrixInput.hidden = true;
+                this.colorInput.hidden = true;
                 this.webcamInput.hidden = false;
                 this.imageInput.hidden = true;
                 break;
@@ -192,7 +212,7 @@ export class UniformItem extends HTMLElement
         {
             case "int":
             case "float":
-                value = this.valueInput.value;
+                this.valueInput.value;
                 break;
             case "vec2":
                 value = this.matrixInput.getVector2();
@@ -211,6 +231,9 @@ export class UniformItem extends HTMLElement
                 break;
             case "mat4":
                 value = this.matrixInput.getMatrix4x4();
+                break;
+            case "color":
+                value = hexToRgb(this.colorInput.value);
                 break;
             case "image":
                 value = this.imageInput.getValue();
