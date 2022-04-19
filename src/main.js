@@ -171,6 +171,11 @@ function addUniform( item )
 
     switch( type )
     {
+        case "color":
+        {
+            shader.addUniform("vec3", name);
+            break;
+        }
         case "image":
         case "webcam":
         {
@@ -210,6 +215,7 @@ function setUniform( item )
         case "mat2":    shader.setMatrix2x2(name, value.flat(2));   break;
         case "mat3":    shader.setMatrix3x3(name, value.flat(2));   break;
         case "mat4":    shader.setMatrix4x4(name, value.flat(2));   break;
+        case "color":   shader.setVector3(name, value);             break;
         case "image":
         {
             let texture = textureManager.getTexture(uuid) || textureManager.newTexture(uuid);
