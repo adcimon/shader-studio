@@ -135,7 +135,7 @@ export class ImageInput extends HTMLElement
 
     dispatchValueChange()
     {
-        let newEvent = new CustomEvent("valuechange", { detail: { textureInput: this, value: this.getValue() }});
+        let newEvent = new CustomEvent("valuechange", { detail: { textureInput: this, value: this.getValue() } });
         this.dispatchEvent(newEvent);
     }
 }
