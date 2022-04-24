@@ -46,6 +46,20 @@ export function hexToRgb( color )
 }
 
 /**
+ * Convert a color from normalized RGB to hexadecimal (#ffffff).
+ */
+export function rgbToHex( r, g, b )
+{
+    function componentToHex( c )
+    {
+        let hex = c.toString(16);
+        return hex.length == 1 ? "0" + hex : hex;
+    }
+
+    return "#" + componentToHex(r * 255) + componentToHex(g * 255) + componentToHex(b * 255);
+}
+
+/**
  * Generate a universally unique identifier.
  * Reference: RFC 4122 https://www.ietf.org/rfc/rfc4122.txt
  */

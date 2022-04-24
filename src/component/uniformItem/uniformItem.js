@@ -1,7 +1,7 @@
 "use strict";
 
 import { BinIcon } from '../.././icons.js';
-import { hexToRgb, uuid } from '../../utils.js';
+import { hexToRgb, rgbToHex, uuid } from '../../utils.js';
 
 const css =
 `
@@ -121,6 +121,73 @@ export class UniformItem extends HTMLElement
             case "color":       return hexToRgb(this.colorInput.value);
             case "image":       return this.imageInput.getValue();
             case "webcam":      return this.webcamInput.getValue();
+        }
+    }
+
+    setType( type )
+    {
+        this.typeSelect.value = type;
+        this.dispatchTypeChange();
+    }
+
+    setName( name )
+    {
+        this.nameInput.value = name;
+    }
+
+    setValue( value )
+    {
+        switch( this.typeSelect.value )
+        {
+            case "int":
+            case "float":
+            {
+                this.valueInput.value = value;
+                break;
+            }
+            case "vec2":
+            {
+                this.matrixInput.setVector2(value);
+                break;
+            }
+            case "vec3":
+            {
+                this.matrixInput.setVector3(value);
+                break;
+            }
+            case "vec4":
+            {
+                this.matrixInput.setVector4(value);
+                break;
+            }
+            case "mat2":
+            {
+                this.matrixInput.setMatrix2x2(value);
+                break;
+            }
+            case "mat3":
+            {
+                this.matrixInput.setMatrix3x3(value);
+                break;
+            }
+            case "mat4":
+            {
+                this.matrixInput.setMatrix4x4(value);
+                break;
+            }
+            case "color":
+            {
+                this.colorInput.value = rgbToHex(value[0], value[1], value[2]);
+                break;
+            }
+            case "image":
+            {
+                break;
+            }
+            case "webcam":
+            {
+                break;
+            }
         }
     }
 

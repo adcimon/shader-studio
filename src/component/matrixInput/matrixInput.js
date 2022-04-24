@@ -172,6 +172,74 @@ export class MatrixInput extends HTMLElement
         return values;
     }
 
+    setVector2( value )
+    {
+        this.inputs[0].value = value[0];
+        this.inputs[1].value = value[1];
+    }
+
+    setVector3( value )
+    {
+        this.inputs[0].value = value[0];
+        this.inputs[1].value = value[1];
+        this.inputs[2].value = value[2];
+    }
+
+    setVector4( value )
+    {
+        this.inputs[0].value = value[0];
+        this.inputs[1].value = value[1];
+        this.inputs[2].value = value[2];
+        this.inputs[3].value = value[3];
+    }
+
+    setMatrix2x2( value )
+    {
+        this.inputs[0].value = value[0][0];
+        this.inputs[1].value = value[0][1];
+
+        this.inputs[2].value = value[1][0];
+        this.inputs[3].value = value[1][1];
+    }
+
+    setMatrix3x3( value )
+    {
+        this.inputs[0].value = value[0][0];
+        this.inputs[1].value = value[0][1];
+        this.inputs[2].value = value[0][2];
+
+        this.inputs[3].value = value[1][0];
+        this.inputs[4].value = value[1][1];
+        this.inputs[5].value = value[1][2];
+
+        this.inputs[6].value = value[2][0];
+        this.inputs[7].value = value[2][1];
+        this.inputs[8].value = value[2][2];
+    }
+
+    setMatrix4x4( value )
+    {
+        this.inputs[0].value = value[0][0];
+        this.inputs[1].value = value[0][1];
+        this.inputs[2].value = value[0][2];
+        this.inputs[3].value = value[0][3];
+
+        this.inputs[4].value = value[1][0];
+        this.inputs[5].value = value[1][1];
+        this.inputs[6].value = value[1][2];
+        this.inputs[7].value = value[1][3];
+
+        this.inputs[8].value = value[2][0];
+        this.inputs[9].value = value[2][1];
+        this.inputs[10].value = value[2][2];
+        this.inputs[11].value = value[2][3];
+
+        this.inputs[12].value = value[3][0];
+        this.inputs[13].value = value[3][1];
+        this.inputs[14].value = value[3][2];
+        this.inputs[15].value = value[3][3];
+    }
+
     showVector2()
     {
         this.inputs.forEach(input =>

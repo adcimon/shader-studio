@@ -160,7 +160,7 @@ function addUniforms()
 {
     shader.clearUniforms();
 
-    let items = uniformList.getUniforms();
+    let items = uniformList.getUniformItems();
     items.forEach(item => addUniform(item));
 }
 
@@ -194,7 +194,7 @@ function setUniforms()
 {
     shader.setVector2("u_resolution", [renderView.getWidth(), renderView.getHeight()]);
 
-    let items = uniformList.getUniforms();
+    let items = uniformList.getUniformItems();
     items.forEach(item => setUniform(item));
 }
 
@@ -238,25 +238,25 @@ function setUniform( item )
 function save()
 {
     let filename = "shader.json";
-    let json = { };
+    let obj = { };
 
     // Version.
-    json.version = 1;
+    obj.version = 1;
 
     // Shader code.
-    json.code = shaderEditor.getCode();
+    obj.code = shaderEditor.getCode();
 
     // Generates sources.
     let sources = shader.generate(shaderEditor.getCode());
-    json.vertex = sources.vert;
-    json.fragment = sources.frag;
+    obj.vertex = sources.vert;
+    obj.fragment = sources.frag;
 
     // Uniforms.
-    json.uniforms = [];
-    let items = uniformList.getUniforms();
+    obj.uniforms = [];
+    let items = uniformList.getUniformItems();
     items.forEach(item =>
     {
-        json.uniforms.push(
+        obj.uniforms.push(
         {
             "type": item.getType(),
             "name": item.getName(),
@@ -265,11 +265,47 @@ function save()
     });
 
     // Remove undefined and null values.
-    clean(json);
+    clean(obj);
 
-    downloadTextFile(filename, JSON.stringify(json, null, "\t"));
+    downloadTextFile(filename, JSON.stringify(obj, null, "\t"));
 }
 
-function load()
+function load( event )
 {
+    let contents = event.detail.contents;
+    let obj = JSON.parse(contents);
+
+    // Check serialized object properties.
+
+    if( !obj.code || typeof obj.code !== "string" )
+    {
+        return;
+    }
+
+    if( obj.uniforms && !(obj.uniforms instanceof Array) )
+    {
+        return;
+    }
+
+    // Load shader.
+
+    shaderEditor.setCode(obj.code);
+
+    uniformList.clear();
+    if( obj.uniforms )
+    {
+        for( let key in obj.uniforms )
+        {
+            let uniform = obj.uniforms[key];
+
+            let uniformItem = new UniformItem();
+            uniformList.addUniformItem(uniformItem);
+
+            uniformItem.setType(uniform.type);
+            uniformItem.setName(uniform.name);
+            uniformItem.setValue(uniform.value);
+        }
+    }
+
+    compile();
 }

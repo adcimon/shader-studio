@@ -24,6 +24,7 @@ const html =
         <button id="saveButton" title="Save">
             ${DownloadIcon}
         </button>
+        <input id="loadInput" type="file" accept="application/json" hidden>
         <button id="loadButton" title="Load">
             ${UploadIcon}
         </button>
@@ -35,6 +36,7 @@ export class EditorView extends HTMLElement
 {
     compileButton = null;
     saveButton = null;
+    loadInput = null;
     loadButton = null;
 
     constructor()
@@ -52,6 +54,7 @@ export class EditorView extends HTMLElement
     {
         this.compileButton = this.shadowRoot.querySelector("#compileButton");
         this.saveButton = this.shadowRoot.querySelector("#saveButton");
+        this.loadInput = this.shadowRoot.querySelector("#loadInput");
         this.loadButton = this.shadowRoot.querySelector("#loadButton");
 
         this.compileButton.addEventListener("click", () =>
@@ -66,10 +69,30 @@ export class EditorView extends HTMLElement
             this.dispatchEvent(event);
         });
 
+        let editorView = this;
+        this.loadInput.addEventListener("change", (event) =>
+        {
+            let file = event.target.files[0];
+            if( !file )
+            {
+                return;
+            }
+
+            let reader = new FileReader();
+            reader.onload = function( event )
+            {
+                let contents = event.target.result;
+
+                let clickEvent = new CustomEvent("load", { detail: { contents: contents } });
+                editorView.dispatchEvent(clickEvent);
+            };
+
+            reader.readAsText(file);
+        });
+
         this.loadButton.addEventListener("click", () =>
         {
-            let event = new CustomEvent("load");
-            this.dispatchEvent(event);
+            this.loadInput.click();
         });
     }
 

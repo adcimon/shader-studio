@@ -39,21 +39,25 @@ export class UniformList extends HTMLElement
         this.list = this.shadowRoot.querySelector("#list");
 
         this.addButton = this.shadowRoot.querySelector("#addButton");
-        this.addButton.addEventListener("click", this.addUniform.bind(this));
+        this.addButton.addEventListener("click", this.addUniformItem.bind(this));
     }
 
     disconnectedCallback()
     {
     }
 
-    getUniforms()
+    getUniformItems()
     {
         return this.list.querySelectorAll("uniform-item");
     }
 
-    addUniform()
+    addUniformItem( item )
     {
-        let item = new UniformItem();
+        if( !item || !(item instanceof UniformItem) )
+        {
+            item = new UniformItem();
+        }
+
         item.addEventListener("removeuniform", (event) =>
         {
             let newEvent = new CustomEvent("removeuniform", { detail: { uniformItem: event.detail.uniformItem }});
@@ -65,6 +69,14 @@ export class UniformList extends HTMLElement
         this.dispatchEvent(newEvent);
 
         return item;
+    }
+
+    clear()
+    {
+        while( this.list.firstChild )
+        {
+            this.list.removeChild(this.list.lastChild);
+        }
     }
 }
 
