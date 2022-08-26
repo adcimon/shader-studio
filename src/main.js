@@ -1,311 +1,40 @@
-"use strict";
+const { app, BrowserWindow } = require("electron");
+const path = require("path");
 
-import { Renderer } from './render/renderer.js';
-import { TextureManager } from './render/textureManager.js';
-import { Shader } from './render/shader.js';
-import { Quad } from './render/quad.js';
-import { ShaderSource } from './render/shaders.js';
-
-import { MainView } from './component/mainView/mainView.js';
-import { RenderView } from './component/renderView/renderView.js';
-import { EditorView } from './component/editorView/editorView.js';
-import { NavigationMenu } from './component/navigationMenu/navigationMenu.js';
-import { ShaderEditor } from './component/shaderEditor/shaderEditor.js';
-import { UniformList } from './component/uniformList/uniformList.js';
-import { UniformItem } from './component/uniformItem/uniformItem.js';
-import { MatrixInput } from './component/matrixInput/matrixInput.js';
-import { ImageInput } from './component/imageInput/imageInput.js';
-import { WebcamInput } from './component/webcamInput/webcamInput.js';
-
-import { clean, downloadTextFile } from './utils.js';
-
-var renderView, editorView, navigationMenu, shaderEditor, uniformList;
-var gl, renderer, textureManager, shader, quad;
-
-window.addEventListener("load", main);
-
-function main()
+const createWindow = () =>
 {
-    initializeInterface();
-    initializeRenderer();
-
-    renderView.resize();
-}
-
-function initializeInterface()
-{
-    // Editor view.
-    editorView = document.body.querySelector("editor-view");
-    editorView.addEventListener("compile", compile);
-    editorView.addEventListener("save", save);
-    editorView.addEventListener("load", load);
-
-    // Shader editor.
-    shaderEditor = document.body.querySelector("shader-editor");
-    shaderEditor.setCode(ShaderSource);
-
-    // Uniform list.
-    uniformList = document.body.querySelector("uniform-list");
-    uniformList.addEventListener("adduniform", (event) =>
+    const window = new BrowserWindow(
     {
-        event.detail.uniformItem.addEventListener("typechange", () =>
+        width: 1280,
+        height: 720,
+        webPreferences:
         {
-            let item = event.detail.uniformItem;
-            textureManager.deleteTexture(item.getUuid());
-            shader.removeUniform(item.getName());
-            addUniform(item);
-            setUniform(item);
-        });
-
-        event.detail.uniformItem.addEventListener("valuechange", () =>
-        {
-            let item = event.detail.uniformItem;
-            setUniform(item);
-        });
-    });
-    uniformList.addEventListener("removeuniform", (event) =>
-    {
-        let item = event.detail.uniformItem;
-        textureManager.deleteTexture(item.getUuid());
-        shader.removeUniform(item.getName());
-    });
-
-    // Navigation menu.
-    navigationMenu = document.body.querySelector("navigation-menu");
-    navigationMenu.addEventListener("itemselect", (event) =>
-    {
-        switch( event.detail.name )
-        {
-            case "shader":
-            {
-                uniformList.hidden = true;
-                shaderEditor.hidden = false;
-                break;
-            }
-            case "uniforms":
-            {
-                shaderEditor.hidden = true;
-                uniformList.hidden = false;
-                break;
-            }
+            preload: path.join(__dirname, "preload.js")
         }
     });
+  
+    window.loadFile(path.join(__dirname, "index.html"));
 
-    // Render view.
-    renderView = document.body.querySelector("render-view");
-    renderView.addEventListener("resize", () =>
-    {
-        shader.setVector2("u_resolution", [renderView.getWidth(), renderView.getHeight()]);
-    });
-    renderView.addEventListener("resettime", () =>
-    {
-        renderer.reset();
-    });
-    renderView.addEventListener("resumetime", () =>
-    {
-        renderer.resume();
-    });
-    renderView.addEventListener("pausetime", () =>
-    {
-        renderer.pause();
-    });
-}
+    window.maximize();
+};
 
-function initializeRenderer()
+app.whenReady().then(() =>
 {
-    // Renderer.
-    renderer = new Renderer(renderView.getCanvas());
-    gl = renderer.getContext();
+    createWindow();
 
-    // Texture manager.
-    textureManager = new TextureManager(gl);
-
-    // Shader.
-    shader = new Shader(gl);
-    compile();
-    setUniforms();
-
-    // Quad.
-    quad = new Quad(gl);
-    quad.bindBuffers(shader);
-
-    renderer.start(render);
-}
-
-function render( time, deltaTime )
-{
-    renderView.setTime(time);
-
-    shader.setFloat("u_time", time);
-    shader.setFloat("u_deltaTime", deltaTime);
-
-    textureManager.updateTextures();
-
-    quad.draw();
-}
-
-function compile()
-{
-    textureManager.clearUnits();
-
-    addUniforms();
-
-    shader.compile(shaderEditor.getCode());
-    shader.use();
-
-    setUniforms();
-}
-
-function addUniforms()
-{
-    shader.clearUniforms();
-
-    let items = uniformList.getUniformItems();
-    items.forEach(item => addUniform(item));
-}
-
-function addUniform( item )
-{
-    let type = item.getType();
-    let name = item.getName();
-
-    switch( type )
+    app.on("activate", () =>
     {
-        case "color":
+        if( BrowserWindow.getAllWindows().length === 0 )
         {
-            shader.addUniform("vec3", name);
-            break;
+            createWindow();
         }
-        case "image":
-        case "webcam":
-        {
-            shader.addUniform("sampler2D", name);
-            break;
-        }
-        default:
-        {
-            shader.addUniform(type, name);
-            break;
-        }
+    })
+});
+
+app.on("window-all-closed", () =>
+{
+    if( process.platform !== "darwin" )
+    {
+        app.quit();
     }
-}
-
-function setUniforms()
-{
-    shader.setVector2("u_resolution", [renderView.getWidth(), renderView.getHeight()]);
-
-    let items = uniformList.getUniformItems();
-    items.forEach(item => setUniform(item));
-}
-
-function setUniform( item )
-{
-    let uuid = item.getUuid();
-    let type = item.getType();
-    let name = item.getName();
-    let value = item.getValue();
-
-    switch( type )
-    {
-        case "int":     shader.setInt(name, value);                 break;
-        case "float":   shader.setFloat(name, value);               break;
-        case "vec2":    shader.setVector2(name, value);             break;
-        case "vec3":    shader.setVector3(name, value);             break;
-        case "vec4":    shader.setVector4(name, value);             break;
-        case "mat2":    shader.setMatrix2x2(name, value.flat(2));   break;
-        case "mat3":    shader.setMatrix3x3(name, value.flat(2));   break;
-        case "mat4":    shader.setMatrix4x4(name, value.flat(2));   break;
-        case "color":   shader.setVector3(name, value);             break;
-        case "image":
-        {
-            let texture = textureManager.getTexture(uuid) || textureManager.newTexture(uuid);
-            let unit = textureManager.getUnit(uuid);
-            texture.setSource(value.image);
-            shader.setTexture(name, unit);
-            break;
-        }
-        case "webcam":
-        {
-            let texture = textureManager.getTexture(uuid) || textureManager.newTexture(uuid);
-            let unit = textureManager.getUnit(uuid);
-            texture.setSource(value.video);
-            shader.setTexture(name, unit);
-            break;
-        }
-    }
-}
-
-function save()
-{
-    let filename = "shader.json";
-    let obj = { };
-
-    // Version.
-    obj.version = 1;
-
-    // Shader code.
-    obj.code = shaderEditor.getCode();
-
-    // Generates sources.
-    let sources = shader.generate(shaderEditor.getCode());
-    obj.vertex = sources.vert;
-    obj.fragment = sources.frag;
-
-    // Uniforms.
-    obj.uniforms = [];
-    let items = uniformList.getUniformItems();
-    items.forEach(item =>
-    {
-        obj.uniforms.push(
-        {
-            "type": item.getType(),
-            "name": item.getName(),
-            "value": item.getValue()
-        });
-    });
-
-    // Remove undefined and null values.
-    clean(obj);
-
-    downloadTextFile(filename, JSON.stringify(obj, null, "\t"));
-}
-
-function load( event )
-{
-    let contents = event.detail.contents;
-    let obj = JSON.parse(contents);
-
-    // Check serialized object properties.
-
-    if( !obj.code || typeof obj.code !== "string" )
-    {
-        return;
-    }
-
-    if( obj.uniforms && !(obj.uniforms instanceof Array) )
-    {
-        return;
-    }
-
-    // Load shader.
-
-    shaderEditor.setCode(obj.code);
-
-    uniformList.clear();
-    if( obj.uniforms )
-    {
-        for( let key in obj.uniforms )
-        {
-            let uniform = obj.uniforms[key];
-
-            let uniformItem = new UniformItem();
-            uniformList.addUniformItem(uniformItem);
-
-            uniformItem.setType(uniform.type);
-            uniformItem.setName(uniform.name);
-            uniformItem.setValue(uniform.value);
-        }
-    }
-
-    compile();
-}
+});

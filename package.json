@@ -1,0 +1,14 @@
+{
+    "name": "shader-studio",
+    "version": "1.0.0",
+    "description": "Shader Studio",
+    "main": "src/main.js",
+    "scripts": {
+        "start": "electron ."
+    },
+    "author": "adcimon",
+    "license": "MIT",
+    "devDependencies": {
+        "electron": "^20.0.2"
+    }
+}
