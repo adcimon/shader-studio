@@ -2,7 +2,7 @@
 
 import * as THREE from '../../lib/three/build/three.module.js';
 
-const renderViewHTML = /*html*/
+const html = /*html*/
 `
 <canvas class="block w-full h-full">
 </canvas>
@@ -17,16 +17,13 @@ export function RenderView( domElement )
     let camera = null;
     let material = null;
 
-    let build = function()
+    let init = function()
     {
-        const template = document.createElement("template");
-        template.innerHTML = renderViewHTML;
-        const fragment = template.content.cloneNode(true);
-        root = fragment.firstElementChild;
-        domElement.appendChild(root);
+        let elements = createElements(html, domElement);
+        root = elements[0];
     }
 
-    let initialize = function()
+    let initRenderer = function()
     {
         const canvas = root;
 
@@ -97,8 +94,8 @@ export function RenderView( domElement )
         material.fragmentShader = shader;
     }
 
-    build();
-    initialize();
+    init();
+    initRenderer();
 
     return {
         setShader
