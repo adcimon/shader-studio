@@ -1,6 +1,6 @@
 "use strict";
 
-const profileMenuHTML = /*html*/
+const html = /*html*/
 `
 <ul class="flex items-center flex-shrink-0 space-x-6">
     <li class="relative">
@@ -82,16 +82,11 @@ const profileMenuHTML = /*html*/
 
 export function ProfileMenu( domElement )
 {
-    let root = null;
     let opened = false;
 
-    let build = function()
+    let init = function()
     {
-        const template = document.createElement("template");
-        template.innerHTML = profileMenuHTML;
-        const fragment = template.content.cloneNode(true);
-        root = fragment.firstElementChild;
-        domElement.appendChild(root);
+        createElements(html, domElement);
     }
 
     let isOpen = function()
@@ -109,7 +104,7 @@ export function ProfileMenu( domElement )
         this.opened = false;
     }
 
-    build();
+    init();
 
     return {
         isOpen,

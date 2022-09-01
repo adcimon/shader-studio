@@ -1,6 +1,6 @@
 "use strict";
 
-const addModalHTML = /*html*/
+const html = /*html*/
 `
 <div
     class="fixed inset-0 z-30 flex items-end bg-black bg-opacity-50 sm:items-center sm:justify-center"
@@ -85,16 +85,11 @@ const addModalHTML = /*html*/
 
 export function AddModal( domElement )
 {
-    let root = null;
     let opened = false;
 
-    let build = function()
+    let init = function()
     {
-        const template = document.createElement("template");
-        template.innerHTML = addModalHTML;
-        const fragment = template.content.cloneNode(true);
-        root = fragment.firstElementChild;
-        domElement.appendChild(root);
+        createElements(html, domElement);
     }
 
     let isOpen = function()
@@ -112,7 +107,7 @@ export function AddModal( domElement )
         this.opened = false;
     }
 
-    build();
+    init();
 
     return {
         isOpen,

@@ -2,7 +2,7 @@
 
 import { UniformItem } from './uniformItem.js';
 
-const uniformListHTML = /*html*/
+const html = /*html*/
 `
 <div class="py-4 text-gray-500 dark:text-gray-400">
 
@@ -29,19 +29,13 @@ const uniformListHTML = /*html*/
 
 export function UniformList( domElement )
 {
-    let root = null;
     let list = null;
     let items = { };
 
     let build = function()
     {
-        const template = document.createElement("template");
-        template.innerHTML = uniformListHTML;
-        const fragment = template.content.cloneNode(true);
-        root = fragment.firstElementChild;
-        domElement.appendChild(root);
-
-        list = root.querySelector("#uniformList");
+        createElements(html, domElement);
+        list = domElement.querySelector("#uniformList");
     }
 
     let addUniformItem = function( name, type )

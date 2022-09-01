@@ -2,7 +2,7 @@
 
 import { getTypeIcon } from '../utils/icons.js';
 
-const uniformItemHTML = /*html*/
+const html = /*html*/
 `
 <li class="relative px-3 py-1">
 
@@ -35,12 +35,11 @@ export function UniformItem( name, type )
 {
     let root = null;
 
-    let build = function()
+    let init = function()
     {
-        const template = document.createElement("template");
-        template.innerHTML = uniformItemHTML.replace("$icon", getTypeIcon(type));
-        const fragment = template.content.cloneNode(true);
-        root = fragment.firstElementChild;
+        let finalHtml = html.replace("$icon", getTypeIcon(type));
+        let elements = createElements(finalHtml);
+        root = elements[0];
 
         let nameLabel = root.querySelector("#nameLabel");
         nameLabel.innerText = name;
@@ -61,7 +60,7 @@ export function UniformItem( name, type )
         return root;
     }
 
-    build();
+    init();
 
     return {
         getElement,

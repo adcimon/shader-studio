@@ -1,6 +1,6 @@
 "use strict";
 
-const aboutModalHTML = /*html*/
+const html = /*html*/
 `
 <div
     class="fixed inset-0 z-30 flex items-end bg-black bg-opacity-50 sm:items-center sm:justify-center"
@@ -132,13 +132,10 @@ export function AboutModal( domElement )
     let root = null;
     let opened = false;
 
-    let build = function()
+    let init = function()
     {
-        const template = document.createElement("template");
-        template.innerHTML = aboutModalHTML;
-        const fragment = template.content.cloneNode(true);
-        root = fragment.firstElementChild;
-        domElement.appendChild(root);
+        let elements = createElements(html, domElement);
+        root = elements[0];
     }
 
     let isOpen = function()
@@ -168,7 +165,7 @@ export function AboutModal( domElement )
         electronVersion.innerText = versions.electron;
     }
 
-    build();
+    init();
 
     return {
         isOpen,

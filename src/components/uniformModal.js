@@ -1,6 +1,6 @@
 "use strict";
 
-const uniformModalHTML = /*html*/
+const html = /*html*/
 `
 <div
     class="fixed inset-0 z-30 flex items-end bg-black bg-opacity-50 sm:items-center sm:justify-center"
@@ -78,23 +78,17 @@ const uniformModalHTML = /*html*/
 
 export function UniformModal( domElement )
 {
-    let root = null;
     let uniformWindow = null;
     let typeLabel = null;
 
     let opened = false;
     let selectedItem = null;
 
-    let build = function()
+    let init = function()
     {
-        const template = document.createElement("template");
-        template.innerHTML = uniformModalHTML;
-        const fragment = template.content.cloneNode(true);
-        root = fragment.firstElementChild;
-        domElement.appendChild(root);
-
-        uniformWindow = root.querySelector("#uniformWindow");
-        typeLabel = root.querySelector("#typeLabel");
+        createElements(html, domElement);
+        uniformWindow = domElement.querySelector("#uniformWindow");
+        typeLabel = domElement.querySelector("#typeLabel");
     }
 
     let getSelectedItem = function()
@@ -142,7 +136,7 @@ export function UniformModal( domElement )
         this.selectedItem = null;
     }
 
-    build();
+    init();
 
     return {
         getSelectedItem,

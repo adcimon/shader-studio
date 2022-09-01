@@ -4,7 +4,7 @@ export function EditorView( domElement )
 {
     let editor = null;
 
-    let build = function()
+    let init = function()
     {
         editor = monaco.editor.create(domElement,
         {
@@ -31,7 +31,7 @@ export function EditorView( domElement )
         editor.setValue(value);
     }
 
-    build();
+    init();
 
     return {
         getValue,
