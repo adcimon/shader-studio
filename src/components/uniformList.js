@@ -32,7 +32,7 @@ export function UniformList( domElement )
     let list = null;
     let items = { };
 
-    let build = function()
+    let init = function()
     {
         createElements(html, domElement);
         list = domElement.querySelector("#uniformList");
@@ -63,7 +63,7 @@ export function UniformList( domElement )
         return items[name];
     }
 
-    build();
+    init();
 
     return {
         addUniformItem,
