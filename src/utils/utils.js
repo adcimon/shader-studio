@@ -13,7 +13,8 @@ function clone( object )
  */
 function debounce( func, wait, immediate )
 {
-    let timeout;
+    let timeout = null;
+
     return function()
     {
         let context = this;
@@ -29,13 +30,51 @@ function debounce( func, wait, immediate )
         };
 
         let callNow = immediate && !timeout;
+
         clearTimeout(timeout);
         timeout = setTimeout(later, wait);
+
         if( callNow )
         {
             func.apply(context, args);
         }
     };
+}
+
+/**
+ * Create an array of HTMLElement given a string.
+ * If a DOM element is provided, the elements are appended to the DOM element.
+ */
+function createElements( html, domElement = null )
+{
+    const template = document.createElement("template");
+    template.innerHTML = html;
+    const fragment = template.content;
+    const elements = Array.from(fragment.children);
+
+    if( domElement )
+    {
+        domElement.appendCollection(fragment.children);
+    }
+
+    return elements;
+}
+
+/**
+ * Download a text file.
+ */
+function downloadTextFile( filename, text )
+{
+    const element = document.createElement("a");
+    element.setAttribute("href", "data:text/plain;charset=utf-8," + encodeURIComponent(text));
+    element.setAttribute("download", filename);
+
+    element.style.display = "none";
+    document.body.appendChild(element);
+
+    element.click();
+
+    document.body.removeChild(element);
 }
 
 /**
@@ -92,47 +131,11 @@ function uuidv4()
 }
 
 /**
- * Download a text file.
- */
-function downloadTextFile( filename, text )
-{
-    let element = document.createElement("a");
-    element.setAttribute("href", "data:text/plain;charset=utf-8," + encodeURIComponent(text));
-    element.setAttribute("download", filename);
-  
-    element.style.display = "none";
-    document.body.appendChild(element);
-  
-    element.click();
-  
-    document.body.removeChild(element);
-}
-
-/**
- * Create an array of HTMLElement given a string.
- * If a DOM element is provided, the elements are appended to the DOM element.
- */
-function createElements( html, domElement = null )
-{
-    const template = document.createElement("template");
-    template.innerHTML = html;
-    const fragment = template.content;
-    let elements = Array.from(fragment.children);
-
-    if( domElement )
-    {
-        domElement.appendCollection(fragment.children);
-    }
-
-    return elements;
-}
-
-/**
  * Return the elements that match the specified selector.
  */
 HTMLElement.prototype.query = function( selector )
 {
-    let elements = this.querySelectorAll(selector);
+    const elements = this.querySelectorAll(selector);
     return (elements.length === 1) ? elements[0] : elements;
 }
 

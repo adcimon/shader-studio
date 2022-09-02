@@ -1,12 +1,13 @@
 "use strict";
 
+import { CompileButton } from './components/compileButton.js';
 import { ProfileMenu } from './components/profileMenu.js';
-import { AboutModal } from './components/aboutModal.js';
 import { UniformList } from './components/uniformList.js';
-import { AddModal } from './components/addModal.js';
-import { UniformModal } from './components/uniformModal.js';
 import { EditorView } from './components/editorView.js';
 import { RenderView } from './components/renderView.js';
+import { AddModal } from './components/addModal.js';
+import { UniformModal } from './components/uniformModal.js';
+import { AboutModal } from './components/aboutModal.js';
 
 const fragmentShader =
 `// Reference: https://www.shadertoy.com/user/iq  
@@ -37,46 +38,58 @@ window.addEventListener("load", main);
 
 function main()
 {
+    const sidebar = document.getElementById("sidebar");
+    const top = document.getElementById("top");
+    const left = document.getElementById("left");
+    const right = document.getElementById("right");
+
+    // Compile button.
+    const compileButton = new CompileButton(top);
+    Alpine.store("compileButton", compileButton);
+    window.compileButton = Alpine.store("compileButton");
+
     // Profile menu.
-    let profileElement = document.getElementById("top");
-    let profileMenu = new ProfileMenu(profileElement);
+    const profileMenu = new ProfileMenu(top);
     Alpine.store("profileMenu", profileMenu);
     window.profileMenu = Alpine.store("profileMenu");
 
-    // About modal.
-    let aboutModal = new AboutModal(document.body);
-    let versions = { node: window.versions.node, chrome: window.versions.chrome, electron: window.versions.electron };
-    aboutModal.updateVersions(versions);
-    Alpine.store("aboutModal", aboutModal);
-    window.aboutModal = Alpine.store("aboutModal");
-
     // Uniform list.
-    let sidebar = document.getElementById("sidebar");
-    let uniformList = new UniformList(sidebar);
+    const uniformList = new UniformList(sidebar);
     Alpine.store("uniformList", uniformList);
     window.uniformList = Alpine.store("uniformList");
 
-    // Add modal.
-    let addModal = new AddModal(document.body);
-    Alpine.store("addModal", addModal);
-    window.addModal = Alpine.store("addModal");
-
-    // Uniform modal.
-    let uniformModal = new UniformModal(document.body);
-    Alpine.store("uniformModal", uniformModal);
-    window.uniformModal = Alpine.store("uniformModal");
-
     // Editor view.
-    let editorElement = document.getElementById("left");
-    let editorView = new EditorView(editorElement);
+    const editorView = new EditorView(left);
     editorView.setValue(fragmentShader);
     Alpine.store("editorView", editorView);
     window.editorView = Alpine.store("editorView");
 
     // Render view.
-    let renderElement = document.getElementById("right");
-    let renderView = new RenderView(renderElement);
+    const renderView = new RenderView(right);
     renderView.setShader(fragmentShader);
     Alpine.store("renderView", renderView);
     window.renderView = Alpine.store("renderView");
+
+    // Add modal.
+    const addModal = new AddModal(document.body);
+    Alpine.store("addModal", addModal);
+    window.addModal = Alpine.store("addModal");
+
+    // Uniform modal.
+    const uniformModal = new UniformModal(document.body);
+    Alpine.store("uniformModal", uniformModal);
+    window.uniformModal = Alpine.store("uniformModal");
+
+    // About modal.
+    const aboutModal = new AboutModal(document.body);
+    const versions =
+    {
+        node: window.nodeVersion,
+        chrome: window.chromeVersion,
+        electron: window.electronVersion,
+        three: window.threeVersion
+    };
+    aboutModal.updateVersions(versions);
+    Alpine.store("aboutModal", aboutModal);
+    window.aboutModal = Alpine.store("aboutModal");
 }

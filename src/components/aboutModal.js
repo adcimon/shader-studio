@@ -62,7 +62,7 @@ const html = /*html*/
                                         </div>
                                     </td>
                                     <td
-                                        id="nodeVersion"
+                                        id="nodeLabel"
                                         class="px-4 py-3 text-sm">
                                         X.Y.Z
                                     </td>
@@ -78,7 +78,7 @@ const html = /*html*/
                                         </div>
                                     </td>
                                     <td
-                                        id="chromeVersion"
+                                        id="chromeLabel"
                                         class="px-4 py-3 text-sm">
                                         X.Y.Z
                                     </td>
@@ -94,7 +94,23 @@ const html = /*html*/
                                         </div>
                                     </td>
                                     <td
-                                        id="electronVersion"
+                                        id="electronLabel"
+                                        class="px-4 py-3 text-sm">
+                                        X.Y.Z
+                                    </td>
+                                </tr>
+
+                                <!-- THREE -->
+                                <tr class="text-gray-700 dark:text-gray-400">
+                                    <td class="px-4 py-3">
+                                        <div class="flex items-center text-sm">
+                                            <div>
+                                                <p class="font-semibold">THREE</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td
+                                        id="threeLabel"
                                         class="px-4 py-3 text-sm">
                                         X.Y.Z
                                     </td>
@@ -134,7 +150,7 @@ export function AboutModal( domElement )
 
     let init = function()
     {
-        let elements = createElements(html, domElement);
+        const elements = createElements(html, domElement);
         root = elements[0];
     }
 
@@ -155,14 +171,17 @@ export function AboutModal( domElement )
 
     let updateVersions = function( versions )
     {
-        let nodeVersion = root.querySelector("#nodeVersion");
-        nodeVersion.innerText = versions.node;
+        let nodeLabel = root.querySelector("#nodeLabel");
+        nodeLabel.innerText = versions.node;
 
-        let chromeVersion = root.querySelector("#chromeVersion");
-        chromeVersion.innerText = versions.chrome;
+        let chromeLabel = root.querySelector("#chromeLabel");
+        chromeLabel.innerText = versions.chrome;
 
-        let electronVersion = root.querySelector("#electronVersion");
-        electronVersion.innerText = versions.electron;
+        let electronLabel = root.querySelector("#electronLabel");
+        electronLabel.innerText = versions.electron;
+
+        let threeLabel = root.querySelector("#threeLabel");
+        threeLabel.innerText = versions.three;
     }
 
     init();
