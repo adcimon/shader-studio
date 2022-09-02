@@ -1293,6 +1293,10 @@ print and (-ms-high-contrast:none) {
     margin-bottom: -1rem
 }
 
+.ml-auto {
+    margin-left: auto;
+}
+
 .max-h-0 {
     max-height: 0
 }

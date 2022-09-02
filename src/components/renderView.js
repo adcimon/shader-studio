@@ -10,23 +10,24 @@ const html = /*html*/
 
 export function RenderView( domElement )
 {
-    let root = null;
-
     let renderer = null;
     let scene = null;
     let camera = null;
     let material = null;
+    let uniforms = null;
 
     let init = function()
     {
-        let elements = createElements(html, domElement);
-        root = elements[0];
+        window.threeVersion = THREE.REVISION;
+
+        const elements = createElements(html, domElement);
+        const canvas = elements[0];
+
+        initRenderer(canvas);
     }
 
-    let initRenderer = function()
+    let initRenderer = function( canvas )
     {
-        const canvas = root;
-
         renderer = new THREE.WebGLRenderer({ canvas: canvas });
         renderer.autoClearColor = false;
     
@@ -42,60 +43,60 @@ export function RenderView( domElement )
         scene = new THREE.Scene();
         const plane = new THREE.PlaneBufferGeometry(2, 2);
     
-        const uniforms =
+        uniforms =
         {
             iTime: { value: 0 },
             iResolution:  { value: new THREE.Vector2() },
         };
-    
+
         material = new THREE.ShaderMaterial(
         {
             uniforms: uniforms,
         });
 
         scene.add(new THREE.Mesh(plane, material));
+    
+        window.requestAnimationFrame(render);
+    }
 
-        function resizeRenderer( renderer )
+    let resizeRenderer = function( renderer )
+    {
+        const canvas = renderer.domElement;
+        const rect = canvas.getBoundingClientRect();
+        const width = rect.width;
+        const height = rect.height;
+
+        const needResize = canvas.width !== width || canvas.height !== height;
+        if( needResize )
         {
-            const canvas = renderer.domElement;
-            const rect = canvas.getBoundingClientRect();
-            const width = rect.width;
-            const height = rect.height;
-    
-            const needResize = canvas.width !== width || canvas.height !== height;
-            if( needResize )
-            {
-                renderer.setSize(width, height, false);
-            }
-    
-            return needResize;
+            renderer.setSize(width, height, false);
         }
-    
-        function render( time )
-        {
-            time *= 0.001; // Convert to seconds.
-    
-            resizeRenderer(renderer);
-    
-            const canvas = renderer.domElement;
-            uniforms.iResolution.value.set(canvas.width, canvas.height);
-            uniforms.iTime.value = time;
-    
-            renderer.render(scene, camera);
-    
-            window.requestAnimationFrame(render);
-        }
-    
+
+        return needResize;
+    }
+
+    let render = function( time )
+    {
+        time *= 0.001; // Convert to seconds.
+
+        resizeRenderer(renderer);
+
+        const canvas = renderer.domElement;
+        uniforms.iResolution.value.set(canvas.width, canvas.height);
+        uniforms.iTime.value = time;
+
+        renderer.render(scene, camera);
+
         window.requestAnimationFrame(render);
     }
 
     let setShader = function( shader )
     {
         material.fragmentShader = shader;
+        material.needsUpdate = true;
     }
 
     init();
-    initRenderer();
 
     return {
         setShader

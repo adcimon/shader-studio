@@ -37,11 +37,11 @@ export function UniformItem( name, type )
 
     let init = function()
     {
-        let finalHtml = html.replace("$icon", getTypeIcon(type));
-        let elements = createElements(finalHtml);
+        const composedHtml = html.replace("$icon", getTypeIcon(type));
+        const elements = createElements(composedHtml);
         root = elements[0];
 
-        let nameLabel = root.querySelector("#nameLabel");
+        const nameLabel = root.querySelector("#nameLabel");
         nameLabel.innerText = name;
     }
 

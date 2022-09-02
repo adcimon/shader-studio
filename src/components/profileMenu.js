@@ -2,7 +2,7 @@
 
 const html = /*html*/
 `
-<ul class="flex items-center flex-shrink-0 space-x-6">
+<ul class="flex items-center flex-shrink-0 space-x-6 ml-auto">
     <li class="relative">
 
         <span class="mr-2 font-bold" x-text="$store.app.getUser()"></span>
