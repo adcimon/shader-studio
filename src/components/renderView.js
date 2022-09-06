@@ -115,6 +115,16 @@ export function RenderView( domElement )
                 uniforms[name] = { value: value };
                 break;
             }
+            case "vec2":
+            case "vec3":
+            case "vec4":
+            case "mat2":
+            case "mat3":
+            case "mat4":
+            {
+                uniforms[name] = { value: value.flat() };
+                break;
+            }
             case "color":
             {
                 uniforms[name] = { value: new THREE.Color(value[0], value[1], value[2]) };
@@ -147,6 +157,16 @@ export function RenderView( domElement )
             case "float":
             {
                 uniforms[name].value = value;
+                break;
+            }
+            case "vec2":
+            case "vec3":
+            case "vec4":
+            case "mat2":
+            case "mat3":
+            case "mat4":
+            {
+                uniforms[name].value = value.flat();
                 break;
             }
             case "color":
