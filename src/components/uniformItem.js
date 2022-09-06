@@ -47,10 +47,16 @@ export function UniformItem( name, type )
 
         switch( type )
         {
-            case "int":         value = 1;                  break;
-            case "float":       value = 1.0;                break;
-            case "color":       value = [1.0, 1.0, 1.0];    break;
-            default:                                        break;
+            case "int":         value = 1; break;
+            case "float":       value = 1; break;
+            case "vec2":        value = [1, 1]; break;
+            case "vec3":        value = [1, 1, 1]; break;
+            case "vec4":        value = [1, 1, 1, 1]; break;
+            case "mat2":        value = [[1, 0], [0, 1]]; break;
+            case "mat3":        value = [[1, 0, 0], [0, 1, 0], [0, 0, 1]]; break;
+            case "mat4":        value = [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]]; break;
+            case "color":       value = [1, 1, 1]; break;
+            default: break;
         }
     }
 
