@@ -34,6 +34,7 @@ const html = /*html*/
 export function UniformItem( name, type )
 {
     let root = null;
+    let value = null;
 
     let init = function()
     {
@@ -43,6 +44,19 @@ export function UniformItem( name, type )
 
         const nameLabel = root.querySelector("#nameLabel");
         nameLabel.innerText = name;
+
+        switch( type )
+        {
+            case "int":         value = 1;                  break;
+            case "float":       value = 1.0;                break;
+            case "color":       value = [1.0, 1.0, 1.0];    break;
+            default:                                        break;
+        }
+    }
+
+    let getElement = function()
+    {
+        return root;
     }
 
     let getName = function()
@@ -55,9 +69,14 @@ export function UniformItem( name, type )
         return type;
     }
 
-    let getElement = function()
+    let getValue = function()
     {
-        return root;
+        return value;
+    }
+
+    let setValue = function( newValue )
+    {
+        value = newValue;
     }
 
     init();
@@ -65,6 +84,8 @@ export function UniformItem( name, type )
     return {
         getElement,
         getName,
-        getType
+        getType,
+        getValue,
+        setValue
     }
 }
