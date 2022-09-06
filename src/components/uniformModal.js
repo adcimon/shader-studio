@@ -121,21 +121,24 @@ export function UniformModal( domElement )
         intInput.addEventListener("change", function()
         {
             let item = window.uniformModal.selectedItem;
-            window.renderView.setScalar(item.getName(), this.value);
+            item.setValue(this.value);
+            window.renderView.setUniform(item);
         });
 
         let floatInput = domElement.querySelector("#floatInput");
         floatInput.addEventListener("change", function()
         {
             let item = window.uniformModal.selectedItem;
-            window.renderView.setScalar(item.getName(), this.value);
+            item.setValue(this.value);
+            window.renderView.setUniform(item);
         });
 
         let colorInput = domElement.querySelector("#colorInput");
         colorInput.addEventListener("change", function()
         {
             let item = window.uniformModal.selectedItem;
-            window.renderView.setColor(item.getName(), hexToRgb(this.value));
+            item.setValue(hexToRgb(this.value));
+            window.renderView.setUniform(item);
         });
     }
 

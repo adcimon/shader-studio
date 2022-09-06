@@ -17,9 +17,9 @@ export function RenderView( domElement )
 
     let uniforms =
     {
-        time: { value: 0 },
-        resolution:  { value: new THREE.Vector2() },
-        mouse:  { value: new THREE.Vector2() },
+        time:           { value: 0 },
+        resolution:     { value: new THREE.Vector2() },
+        mouse:          { value: new THREE.Vector2() },
     };
 
     let init = function()
@@ -96,50 +96,70 @@ export function RenderView( domElement )
         material.needsUpdate = true;
     }
 
-    let addScalar = function( name, value )
+    let addUniform = function( item )
     {
+        let name = item.getName();
+        let type = item.getType();
+        let value = item.getValue();
+
         if( name in uniforms )
         {
             return;
         }
 
-        uniforms[name] = { value: value };
+        switch( type )
+        {
+            case "int":
+            case "float":
+            {
+                uniforms[name] = { value: value };
+                break;
+            }
+            case "color":
+            {
+                uniforms[name] = { value: new THREE.Color(value[0], value[1], value[2]) };
+                break;
+            }
+            default:
+            {
+                return;
+            }
+        }
+
         material.uniforms = uniforms;
         material.needsUpdate = true;
     }
 
-    let setScalar = function( name, value )
+    let setUniform = function( item )
     {
+        let name = item.getName();
+        let type = item.getType();
+        let value = item.getValue();
+
         if( !(name in uniforms) )
         {
             return;
         }
 
-        uniforms[name].value = value;
-        material.uniforms = uniforms;
-        material.needsUpdate = true;
-    }
-
-    let addColor = function( name, color )
-    {
-        if( name in uniforms )
+        switch( type )
         {
-            return;
+            case "int":
+            case "float":
+            {
+                uniforms[name].value = value;
+                break;
+            }
+            case "color":
+            {
+                uniforms[name].value = new THREE.Color(value[0], value[1], value[2]);
+                break;
+            }
+            default:
+            {
+                return;
+            }
         }
 
-        uniforms[name] = { value: new THREE.Color(color[0], color[1], color[2]) };
-        material.uniforms = uniforms;
-        material.needsUpdate = true;
-    }
-
-    let setColor = function( name, color )
-    {
-        if( !(name in uniforms) )
-        {
-            return;
-        }
-
-        uniforms[name].value = new THREE.Color(color[0], color[1], color[2]);
         material.uniforms = uniforms;
         material.needsUpdate = true;
     }
@@ -148,9 +168,7 @@ export function RenderView( domElement )
 
     return {
         setShader,
-        addScalar,
-        setScalar,
-        addColor,
-        setColor
+        addUniform,
+        setUniform
     }
 }
