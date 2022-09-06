@@ -121,13 +121,9 @@ export function RenderView( domElement )
             case "mat2":
             case "mat3":
             case "mat4":
-            {
-                uniforms[name] = { value: value.flat() };
-                break;
-            }
             case "color":
             {
-                uniforms[name] = { value: new THREE.Color(value[0], value[1], value[2]) };
+                uniforms[name] = { value: value.flat() };
                 break;
             }
             default:
@@ -165,13 +161,9 @@ export function RenderView( domElement )
             case "mat2":
             case "mat3":
             case "mat4":
-            {
-                uniforms[name].value = value.flat();
-                break;
-            }
             case "color":
             {
-                uniforms[name].value = new THREE.Color(value[0], value[1], value[2]);
+                uniforms[name].value = value.flat();
                 break;
             }
             default:
