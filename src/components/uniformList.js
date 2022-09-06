@@ -40,10 +40,7 @@ export function UniformList( domElement )
 
     let addUniformItem = function( name, type )
     {
-        if( !name || !type )
-        {
-            return;
-        }
+        // TODO: Check uniform name.
 
         if( name in items )
         {

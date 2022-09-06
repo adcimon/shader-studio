@@ -67,6 +67,159 @@ const html = /*html*/
                     </label>
                 </div>
 
+                <!-- Matrix -->
+                <div
+                    id="matrixField"
+                    class="mb-2">
+                    <label class="block text-sm">
+                        <span class="text-gray-700 dark:text-gray-400">Value</span>
+                        <div class="w-full mb-8 overflow-hidden rounded-lg shadow-xs">
+                            <div class="w-full overflow-x-auto">
+                                <table class="w-full whitespace-no-wrap">
+                                    <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
+
+                                        <!-- 0 -->
+                                        <tr
+                                            row="0"
+                                            class="text-gray-700 dark:text-gray-400">
+                                            <td
+                                                row="0"
+                                                column="0">
+                                                <input
+                                                    class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                                                    type="number" value="1" step="0.1"/>
+                                            </td>
+                                            <td
+                                                row="0"
+                                                column="1">
+                                                <input
+                                                    class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                                                    type="number" value="1" step="0.1"/>
+                                            </td>
+                                            <td
+                                                row="0"
+                                                column="2">
+                                                <input
+                                                    class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                                                    type="number" value="1" step="0.1"/>
+                                            </td>
+                                            <td
+                                                row="0"
+                                                column="3">
+                                                <input
+                                                    class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                                                    type="number" value="1" step="0.1"/>
+                                            </td>
+                                        </tr>
+
+                                        <!-- 1 -->
+                                        <tr
+                                            row="1"
+                                            class="text-gray-700 dark:text-gray-400">
+                                            <td
+                                                row="1"
+                                                column="0">
+                                                <input
+                                                    class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                                                    type="number" value="1" step="0.1"/>
+                                            </td>
+                                            <td
+                                                row="1"
+                                                column="1">
+                                                <input
+                                                    class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                                                    type="number" value="1" step="0.1"/>
+                                            </td>
+                                            <td
+                                                row="1"
+                                                column="2">
+                                                <input
+                                                    class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                                                    type="number" value="1" step="0.1"/>
+                                            </td>
+                                            <td
+                                                row="1"
+                                                column="3">
+                                                <input
+                                                    class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                                                    type="number" value="1" step="0.1"/>
+                                            </td>
+                                        </tr>
+
+                                        <!-- 2 -->
+                                        <tr
+                                            row="2"
+                                            class="text-gray-700 dark:text-gray-400">
+                                            <td
+                                                row="2"
+                                                column="0">
+                                                <input
+                                                    class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                                                    type="number" value="1" step="0.1"/>
+                                            </td>
+                                            <td
+                                                row="2"
+                                                column="1">
+                                                <input
+                                                    class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                                                    type="number" value="1" step="0.1"/>
+                                            </td>
+                                            <td
+                                                row="2"
+                                                column="2">
+                                                <input
+                                                    class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                                                    type="number" value="1" step="0.1"/>
+                                            </td>
+                                            <td
+                                                row="2"
+                                                column="3">
+                                                <input
+                                                    class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                                                    type="number" value="1" step="0.1"/>
+                                            </td>
+                                        </tr>
+
+                                        <!-- 3 -->
+                                        <tr
+                                            row="3"
+                                            class="text-gray-700 dark:text-gray-400">
+                                            <td
+                                                row="3"
+                                                column="0">
+                                                <input
+                                                    class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                                                    type="number" value="1" step="0.1"/>
+                                            </td>
+                                            <td
+                                                row="3"
+                                                column="1">
+                                                <input
+                                                    class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                                                    type="number" value="1" step="0.1"/>
+                                            </td>
+                                            <td
+                                                row="3"
+                                                column="2">
+                                                <input
+                                                    class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                                                    type="number" value="1" step="0.1"/>
+                                            </td>
+                                            <td
+                                                row="3"
+                                                column="3">
+                                                <input
+                                                    class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                                                    type="number" value="1" step="0.1"/>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </label>
+                </div>
+
                 <!-- Color -->
                 <div
                     id="colorField"
@@ -104,7 +257,10 @@ export function UniformModal( domElement )
 
     let intField = null;
     let floatField = null;
+    let matrixField = null;
     let colorField = null;
+
+    let matrixInputs = null;
 
     let init = function()
     {
@@ -115,6 +271,7 @@ export function UniformModal( domElement )
 
         intField = domElement.querySelector("#intField");
         floatField = domElement.querySelector("#floatField");
+        matrixField = domElement.querySelector("#matrixField");
         colorField = domElement.querySelector("#colorField");
 
         let intInput = domElement.querySelector("#intInput");
@@ -133,6 +290,8 @@ export function UniformModal( domElement )
             window.renderView.setUniform(item);
         });
 
+        matrixInputs = matrixField.querySelectorAll("input");
+
         let colorInput = domElement.querySelector("#colorInput");
         colorInput.addEventListener("change", function()
         {
@@ -140,18 +299,6 @@ export function UniformModal( domElement )
             item.setValue(hexToRgb(this.value));
             window.renderView.setUniform(item);
         });
-    }
-
-    let setPosition = function( x, y )
-    {
-        uniformWindow.style.left = (x - 10) + "px";
-        uniformWindow.style.top = (y + 20) + "px";
-    }
-
-    let resetPosition = function()
-    {
-        uniformWindow.style.left = "50%";
-        uniformWindow.style.top = "50%";
     }
 
     let open = function( name, x, y )
@@ -174,6 +321,7 @@ export function UniformModal( domElement )
             {
                 intField.show();
                 floatField.hide();
+                matrixField.hide();
                 colorField.hide();
                 break;
             }
@@ -181,27 +329,78 @@ export function UniformModal( domElement )
             {
                 intField.hide();
                 floatField.show();
+                matrixField.hide();
                 colorField.hide();
+                break;
+            }
+            case "vec2":
+            {
+                intField.hide();
+                floatField.hide();
+                matrixField.show();
+                colorField.hide();
+                showVector2();
+                break;
+            }
+            case "vec3":
+            {
+                intField.hide();
+                floatField.hide();
+                matrixField.show();
+                colorField.hide();
+                showVector3();
+                break;
+            }
+            case "vec4":
+            {
+                intField.hide();
+                floatField.hide();
+                matrixField.show();
+                colorField.hide();
+                showVector4();
+                break;
+            }
+            case "mat2":
+            {
+                intField.hide();
+                floatField.hide();
+                matrixField.show();
+                colorField.hide();
+                showMatrix2();
+                break;
+            }
+            case "mat3":
+            {
+                intField.hide();
+                floatField.hide();
+                matrixField.show();
+                colorField.hide();
+                showMatrix3();
+                break;
+            }
+            case "mat4":
+            {
+                intField.hide();
+                floatField.hide();
+                matrixField.show();
+                colorField.hide();
+                showMatrix4();
                 break;
             }
             case "color":
             {
                 intField.hide();
                 floatField.hide();
+                matrixField.hide();
                 colorField.show();
                 break;
             }
-            case "vec2":
-            case "vec3":
-            case "vec4":
-            case "mat2":
-            case "mat3":
-            case "mat4":
             case "image":
             case "webcam":
             {
                 intField.hide();
                 floatField.hide();
+                matrixField.hide();
                 colorField.hide();
                 break;
             }
@@ -218,6 +417,122 @@ export function UniformModal( domElement )
     {
         this.opened = false;
         this.selectedItem = null;
+    }
+
+    let setPosition = function( x, y )
+    {
+        uniformWindow.style.left = (x - 10) + "px";
+        uniformWindow.style.top = (y + 20) + "px";
+    }
+
+    let resetPosition = function()
+    {
+        uniformWindow.style.left = "50%";
+        uniformWindow.style.top = "50%";
+    }
+
+    let getInputRow = function( input )
+    {
+        let row = Array.from(input.parentNode.parentNode.parentNode.children).indexOf(input.parentNode.parentNode);
+        return row;
+    }
+
+    let getInputColumn = function( input )
+    {
+        let column = Array.from(input.parentNode.parentNode.children).indexOf(input.parentNode);
+        return column;
+    }
+
+    let showVector2 = function()
+    {
+        matrixInputs.forEach(input =>
+        {
+            let r = getInputRow(input);
+            let c = getInputColumn(input);
+            if( r === 0 && (c === 0 || c === 1) )
+            {
+                input.parentNode.show();
+            }
+            else
+            {
+                input.parentNode.hide();
+            }
+        });
+    }
+
+    let showVector3 = function()
+    {
+        matrixInputs.forEach(input =>
+        {
+            let r = getInputRow(input);
+            let c = getInputColumn(input);
+            if( r === 0 && (c === 0 || c === 1 || c === 2) )
+            {
+                input.parentNode.show();
+            }
+            else
+            {
+                input.parentNode.hide();
+            }
+        });
+    }
+
+    let showVector4 = function()
+    {
+        matrixInputs.forEach(input =>
+        {
+            let r = getInputRow(input);
+            if( r === 0 )
+            {
+                input.parentNode.show();
+            }
+            else
+            {
+                input.parentNode.hide();
+            }
+        });
+    }
+
+    let showMatrix2 = function()
+    {
+        matrixInputs.forEach(input =>
+        {
+            let r = getInputRow(input);
+            let c = getInputColumn(input);
+            if( (r === 0 || r === 1) && (c === 0 || c === 1) )
+            {
+                input.parentNode.show();
+            }
+            else
+            {
+                input.parentNode.hide();
+            }
+        });
+    }
+
+    let showMatrix3 = function()
+    {
+        matrixInputs.forEach(input =>
+        {
+            let r = getInputRow(input);
+            let c = getInputColumn(input);
+            if( (r === 0 || r === 1 || r === 2) && (c === 0 || c === 1 || c === 2) )
+            {
+                input.parentNode.show();
+            }
+            else
+            {
+                input.parentNode.hide();
+            }
+        });
+    }
+
+    let showMatrix4 = function()
+    {
+        matrixInputs.forEach(input =>
+        {
+            input.parentNode.show();
+        });
     }
 
     init();
