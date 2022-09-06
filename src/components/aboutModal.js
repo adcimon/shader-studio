@@ -4,7 +4,7 @@ const html = /*html*/
 `
 <div
     class="fixed inset-0 z-30 flex items-end bg-black bg-opacity-50 sm:items-center sm:justify-center"
-    x-show="$store.aboutModal.isOpen()"
+    x-show="$store.aboutModal.opened"
     x-transition:enter="transition ease-out duration-150"
     x-transition:enter-start="opacity-0"
     x-transition:enter-end="opacity-100"
@@ -14,7 +14,7 @@ const html = /*html*/
 
     <div
         class="w-full px-6 py-4 overflow-hidden bg-gray-300 rounded-t-lg dark:bg-gray-800 sm:rounded-lg sm:m-4 sm:max-w-xl border-1 border-gray-100 dark:border-gray-700"
-        x-show="$store.aboutModal.isOpen()"
+        x-show="$store.aboutModal.opened"
         x-transition:enter="transition ease-out duration-150"
         x-transition:enter-start="opacity-0 transform translate-y-1/2"
         x-transition:enter-end="opacity-100"
@@ -146,17 +146,11 @@ const html = /*html*/
 export function AboutModal( domElement )
 {
     let root = null;
-    let opened = false;
 
     let init = function()
     {
         const elements = createElements(html, domElement);
         root = elements[0];
-    }
-
-    let isOpen = function()
-    {
-        return this.opened;
     }
 
     let open = function()
@@ -187,7 +181,7 @@ export function AboutModal( domElement )
     init();
 
     return {
-        isOpen,
+        opened: false,
         open,
         close,
         updateVersions

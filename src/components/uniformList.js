@@ -50,9 +50,16 @@ export function UniformList( domElement )
             return;
         }
 
+        switch( type )
+        {
+            case "int": window.renderView.addScalar(name, 1); break;
+            case "float": window.renderView.addScalar(name, 1.0); break;
+            case "color": window.renderView.addColor(name, [1.0, 1.0, 1.0]); break;
+            default: return;
+        }
+
         let item = UniformItem(name, type);
         items[name] = item;
-
         list.appendChild(item.getElement());
 
         window.addModal.close();

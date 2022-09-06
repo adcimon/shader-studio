@@ -9,7 +9,7 @@ const html = /*html*/
     <!-- Border -->
     <span
         class="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg"
-        x-show="$store.uniformModal.getSelectedItem() && $store.uniformModal.getSelectedItem().getName() === $el.parentNode.querySelector('#nameLabel').innerText">
+        x-show="$store.uniformModal.selectedItem && $store.uniformModal.selectedItem.getName() === $el.parentNode.querySelector('#nameLabel').innerText">
     </span>
 
     <!-- Content -->

@@ -14,23 +14,35 @@ export function RenderView( domElement )
     let scene = null;
     let camera = null;
     let material = null;
-    let uniforms = null;
+
+    let uniforms =
+    {
+        time: { value: 0 },
+        resolution:  { value: new THREE.Vector2() },
+        mouse:  { value: new THREE.Vector2() },
+    };
 
     let init = function()
     {
-        window.threeVersion = THREE.REVISION;
-
         const elements = createElements(html, domElement);
         const canvas = elements[0];
 
+        window.threeVersion = THREE.REVISION;
+
         initRenderer(canvas);
+
+        document.addEventListener("mousemove", (event) =>
+        {
+            uniforms.mouse.value.set(event.clientX, event.clientY);
+        });
     }
 
     let initRenderer = function( canvas )
     {
         renderer = new THREE.WebGLRenderer({ canvas: canvas });
         renderer.autoClearColor = false;
-    
+
+        scene = new THREE.Scene();
         camera = new THREE.OrthographicCamera(
             -1, // left
             1,  // right
@@ -40,21 +52,11 @@ export function RenderView( domElement )
             1,  // far
         );
     
-        scene = new THREE.Scene();
         const plane = new THREE.PlaneBufferGeometry(2, 2);
-    
-        uniforms =
-        {
-            iTime: { value: 0 },
-            iResolution:  { value: new THREE.Vector2() },
-        };
+        material = new THREE.ShaderMaterial({ uniforms: uniforms });
+        const mesh = new THREE.Mesh(plane, material);
 
-        material = new THREE.ShaderMaterial(
-        {
-            uniforms: uniforms,
-        });
-
-        scene.add(new THREE.Mesh(plane, material));
+        scene.add(mesh);
     
         window.requestAnimationFrame(render);
     }
@@ -71,8 +73,6 @@ export function RenderView( domElement )
         {
             renderer.setSize(width, height, false);
         }
-
-        return needResize;
     }
 
     let render = function( time )
@@ -82,8 +82,8 @@ export function RenderView( domElement )
         resizeRenderer(renderer);
 
         const canvas = renderer.domElement;
-        uniforms.iResolution.value.set(canvas.width, canvas.height);
-        uniforms.iTime.value = time;
+        uniforms.time.value = time;
+        uniforms.resolution.value.set(canvas.width, canvas.height);
 
         renderer.render(scene, camera);
 
@@ -96,9 +96,61 @@ export function RenderView( domElement )
         material.needsUpdate = true;
     }
 
+    let addScalar = function( name, value )
+    {
+        if( name in uniforms )
+        {
+            return;
+        }
+
+        uniforms[name] = { value: value };
+        material.uniforms = uniforms;
+        material.needsUpdate = true;
+    }
+
+    let setScalar = function( name, value )
+    {
+        if( !(name in uniforms) )
+        {
+            return;
+        }
+
+        uniforms[name].value = value;
+        material.uniforms = uniforms;
+        material.needsUpdate = true;
+    }
+
+    let addColor = function( name, color )
+    {
+        if( name in uniforms )
+        {
+            return;
+        }
+
+        uniforms[name] = { value: new THREE.Color(color[0], color[1], color[2]) };
+        material.uniforms = uniforms;
+        material.needsUpdate = true;
+    }
+
+    let setColor = function( name, color )
+    {
+        if( !(name in uniforms) )
+        {
+            return;
+        }
+
+        uniforms[name].value = new THREE.Color(color[0], color[1], color[2]);
+        material.uniforms = uniforms;
+        material.needsUpdate = true;
+    }
+
     init();
 
     return {
-        setShader
+        setShader,
+        addScalar,
+        setScalar,
+        addColor,
+        setColor
     }
 }
