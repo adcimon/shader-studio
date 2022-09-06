@@ -22,7 +22,7 @@ const html = /*html*/
         <!-- Menu -->
         <ul
             class="absolute right-0 w-56 p-2 mt-2 space-y-2 text-gray-600 bg-gray-300 border border-gray-100 rounded-md shadow-md dark:border-gray-700 dark:text-gray-300 dark:bg-gray-700"
-            x-show="$store.profileMenu.isOpen()"
+            x-show="$store.profileMenu.opened"
             x-transition:leave="transition ease-in duration-150"
             x-transition:leave-start="opacity-100"
             x-transition:leave-end="opacity-0"
@@ -82,16 +82,9 @@ const html = /*html*/
 
 export function ProfileMenu( domElement )
 {
-    let opened = false;
-
     let init = function()
     {
         createElements(html, domElement);
-    }
-
-    let isOpen = function()
-    {
-        return this.opened;
     }
 
     let toggle = function()
@@ -107,7 +100,7 @@ export function ProfileMenu( domElement )
     init();
 
     return {
-        isOpen,
+        opened: false,
         toggle,
         close
     }

@@ -4,7 +4,7 @@ const html = /*html*/
 `
 <div
     class="fixed inset-0 z-30 flex items-end bg-black bg-opacity-50 sm:items-center sm:justify-center"
-    x-show="$store.uniformModal.isOpen()"
+    x-show="$store.uniformModal.opened"
     x-transition:enter="transition ease-out duration-150"
     x-transition:enter-start="opacity-0"
     x-transition:enter-end="opacity-100"
@@ -15,7 +15,7 @@ const html = /*html*/
     <div
         id="uniformWindow"
         class="absolute w-full px-6 py-4 overflow-hidden bg-gray-300 rounded-t-lg dark:bg-gray-800 sm:rounded-lg sm:m-4 sm:max-w-xl border-1 border-gray-100 dark:border-gray-700"
-        x-show="$store.uniformModal.isOpen()"
+        x-show="$store.uniformModal.opened"
         x-transition:enter="transition ease-out duration-150"
         x-transition:enter-start="opacity-0"
         x-transition:enter-end="opacity-100"
@@ -37,11 +37,29 @@ const html = /*html*/
                     </span>
                 </div>
 
-                <!-- Value -->
-                <div class="mb-2">
+                <!-- Int -->
+                <div
+                    id="intField"
+                    class="mb-2">
                     <label class="block text-sm">
                         <span class="text-gray-700 dark:text-gray-400">Value</span>
                         <input
+                            id="intInput"
+                            class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                            type="number"
+                            value="1"
+                            step="1"/>
+                    </label>
+                </div>
+
+                <!-- Float -->
+                <div
+                    id="floatField"
+                    class="mb-2">
+                    <label class="block text-sm">
+                        <span class="text-gray-700 dark:text-gray-400">Value</span>
+                        <input
+                            id="floatInput"
                             class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                             type="number"
                             value="1.0"
@@ -50,10 +68,13 @@ const html = /*html*/
                 </div>
 
                 <!-- Color -->
-                <div class="mb-2">
+                <div
+                    id="colorField"
+                    class="mb-2">
                     <label class="block text-sm">
                         <span class="text-gray-700 dark:text-gray-400">Color</span>
                         <input
+                            id="colorInput"
                             class="block w-full mt-1 text-sm rounded dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray"
                             type="color"
                             value="#ffffff"/>
@@ -81,19 +102,41 @@ export function UniformModal( domElement )
     let uniformWindow = null;
     let typeLabel = null;
 
-    let opened = false;
-    let selectedItem = null;
+    let intField = null;
+    let floatField = null;
+    let colorField = null;
 
     let init = function()
     {
         createElements(html, domElement);
+
         uniformWindow = domElement.querySelector("#uniformWindow");
         typeLabel = domElement.querySelector("#typeLabel");
-    }
 
-    let getSelectedItem = function()
-    {
-        return this.selectedItem;
+        intField = domElement.querySelector("#intField");
+        floatField = domElement.querySelector("#floatField");
+        colorField = domElement.querySelector("#colorField");
+
+        let intInput = domElement.querySelector("#intInput");
+        intInput.addEventListener("change", function()
+        {
+            let item = window.uniformModal.selectedItem;
+            window.renderView.setScalar(item.getName(), this.value);
+        });
+
+        let floatInput = domElement.querySelector("#floatInput");
+        floatInput.addEventListener("change", function()
+        {
+            let item = window.uniformModal.selectedItem;
+            window.renderView.setScalar(item.getName(), this.value);
+        });
+
+        let colorInput = domElement.querySelector("#colorInput");
+        colorInput.addEventListener("change", function()
+        {
+            let item = window.uniformModal.selectedItem;
+            window.renderView.setColor(item.getName(), hexToRgb(this.value));
+        });
     }
 
     let setPosition = function( x, y )
@@ -108,11 +151,6 @@ export function UniformModal( domElement )
         uniformWindow.style.top = "50%";
     }
 
-    let isOpen = function()
-    {
-        return this.opened;
-    }
-
     let open = function( name, x, y )
     {
         let item = window.uniformList.getUniformItem(name);
@@ -122,10 +160,53 @@ export function UniformModal( domElement )
         }
 
         this.selectedItem = item;
-        console.log("Selected: " + this.selectedItem.getName());
+        let type = this.selectedItem.getType();
 
-        typeLabel.innerText = this.selectedItem.getType();
-        this.setPosition(x, y);
+        typeLabel.innerText = type;
+        setPosition(x, y);
+
+        switch( type )
+        {
+            case "int":
+            {
+                intField.show();
+                floatField.hide();
+                colorField.hide();
+                break;
+            }
+            case "float":
+            {
+                intField.hide();
+                floatField.show();
+                colorField.hide();
+                break;
+            }
+            case "color":
+            {
+                intField.hide();
+                floatField.hide();
+                colorField.show();
+                break;
+            }
+            case "vec2":
+            case "vec3":
+            case "vec4":
+            case "mat2":
+            case "mat3":
+            case "mat4":
+            case "image":
+            case "webcam":
+            {
+                intField.hide();
+                floatField.hide();
+                colorField.hide();
+                break;
+            }
+            default:
+            {
+                return;
+            }
+        }
 
         this.opened = true;
     }
@@ -139,11 +220,11 @@ export function UniformModal( domElement )
     init();
 
     return {
-        getSelectedItem,
+        selectedItem: null,
+        opened: false,
+        open,
+        close,
         setPosition,
         resetPosition,
-        isOpen,
-        open,
-        close
     }
 }
