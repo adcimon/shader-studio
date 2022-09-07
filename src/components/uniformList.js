@@ -29,6 +29,7 @@ const html = /*html*/
 
 export function UniformList( domElement )
 {
+    var regexp = /^[A-Za-z]\w*$/;
     let list = null;
     let items = { };
 
@@ -40,11 +41,14 @@ export function UniformList( domElement )
 
     let addUniformItem = function( name, type )
     {
-        // TODO: Check uniform name.
+        if( !regexp.test(name) )
+        {
+            return false;
+        }
 
         if( name in items )
         {
-            return;
+            return false;
         }
 
         let item = UniformItem(name, type);
@@ -52,7 +56,7 @@ export function UniformList( domElement )
         list.appendChild(item.getElement());
         window.renderView.addUniform(item);
 
-        window.addModal.close();
+        return true;
     }
 
     let getUniformItem = function( name )

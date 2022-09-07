@@ -34,16 +34,17 @@ const html = /*html*/
                 <label class="block text-sm">
                     <span class="text-gray-700 dark:text-gray-400">Name</span>
                     <input
-                        class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
-                        x-ref="nameInput"/>
+                        id="nameInput"
+                        class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"/>
+                    <span id="invalidLabel" class="text-xs text-red-600 dark:text-red-400">Invalid name.</span>
                 </label>
 
                 <!-- Type -->
                 <label class="block mt-4 text-sm">
                     <span class="text-gray-700 dark:text-gray-400">Type</span>
                     <select
-                        class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
-                        x-ref="typeSelect">
+                        id="typeSelect"
+                        class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray">
                             <option>int</option>
                             <option>float</option>
                             <option>vec2</option>
@@ -72,7 +73,7 @@ const html = /*html*/
                 <!-- Accept Button -->
                 <button
                     class="w-full px-5 py-3 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg sm:w-auto sm:px-4 sm:py-2 active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
-                    x-on:click="$store.uniformList.addUniformItem($refs.nameInput.value, $refs.typeSelect.options[$refs.typeSelect.selectedIndex].text)">
+                    x-on:click="$store.addModal.accept()">
                     Accept
                 </button>
 
@@ -85,18 +86,23 @@ const html = /*html*/
 
 export function AddModal( domElement )
 {
+    let nameInput = null;
+    let invalidLabel = null;
+    let typeSelect = null;
+
     let init = function()
     {
-        createElements(html, domElement);
-    }
-
-    let isOpen = function()
-    {
-        return this.opened;
+        let elements = createElements(html, domElement);
+        let root = elements[0];
+        nameInput = root.querySelector("#nameInput");
+        invalidLabel = root.querySelector("#invalidLabel");
+        invalidLabel.hide();
+        typeSelect = root.querySelector("#typeSelect");
     }
 
     let open = function()
     {
+        invalidLabel.hide();
         this.opened = true;
     }
 
@@ -105,11 +111,26 @@ export function AddModal( domElement )
         this.opened = false;
     }
 
+    let accept = function()
+    {
+        let name = nameInput.value;
+        let type = typeSelect.options[typeSelect.selectedIndex].text;
+
+        if( !window.uniformList.addUniformItem(name, type) )
+        {
+            invalidLabel.show();
+            return;
+        }
+
+        window.addModal.close();
+    }
+
     init();
 
     return {
         opened: false,
         open,
-        close
+        close,
+        accept
     }
 }
