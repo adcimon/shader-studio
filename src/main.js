@@ -7,6 +7,7 @@ const createWindow = () =>
     {
         width: 1280,
         height: 720,
+        icon: path.join(__dirname, "..", "assets", "favicon", "favicon.ico"),
         webPreferences:
         {
             preload: path.join(__dirname, "preload.js")
