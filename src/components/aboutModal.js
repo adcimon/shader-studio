@@ -100,6 +100,22 @@ const html = /*html*/
                                     </td>
                                 </tr>
 
+                                <!-- Monaco -->
+                                <tr class="text-gray-700 dark:text-gray-400">
+                                    <td class="px-4 py-3">
+                                        <div class="flex items-center text-sm">
+                                            <div>
+                                                <p class="font-semibold">Monaco</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td
+                                        id="monacoLabel"
+                                        class="px-4 py-3 text-sm">
+                                        0.34.0
+                                    </td>
+                                </tr>
+
                                 <!-- THREE -->
                                 <tr class="text-gray-700 dark:text-gray-400">
                                     <td class="px-4 py-3">
