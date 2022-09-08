@@ -115,6 +115,21 @@ const html = /*html*/
                     </label>
                 </div>
 
+                <!-- Webcam -->
+                <div
+                    id="webcamField"
+                    class="mb-2">
+                    <label class="block text-sm">
+                        <span class="text-gray-700 dark:text-gray-400">NYI</span>
+                        <div class="w-full mb-8 overflow-hidden rounded-lg shadow-xs">
+                            <div
+                                id="webcamContainer"
+                                class="w-full">
+                            </div>
+                        </div>
+                    </label>
+                </div>
+
             </div>
 
             <!-- Footer -->
@@ -155,6 +170,7 @@ export function UniformModal( domElement )
     let matrixField = null;
     let colorField = null;
     let imageField = null;
+    let webcamField = null;
 
     let intInput = null;
     let floatInput = null;
@@ -176,6 +192,7 @@ export function UniformModal( domElement )
         matrixField = domElement.querySelector("#matrixField");
         colorField = domElement.querySelector("#colorField");
         imageField = domElement.querySelector("#imageField");
+        webcamField = domElement.querySelector("#webcamField");
 
         // Int.
         intInput = domElement.querySelector("#intInput");
@@ -292,6 +309,7 @@ export function UniformModal( domElement )
                 matrixField.hide();
                 colorField.hide();
                 imageField.hide();
+                webcamField.hide();
                 break;
             }
             case "float":
@@ -302,6 +320,7 @@ export function UniformModal( domElement )
                 matrixField.hide();
                 colorField.hide();
                 imageField.hide();
+                webcamField.hide();
                 break;
             }
             case "vec2":
@@ -313,6 +332,7 @@ export function UniformModal( domElement )
                 matrixField.show();
                 colorField.hide();
                 imageField.hide();
+                webcamField.hide();
                 break;
             }
             case "vec3":
@@ -324,6 +344,7 @@ export function UniformModal( domElement )
                 matrixField.show();
                 colorField.hide();
                 imageField.hide();
+                webcamField.hide();
                 break;
             }
             case "vec4":
@@ -335,6 +356,7 @@ export function UniformModal( domElement )
                 matrixField.show();
                 colorField.hide();
                 imageField.hide();
+                webcamField.hide();
                 break;
             }
             case "mat2":
@@ -346,6 +368,7 @@ export function UniformModal( domElement )
                 matrixField.show();
                 colorField.hide();
                 imageField.hide();
+                webcamField.hide();
                 break;
             }
             case "mat3":
@@ -357,6 +380,7 @@ export function UniformModal( domElement )
                 matrixField.show();
                 colorField.hide();
                 imageField.hide();
+                webcamField.hide();
                 break;
             }
             case "mat4":
@@ -368,6 +392,7 @@ export function UniformModal( domElement )
                 matrixField.show();
                 colorField.hide();
                 imageField.hide();
+                webcamField.hide();
                 break;
             }
             case "color":
@@ -378,6 +403,7 @@ export function UniformModal( domElement )
                 colorInput.value = rgbToHex(...value);
                 colorField.show();
                 imageField.hide();
+                webcamField.hide();
                 break;
             }
             case "image":
@@ -387,6 +413,7 @@ export function UniformModal( domElement )
                 matrixField.hide();
                 colorField.hide();
                 imageField.show();
+                webcamField.hide();
                 break;
             }
             case "webcam":
@@ -396,6 +423,7 @@ export function UniformModal( domElement )
                 matrixField.hide();
                 colorField.hide();
                 imageField.hide();
+                webcamField.show();
                 break;
             }
             default:
