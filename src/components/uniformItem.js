@@ -1,6 +1,6 @@
 "use strict";
 
-import { getTypeIcon } from '../utils/icons.js';
+import { Icons } from '../utils/icons.js';
 
 const html = /*html*/
 `
@@ -38,7 +38,7 @@ export function UniformItem( name, type )
 
     let init = function()
     {
-        const composedHtml = html.replace("$icon", getTypeIcon(type));
+        const composedHtml = html.replace("$icon", Icons.getTypeIcon(type));
         const elements = createElements(composedHtml);
         root = elements[0];
 
@@ -58,6 +58,11 @@ export function UniformItem( name, type )
             case "color":       value = [1, 1, 1]; break;
             default: break;
         }
+    }
+
+    let remove = function()
+    {
+        root.remove();
     }
 
     let getElement = function()
@@ -88,6 +93,7 @@ export function UniformItem( name, type )
     init();
 
     return {
+        remove,
         getElement,
         getName,
         getType,

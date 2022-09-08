@@ -1,5 +1,6 @@
 "use strict";
 
+import { Icons } from '../utils/icons.js';
 import { MatrixInput } from "./matrixInput.js";
 
 const html = /*html*/
@@ -103,6 +104,20 @@ const html = /*html*/
             <!-- Footer -->
             <footer class="flex flex-col items-center justify-end px-6 py-3 -mx-6 -mb-4 space-y-4 sm:space-y-0 sm:space-x-6 sm:flex-row bg-gray-300 dark:bg-gray-800">
                 <button
+                    class="flex items-center justify-between px-4 py-2 text-sm font-medium leading-5 text-white text-gray-700 transition-colors duration-150  border border-gray-300 rounded-lg dark:text-gray-400 sm:px-4 sm:py-2 sm:w-auto active:bg-transparent hover:border-gray-500 focus:border-gray-500 active:text-gray-500 focus:outline-none focus:shadow-outline-gray"
+                    x-show="!$store.uniformModal.deleting"
+                    x-on:click="$store.uniformModal.showDelete()">
+                    $deleteIcon
+                    <span class="ml-2">Delete</span>
+                </button>
+                <button
+                    class="flex items-center justify-between px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-red-600 border border-transparent rounded-lg focus:outline-none"
+                    x-show="$store.uniformModal.deleting"
+                    x-on:click="$store.uniformModal.confirmDelete()">
+                    $deleteIcon
+                    <span class="ml-2">Delete</span>
+                </button>
+                <button
                     class="w-full px-5 py-3 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg sm:w-auto sm:px-4 sm:py-2 active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
                     x-on:click="$store.uniformModal.close()">
                     Close
@@ -131,7 +146,9 @@ export function UniformModal( domElement )
 
     let init = function()
     {
-        createElements(html, domElement);
+        const regexp = new RegExp("\\$deleteIcon", "g");
+        const composedHtml = html.replace(regexp, Icons.deleteIcon);
+        createElements(composedHtml, domElement);
 
         uniformWindow = domElement.querySelector("#uniformWindow");
         typeLabel = domElement.querySelector("#typeLabel");
@@ -191,6 +208,8 @@ export function UniformModal( domElement )
 
     let open = function( name, x, y )
     {
+        this.deleting = false;
+
         let item = window.uniformList.getUniformItem(name);
         if( !item )
         {
@@ -329,14 +348,30 @@ export function UniformModal( domElement )
         uniformWindow.style.top = "50%";
     }
 
+    let showDelete = function()
+    {
+        this.deleting = true;
+    }
+
+    let confirmDelete = function()
+    {
+        window.uniformList.deleteUniformItem(this.selectedItem);
+        this.opened = false;
+        this.deleting = false;
+        this.selectedItem = null;
+    }
+
     init();
 
     return {
         selectedItem: null,
         opened: false,
+        deleting: false,
         open,
         close,
         setPosition,
         resetPosition,
+        showDelete,
+        confirmDelete
     }
 }

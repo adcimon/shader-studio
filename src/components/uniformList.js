@@ -39,6 +39,11 @@ export function UniformList( domElement )
         list = domElement.querySelector("#uniformList");
     }
 
+    let getUniformItem = function( name )
+    {
+        return items[name];
+    }
+
     let addUniformItem = function( name, type )
     {
         if( !regexp.test(name) )
@@ -59,15 +64,26 @@ export function UniformList( domElement )
         return true;
     }
 
-    let getUniformItem = function( name )
+    let deleteUniformItem = function( item )
     {
-        return items[name];
+        let name = item.getName();
+        if( !(name in items) )
+        {
+            return false;
+        }
+
+        item.remove();
+        delete items[name];
+        window.renderView.deleteUniform(item);
+
+        return true;
     }
 
     init();
 
     return {
+        getUniformItem,
         addUniformItem,
-        getUniformItem
+        deleteUniformItem
     }
 }

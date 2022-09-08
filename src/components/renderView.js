@@ -14,13 +14,7 @@ export function RenderView( domElement )
     let scene = null;
     let camera = null;
     let material = null;
-
-    let uniforms =
-    {
-        time:           { value: 0 },
-        resolution:     { value: new THREE.Vector2() },
-        mouse:          { value: new THREE.Vector2() },
-    };
+    let uniforms = { };
 
     let init = function()
     {
@@ -53,6 +47,7 @@ export function RenderView( domElement )
         );
     
         const plane = new THREE.PlaneBufferGeometry(2, 2);
+        uniforms = resetUniforms();
         material = new THREE.ShaderMaterial({ uniforms: uniforms });
         const mesh = new THREE.Mesh(plane, material);
 
@@ -96,6 +91,15 @@ export function RenderView( domElement )
         material.needsUpdate = true;
     }
 
+    let resetUniforms = function()
+    {
+        return {
+            time:           { value: 0 },
+            resolution:     { value: new THREE.Vector2() },
+            mouse:          { value: new THREE.Vector2() },
+        }
+    }
+
     let addUniform = function( item )
     {
         let name = item.getName();
@@ -104,7 +108,7 @@ export function RenderView( domElement )
 
         if( name in uniforms )
         {
-            return;
+            return false;
         }
 
         switch( type )
@@ -128,12 +132,14 @@ export function RenderView( domElement )
             }
             default:
             {
-                return;
+                return false;
             }
         }
 
         material.uniforms = uniforms;
         material.needsUpdate = true;
+
+        return true;
     }
 
     let setUniform = function( item )
@@ -144,7 +150,7 @@ export function RenderView( domElement )
 
         if( !(name in uniforms) )
         {
-            return;
+            return false;
         }
 
         switch( type )
@@ -168,12 +174,30 @@ export function RenderView( domElement )
             }
             default:
             {
-                return;
+                return false;
             }
         }
 
         material.uniforms = uniforms;
         material.needsUpdate = true;
+
+        return true;
+    }
+
+    let deleteUniform = function( item )
+    {
+        let name = item.getName();
+
+        if( !(name in uniforms) )
+        {
+            return false;
+        }
+
+        delete uniforms[name];
+        material.uniforms = uniforms;
+        material.needsUpdate = true;
+
+        return true;
     }
 
     init();
@@ -181,6 +205,7 @@ export function RenderView( domElement )
     return {
         setShader,
         addUniform,
-        setUniform
+        setUniform,
+        deleteUniform
     }
 }
