@@ -1,5 +1,7 @@
 "use strict";
 
+import { } from '../utils/language.js';
+
 export function EditorView( domElement )
 {
     let editor = null;
@@ -10,7 +12,7 @@ export function EditorView( domElement )
         {
             automaticLayout: true,
             horizontal: "auto",
-            language: "javascript",
+            language: "glsl",
             lineHeight: 19,
             lineNumbers: "on",
             minimap: { enabled: true },
