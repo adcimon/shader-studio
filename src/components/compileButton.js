@@ -1,6 +1,6 @@
 "use strict";
 
-import { CompileIcon } from '../utils/icons.js';
+import { Icons } from '../utils/icons.js';
 
 const html = /*html*/
 `
@@ -15,7 +15,7 @@ export function CompileButton( domElement )
 {
     let init = function()
     {
-        const composedHtml = html.replace("$icon", CompileIcon);
+        const composedHtml = html.replace("$icon", Icons.compileIcon);
         const elements = createElements(composedHtml, domElement);
         const button = elements[0];
         button.addEventListener("click", click);
