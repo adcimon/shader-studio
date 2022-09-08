@@ -2,6 +2,7 @@
 
 import { Icons } from '../utils/icons.js';
 import { MatrixInput } from "./matrixInput.js";
+import { ImageInput } from "./imageInput.js";
 
 const html = /*html*/
 `
@@ -99,6 +100,21 @@ const html = /*html*/
                     </label>
                 </div>
 
+                <!-- Image -->
+                <div
+                    id="imageField"
+                    class="mb-2">
+                    <label class="block text-sm">
+                        <span class="text-gray-700 dark:text-gray-400">Click to select the image</span>
+                        <div class="w-full mb-8 overflow-hidden rounded-lg shadow-xs">
+                            <div
+                                id="imageContainer"
+                                class="w-full">
+                            </div>
+                        </div>
+                    </label>
+                </div>
+
             </div>
 
             <!-- Footer -->
@@ -138,11 +154,13 @@ export function UniformModal( domElement )
     let floatField = null;
     let matrixField = null;
     let colorField = null;
+    let imageField = null;
 
     let intInput = null;
     let floatInput = null;
     let matrixInput = null;
     let colorInput = null;
+    let imageInput = null;
 
     let init = function()
     {
@@ -157,28 +175,47 @@ export function UniformModal( domElement )
         floatField = domElement.querySelector("#floatField");
         matrixField = domElement.querySelector("#matrixField");
         colorField = domElement.querySelector("#colorField");
+        imageField = domElement.querySelector("#imageField");
 
+        // Int.
         intInput = domElement.querySelector("#intInput");
-        intInput.addEventListener("change", function()
+        intInput.addEventListener("change", () =>
         {
             let item = window.uniformModal.selectedItem;
-            item.setValue(this.value);
+            if( !item )
+            {
+                return;
+            }
+
+            item.setValue(intInput.value);
             window.renderView.setUniform(item);
         });
 
+        // Float.
         floatInput = domElement.querySelector("#floatInput");
-        floatInput.addEventListener("change", function()
+        floatInput.addEventListener("change", () =>
         {
             let item = window.uniformModal.selectedItem;
-            item.setValue(this.value);
+            if( !item )
+            {
+                return;
+            }
+
+            item.setValue(floatInput.value);
             window.renderView.setUniform(item);
         });
 
+        // Matrix.
         let matrixContainer = domElement.querySelector("#matrixContainer");
         matrixInput = new MatrixInput(matrixContainer);
         matrixInput.addEventListener("change", () =>
         {
             let item = window.uniformModal.selectedItem;
+            if( !item )
+            {
+                return;
+            }
+
             let type = item.getType();
             let value = null;
 
@@ -197,11 +234,33 @@ export function UniformModal( domElement )
             window.renderView.setUniform(item);
         });
 
+        // Color.
         colorInput = domElement.querySelector("#colorInput");
-        colorInput.addEventListener("change", function()
+        colorInput.addEventListener("change", () =>
         {
             let item = window.uniformModal.selectedItem;
-            item.setValue(hexToRgb(this.value));
+            if( !item )
+            {
+                return;
+            }
+
+            item.setValue(hexToRgb(colorInput.value));
+            window.renderView.setUniform(item);
+        });
+
+        // Image.
+        let imageContainer = domElement.querySelector("#imageContainer");
+        imageInput = new ImageInput(imageContainer);
+        imageInput.addEventListener("change", (event) =>
+        {
+            console.log(event);
+            let item = window.uniformModal.selectedItem;
+            if( !item )
+            {
+                return;
+            }
+
+            item.setValue(event.detail.value);
             window.renderView.setUniform(item);
         });
     }
@@ -232,6 +291,7 @@ export function UniformModal( domElement )
                 floatField.hide();
                 matrixField.hide();
                 colorField.hide();
+                imageField.hide();
                 break;
             }
             case "float":
@@ -241,6 +301,7 @@ export function UniformModal( domElement )
                 floatField.show();
                 matrixField.hide();
                 colorField.hide();
+                imageField.hide();
                 break;
             }
             case "vec2":
@@ -251,6 +312,7 @@ export function UniformModal( domElement )
                 matrixInput.showVector2();
                 matrixField.show();
                 colorField.hide();
+                imageField.hide();
                 break;
             }
             case "vec3":
@@ -261,6 +323,7 @@ export function UniformModal( domElement )
                 matrixInput.showVector3();
                 matrixField.show();
                 colorField.hide();
+                imageField.hide();
                 break;
             }
             case "vec4":
@@ -271,6 +334,7 @@ export function UniformModal( domElement )
                 matrixInput.showVector4();
                 matrixField.show();
                 colorField.hide();
+                imageField.hide();
                 break;
             }
             case "mat2":
@@ -281,6 +345,7 @@ export function UniformModal( domElement )
                 matrixInput.showMatrix2();
                 matrixField.show();
                 colorField.hide();
+                imageField.hide();
                 break;
             }
             case "mat3":
@@ -291,6 +356,7 @@ export function UniformModal( domElement )
                 matrixInput.showMatrix3();
                 matrixField.show();
                 colorField.hide();
+                imageField.hide();
                 break;
             }
             case "mat4":
@@ -301,6 +367,7 @@ export function UniformModal( domElement )
                 matrixInput.showMatrix4();
                 matrixField.show();
                 colorField.hide();
+                imageField.hide();
                 break;
             }
             case "color":
@@ -310,15 +377,25 @@ export function UniformModal( domElement )
                 matrixField.hide();
                 colorInput.value = rgbToHex(...value);
                 colorField.show();
+                imageField.hide();
                 break;
             }
             case "image":
+            {
+                intField.hide();
+                floatField.hide();
+                matrixField.hide();
+                colorField.hide();
+                imageField.show();
+                break;
+            }
             case "webcam":
             {
                 intField.hide();
                 floatField.hide();
                 matrixField.hide();
                 colorField.hide();
+                imageField.hide();
                 break;
             }
             default:

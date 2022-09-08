@@ -56,6 +56,7 @@ export function UniformItem( name, type )
             case "mat3":        value = [[1, 0, 0], [0, 1, 0], [0, 0, 1]]; break;
             case "mat4":        value = [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]]; break;
             case "color":       value = [1, 1, 1]; break;
+            case "image":       value = { image: new Image(2, 2), fileName: "" }; break;
             default: break;
         }
     }
@@ -87,7 +88,33 @@ export function UniformItem( name, type )
 
     let setValue = function( newValue )
     {
-        value = newValue;
+        switch( type )
+        {
+            case "int":
+            case "float":
+            case "vec2":
+            case "vec3":
+            case "vec4":
+            case "mat2":
+            case "mat3":
+            case "mat4":
+            case "color":
+            {
+                value = newValue;
+                break;
+            }
+            case "image":
+            {
+                // value.image.src = newValue.image.src;
+                // value.fileName = newValue.fileName;
+                value = newValue;
+                break;
+            }
+            default:
+            {
+                return;
+            }
+        }
     }
 
     init();

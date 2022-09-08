@@ -1004,6 +1004,10 @@ print and (-ms-high-contrast:none) {
     border-bottom-width: 1px
 }
 
+.cursor-pointer {
+    cursor: pointer;
+}
+
 .cursor-not-allowed {
     cursor: not-allowed
 }

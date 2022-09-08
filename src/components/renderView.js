@@ -80,15 +80,20 @@ export function RenderView( domElement )
         uniforms.time.value = time;
         uniforms.resolution.value.set(canvas.width, canvas.height);
 
+        renderer.setClearColor(0, 0, 0, 1);
         renderer.render(scene, camera);
 
         window.requestAnimationFrame(render);
     }
 
+    let compile = function()
+    {
+        material.needsUpdate = true;
+    }
+
     let setShader = function( shader )
     {
         material.fragmentShader = shader;
-        material.needsUpdate = true;
     }
 
     let resetUniforms = function()
@@ -128,6 +133,14 @@ export function RenderView( domElement )
             case "color":
             {
                 uniforms[name] = { value: value.flat() };
+                break;
+            }
+            case "image":
+            {
+                let texture = new THREE.Texture(value.image);
+                texture.generateMipmaps = false;
+                texture.needsUpdate = true;
+                uniforms[name] = { value: texture };
                 break;
             }
             default:
@@ -172,6 +185,15 @@ export function RenderView( domElement )
                 uniforms[name].value = value.flat();
                 break;
             }
+            case "image":
+            {
+                // After the initial use of a texture, its dimensions, format, and type cannot be changed.
+                // Instead, call .dispose() on the texture and instantiate a new one.
+                let texture = uniforms[name].value;
+                texture.image = value.image;
+                texture.needsUpdate = true;
+                break;
+            }
             default:
             {
                 return false;
@@ -203,6 +225,7 @@ export function RenderView( domElement )
     init();
 
     return {
+        compile,
         setShader,
         addUniform,
         setUniform,
