@@ -49,12 +49,11 @@ export function ImageInput( domElement )
     let eventTarget = new EventTarget();
     let root = null;
 
+    let initializing = false;
     let fileInput = null;
     let image = null;
     let wrapHorizontalSelect = null;
     let wrapVerticalSelect = null;
-
-    let fileName = "";
 
     let init = function()
     {
@@ -68,7 +67,17 @@ export function ImageInput( domElement )
 
         image.addEventListener("load", () =>
         {
-            dispatchChangeEvent();
+            if( !initializing )
+            {
+                dispatchChangeEvent();
+            }
+
+            initializing = false;
+        });
+
+        image.addEventListener("error", () =>
+        {
+            initializing = false;
         });
 
         fileInput.addEventListener("change", (event) =>
@@ -78,7 +87,7 @@ export function ImageInput( domElement )
                 return;
             }
 
-            fileName = event.target.files[0].name;
+            //let fileName = event.target.files[0].name;
             image.src = URL.createObjectURL(event.target.files[0]);
         });
 
@@ -116,27 +125,56 @@ export function ImageInput( domElement )
         let wrapHorizontal = THREE.ClampToEdgeWrapping;
         switch( wrapHorizontalSelect.selectedIndex )
         {
-            case 0: wrapHorizontal = THREE.ClampToEdgeWrapping; break;
-            case 1: wrapHorizontal = THREE.RepeatWrapping; break;
-            case 2: wrapHorizontal = THREE.MirroredRepeatWrapping; break;
-            default: wrapHorizontal = THREE.ClampToEdgeWrapping; break;
+            case 0:     wrapHorizontal = THREE.ClampToEdgeWrapping; break;
+            case 1:     wrapHorizontal = THREE.RepeatWrapping; break;
+            case 2:     wrapHorizontal = THREE.MirroredRepeatWrapping; break;
+            default:    wrapHorizontal = THREE.ClampToEdgeWrapping; break;
         }
 
         let wrapVertical = THREE.ClampToEdgeWrapping;
         switch( wrapVerticalSelect.selectedIndex )
         {
-            case 0: wrapVertical = THREE.ClampToEdgeWrapping; break;
-            case 1: wrapVertical = THREE.RepeatWrapping; break;
-            case 2: wrapVertical = THREE.MirroredRepeatWrapping; break;
-            default: wrapVertical = THREE.ClampToEdgeWrapping; break;
+            case 0:     wrapVertical = THREE.ClampToEdgeWrapping; break;
+            case 1:     wrapVertical = THREE.RepeatWrapping; break;
+            case 2:     wrapVertical = THREE.MirroredRepeatWrapping; break;
+            default:    wrapVertical = THREE.ClampToEdgeWrapping; break;
         }
 
         return {
             image,
-            fileName,
             wrapHorizontal,
             wrapVertical
         };
+    }
+
+    let setValue = function( value )
+    {
+        initializing = true;
+
+        if( !value.image.src )
+        {
+            reset();
+        }
+        else
+        {
+            image.src = value.image.src;
+        }
+
+        switch( value.wrapHorizontal )
+        {
+            case THREE.ClampToEdgeWrapping:     wrapHorizontalSelect.selectedIndex = 0; break;
+            case THREE.RepeatWrapping:          wrapHorizontalSelect.selectedIndex = 1; break;
+            case THREE.MirroredRepeatWrapping:  wrapHorizontalSelect.selectedIndex = 2; break;
+            default:                            wrapHorizontalSelect.selectedIndex = 0; break;
+        }
+
+        switch( value.wrapVertical )
+        {
+            case THREE.ClampToEdgeWrapping:     wrapVerticalSelect.selectedIndex = 0; break;
+            case THREE.RepeatWrapping:          wrapVerticalSelect.selectedIndex = 1; break;
+            case THREE.MirroredRepeatWrapping:  wrapVerticalSelect.selectedIndex = 2; break;
+            default:                            wrapVerticalSelect.selectedIndex = 0; break;
+        }
     }
 
     let dispatchChangeEvent = function()
@@ -148,6 +186,8 @@ export function ImageInput( domElement )
     let reset = function()
     {
         image.src = "../assets/placeholder_image.png";
+        wrapHorizontalSelect.selectedIndex = 0;
+        wrapVerticalSelect.selectedIndex = 0;
     }
 
     init();
@@ -155,6 +195,7 @@ export function ImageInput( domElement )
     return Object.assign(eventTarget, {
         getElement,
         getValue,
+        setValue,
         reset
     })
 }

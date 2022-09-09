@@ -1,6 +1,7 @@
 "use strict";
 
 import { Icons } from '../utils/icons.js';
+import * as THREE from '../../lib/three/build/three.module.js';
 
 const html = /*html*/
 `
@@ -56,7 +57,16 @@ export function UniformItem( name, type )
             case "mat3":        value = [[1, 0, 0], [0, 1, 0], [0, 0, 1]]; break;
             case "mat4":        value = [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]]; break;
             case "color":       value = [1, 1, 1]; break;
-            case "image":       value = { image: new Image(2, 2), fileName: "" }; break;
+            case "image":
+            {
+                value =
+                {
+                    image: new Image(2, 2),
+                    wrapHorizontal: THREE.ClampToEdgeWrapping,
+                    wrapVertical: THREE.ClampToEdgeWrapping
+                };
+                break;
+            }
             default: break;
         }
     }
@@ -105,7 +115,12 @@ export function UniformItem( name, type )
             }
             case "image":
             {
-                value = newValue;
+                value =
+                {
+                    image: newValue.image.cloneNode(),
+                    wrapHorizontal: newValue.wrapHorizontal,
+                    wrapVertical: newValue.wrapVertical
+                }
                 break;
             }
             default:
