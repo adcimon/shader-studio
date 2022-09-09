@@ -14,6 +14,9 @@ export function RenderView( domElement )
     let scene = null;
     let camera = null;
     let material = null;
+    let mesh = null;
+
+    let fragmentShader = "";
     let uniforms = { };
 
     let init = function()
@@ -47,9 +50,10 @@ export function RenderView( domElement )
         );
     
         const plane = new THREE.PlaneBufferGeometry(2, 2);
+        mesh = new THREE.Mesh(plane, null);
+
         uniforms = resetUniforms();
-        material = new THREE.ShaderMaterial({ uniforms: uniforms });
-        const mesh = new THREE.Mesh(plane, material);
+        compile();
 
         scene.add(mesh);
     
@@ -86,14 +90,17 @@ export function RenderView( domElement )
         window.requestAnimationFrame(render);
     }
 
-    let compile = function()
+    let compile = function( shader )
     {
-        material.needsUpdate = true;
-    }
+        if( shader )
+        {
+            fragmentShader = shader;
+        }
 
-    let setShader = function( shader )
-    {
-        material.fragmentShader = shader;
+        material = new THREE.ShaderMaterial({ uniforms: uniforms });
+        material.fragmentShader = fragmentShader;
+        material.needsUpdate = true;
+        mesh.material = material;
     }
 
     let resetUniforms = function()
@@ -149,8 +156,7 @@ export function RenderView( domElement )
             }
         }
 
-        material.uniforms = uniforms;
-        material.needsUpdate = true;
+        compile();
 
         return true;
     }
@@ -187,11 +193,24 @@ export function RenderView( domElement )
             }
             case "image":
             {
+                // let texture = uniforms[name].value;
+                // texture.image = value.image;
+                // texture.needsUpdate = true;
+
                 // After the initial use of a texture, its dimensions, format, and type cannot be changed.
                 // Instead, call .dispose() on the texture and instantiate a new one.
+
                 let texture = uniforms[name].value;
-                texture.image = value.image;
+                texture.dispose();
+                delete uniforms[name];
+                compile();
+
+                texture = new THREE.Texture(value.image);
+                texture.generateMipmaps = false;
                 texture.needsUpdate = true;
+                uniforms[name] = { value: texture };
+                compile();
+
                 break;
             }
             default:
@@ -200,7 +219,6 @@ export function RenderView( domElement )
             }
         }
 
-        material.uniforms = uniforms;
         material.needsUpdate = true;
 
         return true;
@@ -216,8 +234,7 @@ export function RenderView( domElement )
         }
 
         delete uniforms[name];
-        material.uniforms = uniforms;
-        material.needsUpdate = true;
+        compile();
 
         return true;
     }
@@ -226,7 +243,6 @@ export function RenderView( domElement )
 
     return {
         compile,
-        setShader,
         addUniform,
         setUniform,
         deleteUniform

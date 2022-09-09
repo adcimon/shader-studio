@@ -270,7 +270,6 @@ export function UniformModal( domElement )
         imageInput = new ImageInput(imageContainer);
         imageInput.addEventListener("change", (event) =>
         {
-            console.log(event);
             let item = window.uniformModal.selectedItem;
             if( !item )
             {
