@@ -24,8 +24,7 @@ export function CompileButton( domElement )
     let click = function()
     {
         let code = window.editorView.getValue();
-        window.renderView.setShader(code);
-        window.renderView.compile();
+        window.renderView.compile(code);
     }
 
     init();

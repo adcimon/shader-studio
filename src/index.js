@@ -95,6 +95,5 @@ function main()
     Alpine.store("aboutModal", aboutModal);
     window.aboutModal = Alpine.store("aboutModal");
 
-    renderView.setShader(fragmentShader);
-    renderView.compile();
+    renderView.compile(fragmentShader);
 }
