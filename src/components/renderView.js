@@ -145,6 +145,8 @@ export function RenderView( domElement )
             case "image":
             {
                 let texture = new THREE.Texture(value.image);
+                texture.wrapS = value.wrapHorizontal;
+                texture.wrapT = value.wrapVertical;
                 texture.generateMipmaps = false;
                 texture.needsUpdate = true;
                 uniforms[name] = { value: texture };
@@ -193,10 +195,6 @@ export function RenderView( domElement )
             }
             case "image":
             {
-                // let texture = uniforms[name].value;
-                // texture.image = value.image;
-                // texture.needsUpdate = true;
-
                 // After the initial use of a texture, its dimensions, format, and type cannot be changed.
                 // Instead, call .dispose() on the texture and instantiate a new one.
 
@@ -205,11 +203,23 @@ export function RenderView( domElement )
                 delete uniforms[name];
                 compile();
 
-                texture = new THREE.Texture(value.image);
-                texture.generateMipmaps = false;
-                texture.needsUpdate = true;
-                uniforms[name] = { value: texture };
-                compile();
+                const loader = new THREE.TextureLoader();
+                loader.load(value.image.src,
+                    function( texture )
+                    {
+                        texture.wrapS = value.wrapHorizontal;
+                        texture.wrapT = value.wrapVertical;
+                        texture.generateMipmaps = false;
+                        texture.needsUpdate = true;
+                        uniforms[name] = { value: texture };
+                        compile();
+                    },
+                    undefined,
+                    function( error )
+                    {
+                        console.log(error);
+                    }
+                );
 
                 break;
             }

@@ -105,8 +105,6 @@ export function UniformItem( name, type )
             }
             case "image":
             {
-                // value.image.src = newValue.image.src;
-                // value.fileName = newValue.fileName;
                 value = newValue;
                 break;
             }
