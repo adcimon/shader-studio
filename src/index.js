@@ -5,6 +5,7 @@ import { ProfileMenu } from './components/profileMenu.js';
 import { UniformList } from './components/uniformList.js';
 import { EditorView } from './components/editorView.js';
 import { RenderView } from './components/renderView.js';
+import { ErrorView } from './components/errorView.js';
 import { AddModal } from './components/addModal.js';
 import { UniformModal } from './components/uniformModal.js';
 import { AboutModal } from './components/aboutModal.js';
@@ -69,6 +70,16 @@ function main()
     const renderView = new RenderView(right);
     Alpine.store("renderView", renderView);
     window.renderView = Alpine.store("renderView");
+
+    // Error view.
+    const errorView = new ErrorView(right);
+    Alpine.store("errorView", errorView);
+    window.errorView = Alpine.store("errorView");
+    window.errorView.hide();
+    console.error = (message) =>
+    {
+        window.errorView.setText(message);
+    };
 
     // Add modal.
     const addModal = new AddModal(document.body);
