@@ -144,7 +144,9 @@ const html = /*html*/
                 <button
                     class="flex items-center justify-between px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-red-600 border border-transparent rounded-lg focus:outline-none"
                     x-show="$store.uniformModal.deleting"
-                    x-on:click="$store.uniformModal.confirmDelete()">
+                    x-on:click="$store.uniformModal.confirmDelete()"
+                    x-on:click.away="$store.uniformModal.hideDelete()"
+                    x-on:keydown.escape="$store.uniformModal.hideDelete()">
                     $deleteIcon
                     <span class="ml-2">Delete</span>
                 </button>
@@ -457,6 +459,11 @@ export function UniformModal( domElement )
         this.deleting = true;
     }
 
+    let hideDelete = function()
+    {
+        this.deleting = false;
+    }
+
     let confirmDelete = function()
     {
         window.uniformList.deleteUniformItem(this.selectedItem);
@@ -476,6 +483,7 @@ export function UniformModal( domElement )
         setPosition,
         resetPosition,
         showDelete,
+        hideDelete,
         confirmDelete
     }
 }
