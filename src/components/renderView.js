@@ -4,8 +4,12 @@ import * as THREE from '../../lib/three/build/three.module.js';
 
 const html = /*html*/
 `
-<canvas class="block w-full h-full">
-</canvas>
+<div
+    class="block w-full h-full"
+    x-show="$store.renderView.visible">
+        <canvas class="block w-full h-full">
+        </canvas>
+</div>
 `;
 
 export function RenderView( domElement )
@@ -22,7 +26,8 @@ export function RenderView( domElement )
     let init = function()
     {
         const elements = createElements(html, domElement);
-        const canvas = elements[0];
+        const root = elements[0];
+        const canvas = root.querySelector("canvas");
 
         window.threeVersion = THREE.REVISION;
 
@@ -32,6 +37,16 @@ export function RenderView( domElement )
         {
             uniforms.mouse.value.set(event.clientX, event.clientY);
         });
+    }
+
+    let show = function()
+    {
+        this.visible = true;
+    }
+
+    let hide = function()
+    {
+        this.visible = false;
     }
 
     let initRenderer = function( canvas )
@@ -252,6 +267,9 @@ export function RenderView( domElement )
     init();
 
     return {
+        visible: true,
+        show,
+        hide,
         compile,
         addUniform,
         setUniform,
