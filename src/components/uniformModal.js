@@ -413,6 +413,7 @@ export function UniformModal( domElement )
                 floatField.hide();
                 matrixField.hide();
                 colorField.hide();
+                imageInput.setValue(value);
                 imageField.show();
                 webcamField.hide();
                 break;
