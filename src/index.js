@@ -16,7 +16,6 @@ const fragmentShader =
 uniform float time;
 uniform vec2 resolution;
 uniform vec2 mouse;
-uniform sampler2D test;
 
 void mainImage( out vec4 fragColor, in vec2 fragCoord )
 {
@@ -27,8 +26,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     vec3 color = 0.5 + 0.5 * cos(time + uv.xyx + vec3(0, 2, 4));
 
     // Output to screen.
-    //fragColor = vec4(color, 1.0);
-    fragColor = texture(test, uv);
+    fragColor = vec4(color, 1.0);
 }
 
 void main()
