@@ -3,6 +3,7 @@
 import { Icons } from '../utils/icons.js';
 import { MatrixInput } from "./matrixInput.js";
 import { ImageInput } from "./imageInput.js";
+import { WebcamInput } from "./webcamInput.js";
 
 const html = /*html*/
 `
@@ -120,7 +121,6 @@ const html = /*html*/
                     id="webcamField"
                     class="mb-2">
                     <label class="block text-sm">
-                        <span class="text-gray-700 dark:text-gray-400">NYI</span>
                         <div class="w-full mb-8 overflow-hidden rounded-lg shadow-xs">
                             <div
                                 id="webcamContainer"
@@ -179,6 +179,7 @@ export function UniformModal( domElement )
     let matrixInput = null;
     let colorInput = null;
     let imageInput = null;
+    let webcamInput = null;
 
     let init = function()
     {
@@ -271,6 +272,21 @@ export function UniformModal( domElement )
         let imageContainer = domElement.querySelector("#imageContainer");
         imageInput = new ImageInput(imageContainer);
         imageInput.addEventListener("change", (event) =>
+        {
+            let item = window.uniformModal.selectedItem;
+            if( !item )
+            {
+                return;
+            }
+
+            item.setValue(event.detail.value);
+            window.renderView.setUniform(item);
+        });
+
+        // Webcam.
+        let webcamContainer = domElement.querySelector("#webcamContainer");
+        webcamInput = new WebcamInput(webcamContainer);
+        webcamInput.addEventListener("change", (event) =>
         {
             let item = window.uniformModal.selectedItem;
             if( !item )

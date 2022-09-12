@@ -167,6 +167,13 @@ export function RenderView( domElement )
                 uniforms[name] = { value: texture };
                 break;
             }
+            case "webcam":
+            {
+                let texture = new THREE.VideoTexture(value.video);
+                texture.needsUpdate = true;
+                uniforms[name] = { value: texture };
+                break;
+            }
             default:
             {
                 return false;
@@ -235,6 +242,23 @@ export function RenderView( domElement )
                         console.log(error);
                     }
                 );
+
+                break;
+            }
+            case "webcam":
+            {
+                // After the initial use of a texture, its dimensions, format, and type cannot be changed.
+                // Instead, call .dispose() on the texture and instantiate a new one.
+
+                let texture = uniforms[name].value;
+                texture.dispose();
+                delete uniforms[name];
+                compile();
+
+                texture = new THREE.VideoTexture(value.video);
+                texture.needsUpdate = true;
+                uniforms[name] = { value: texture };
+                compile();
 
                 break;
             }

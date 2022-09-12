@@ -48,12 +48,11 @@ export function ImageInput( domElement )
 {
     let eventTarget = new EventTarget();
     let root = null;
-
-    let initializing = false;
     let fileInput = null;
     let image = null;
     let wrapHorizontalSelect = null;
     let wrapVerticalSelect = null;
+    let initializing = false;
 
     let init = function()
     {
