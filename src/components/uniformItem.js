@@ -29,6 +29,8 @@ const html = /*html*/
             </span>
     </a>
 
+    <video autoplay loop muted playsinline hidden></video>
+
 </li>
 `;
 
@@ -36,6 +38,8 @@ export function UniformItem( name, type )
 {
     let root = null;
     let value = null;
+    let image = new Image(2, 2);
+    let video = null;
 
     let init = function()
     {
@@ -45,6 +49,8 @@ export function UniformItem( name, type )
 
         const nameLabel = root.querySelector("#nameLabel");
         nameLabel.innerText = name;
+
+        video = root.querySelector("video");
 
         switch( type )
         {
@@ -61,10 +67,20 @@ export function UniformItem( name, type )
             {
                 value =
                 {
-                    image: new Image(2, 2),
-                    wrapHorizontal: THREE.ClampToEdgeWrapping,
-                    wrapVertical: THREE.ClampToEdgeWrapping
+                    image:              image,
+                    wrapHorizontal:     THREE.ClampToEdgeWrapping,
+                    wrapVertical:       THREE.ClampToEdgeWrapping
                 };
+
+                break;
+            }
+            case "webcam":
+            {
+                value =
+                {
+                    video: video
+                };
+
                 break;
             }
             default: break;
@@ -115,12 +131,26 @@ export function UniformItem( name, type )
             }
             case "image":
             {
+                image = newValue.image.cloneNode();
+
                 value =
                 {
-                    image: newValue.image.cloneNode(),
+                    image: image,
                     wrapHorizontal: newValue.wrapHorizontal,
                     wrapVertical: newValue.wrapVertical
-                }
+                };
+
+                break;
+            }
+            case "webcam":
+            {
+                video.srcObject = newValue.video.srcObject;
+
+                value =
+                {
+                    video: video
+                };
+
                 break;
             }
             default:
