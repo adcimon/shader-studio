@@ -2089,6 +2089,10 @@ print and (-ms-high-contrast:none) {
     user-select: none;
 }
 
+.resize {
+    resize: both;
+}
+
 .resize-none {
     resize: none;
 }
