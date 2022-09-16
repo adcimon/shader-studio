@@ -8,6 +8,7 @@ export function EditorView( domElement )
 
     let init = function()
     {
+        // https://microsoft.github.io/monaco-editor/api/interfaces/monaco.editor.IEditorOptions.html
         editor = monaco.editor.create(domElement,
         {
             automaticLayout: true,
