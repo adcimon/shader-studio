@@ -14,9 +14,14 @@ const html = /*html*/
             x-on:keydown.escape="$store.profileMenu.close()"
             aria-label="Profile"
             aria-haspopup="true">
+            <!--
             <img
                 class="object-cover w-8 h-8 rounded-full"
                 x-bind:src="$store.app.getAvatar()"/>
+            -->
+            <img
+                class="object-cover w-8 h-8 rounded-full"
+                src="../assets/favicon/favicon_128x128.png"/>
         </button>
 
         <!-- Menu -->

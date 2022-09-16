@@ -5,6 +5,7 @@ import * as THREE from '../../lib/three/build/three.module.js';
 const html = /*html*/
 `
 <div class="flex flex-col items-center justify-center px-2 py-4">
+
     <input
         id="fileInput"
         type="file"
@@ -17,6 +18,7 @@ const html = /*html*/
         style="height: 200px;"/>
 
     <div class="flex items-center justify-center w-full">
+
         <!-- Wrap Horizontal -->
         <label class="block mt-4 text-sm px-2">
             <span class="text-gray-700 dark:text-gray-400">Wrap Horizontal</span>
@@ -40,7 +42,9 @@ const html = /*html*/
                     <option>Mirrored Repeat Wrapping</option>
             </select>
         </label>
+
     </div>
+
 </div>
 `;
 

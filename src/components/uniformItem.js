@@ -78,8 +78,10 @@ export function UniformItem( name, type )
             {
                 value =
                 {
-                    device:     { id: "", index: -1, name: ""},
-                    video:      video
+                    device:             { id: "", index: -1, name: ""},
+                    wrapHorizontal:     THREE.ClampToEdgeWrapping,
+                    wrapVertical:       THREE.ClampToEdgeWrapping,
+                    video:              video
                 };
 
                 break;
@@ -149,8 +151,10 @@ export function UniformItem( name, type )
 
                 value =
                 {
-                    device:         { id: newValue.device.id, index: newValue.device.index, name: newValue.device.name },
-                    video:          video
+                    device:             { id: newValue.device.id, index: newValue.device.index, name: newValue.device.name },
+                    wrapHorizontal:     newValue.wrapHorizontal,
+                    wrapVertical:       newValue.wrapVertical,
+                    video:              video
                 };
 
                 break;
