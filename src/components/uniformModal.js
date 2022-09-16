@@ -331,8 +331,8 @@ export function UniformModal( domElement )
             }
             case "float":
             {
-                intField.hide();
                 floatInput.value = value;
+                intField.hide();
                 floatField.show();
                 matrixField.hide();
                 colorField.hide();
@@ -342,10 +342,10 @@ export function UniformModal( domElement )
             }
             case "vec2":
             {
-                intField.hide();
-                floatField.hide();
                 matrixInput.setVector2(value);
                 matrixInput.showVector2();
+                intField.hide();
+                floatField.hide();
                 matrixField.show();
                 colorField.hide();
                 imageField.hide();
@@ -354,10 +354,10 @@ export function UniformModal( domElement )
             }
             case "vec3":
             {
-                intField.hide();
-                floatField.hide();
                 matrixInput.setVector3(value);
                 matrixInput.showVector3();
+                intField.hide();
+                floatField.hide();
                 matrixField.show();
                 colorField.hide();
                 imageField.hide();
@@ -366,10 +366,10 @@ export function UniformModal( domElement )
             }
             case "vec4":
             {
-                intField.hide();
-                floatField.hide();
                 matrixInput.setVector4(value);
                 matrixInput.showVector4();
+                intField.hide();
+                floatField.hide();
                 matrixField.show();
                 colorField.hide();
                 imageField.hide();
@@ -378,10 +378,10 @@ export function UniformModal( domElement )
             }
             case "mat2":
             {
-                intField.hide();
-                floatField.hide();
                 matrixInput.setMatrix2(value);
                 matrixInput.showMatrix2();
+                intField.hide();
+                floatField.hide();
                 matrixField.show();
                 colorField.hide();
                 imageField.hide();
@@ -390,10 +390,10 @@ export function UniformModal( domElement )
             }
             case "mat3":
             {
-                intField.hide();
-                floatField.hide();
                 matrixInput.setMatrix3(value);
                 matrixInput.showMatrix3();
+                intField.hide();
+                floatField.hide();
                 matrixField.show();
                 colorField.hide();
                 imageField.hide();
@@ -402,10 +402,10 @@ export function UniformModal( domElement )
             }
             case "mat4":
             {
-                intField.hide();
-                floatField.hide();
                 matrixInput.setMatrix4(value);
                 matrixInput.showMatrix4();
+                intField.hide();
+                floatField.hide();
                 matrixField.show();
                 colorField.hide();
                 imageField.hide();
@@ -414,10 +414,10 @@ export function UniformModal( domElement )
             }
             case "color":
             {
+                colorInput.value = rgbToHex(...value);
                 intField.hide();
                 floatField.hide();
                 matrixField.hide();
-                colorInput.value = rgbToHex(...value);
                 colorField.show();
                 imageField.hide();
                 webcamField.hide();
@@ -425,17 +425,18 @@ export function UniformModal( domElement )
             }
             case "image":
             {
+                imageInput.setValue(value);
                 intField.hide();
                 floatField.hide();
                 matrixField.hide();
                 colorField.hide();
-                imageInput.setValue(value);
                 imageField.show();
                 webcamField.hide();
                 break;
             }
             case "webcam":
             {
+                webcamInput.setValue(value);
                 intField.hide();
                 floatField.hide();
                 matrixField.hide();

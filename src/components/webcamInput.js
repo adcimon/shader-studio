@@ -47,22 +47,18 @@ export function WebcamInput( domElement )
 
         deviceSelect.addEventListener("change", () =>
         {
-            let device = deviceSelect.options[deviceSelect.selectedIndex].value;
-            let deviceId = devices[device];
-            findStream(deviceId);
+            let name = deviceSelect.options[deviceSelect.selectedIndex].text;
+            let id = devices[name];
+            findStream(id);
         });
 
-        // Find devices and stream on enter the first time.
-        if( deviceSelect.selectedIndex === -1 )
+        findDevices().then(() =>
         {
-            findDevices().then(() =>
-            {
-                deviceSelect.selectedIndex = 0;
-                let device = deviceSelect.options[deviceSelect.selectedIndex].value;
-                let deviceId = devices[device];
-                findStream(deviceId);
-            });
-        }
+            deviceSelect.selectedIndex = selectDefaultDevice();
+            let name = deviceSelect.options[deviceSelect.selectedIndex].text;
+            let id = devices[name];
+            findStream(id);
+        });
     }
 
     let getElement = function()
@@ -72,21 +68,42 @@ export function WebcamInput( domElement )
 
     let getValue = function()
     {
-        let deviceIndex = deviceSelect.selectedIndex;
-        let device = (deviceSelect.selectedIndex in deviceSelect.options) ? deviceSelect.options[deviceSelect.selectedIndex].value : "";
-        let deviceId = (device in devices) ? devices[device] : "";
+        let index = deviceSelect.selectedIndex;
+        let name = (deviceSelect.selectedIndex in deviceSelect.options) ? deviceSelect.options[deviceSelect.selectedIndex].text : "";
+        let id = (name in devices) ? devices[name] : "";
 
         return {
-            deviceIndex:    deviceIndex,
-            device:         device,
-            deviceId:       deviceId,
+            device:         { id: id, index: index, name: name },
             video:          video
         }
     }
 
     let setValue = function( value )
     {
-        // TODO
+        video.srcObject = value.video.srcObject;
+
+        if( value.device.name in devices )
+        {
+            if( deviceSelect.options[value.device.index].value === value.device.id )
+            {
+                deviceSelect.selectedIndex = value.device.index;
+            }
+            else
+            {
+                for( let i = 0; i < deviceSelect.options.length; i++ )
+                {
+                    if( deviceSelect.options[i].value === value.device.id )
+                    {
+                        deviceSelect.selectedIndex = i;
+                        break;
+                    }
+                }
+            }
+        }
+        else
+        {
+            deviceSelect.selectedIndex = -1;
+        }
     }
 
     let dispatchChangeEvent = function()
@@ -114,8 +131,8 @@ export function WebcamInput( domElement )
         {
             if( info.kind === "videoinput" )
             {
-                let label = (info.label === "" ) ? ("Video input " + i) : info.label;
-                devices[label] = info.deviceId;
+                let name = (info.label === "" ) ? ("Video input " + i) : info.label;
+                devices[name] = info.deviceId;
                 i++;
             }
         }
@@ -125,11 +142,11 @@ export function WebcamInput( domElement )
             deviceSelect.removeChild(deviceSelect.lastChild);
         }
     
-        for( let device in devices )
+        for( let name in devices )
         {
             let option = document.createElement("option");
-            option.value = device;
-            option.text = device;
+            option.value = devices[name]; // id
+            option.text = name;
             deviceSelect.appendChild(option);
         }
     }
@@ -137,6 +154,22 @@ export function WebcamInput( domElement )
     let errorDevices = async function( error )
     {
         console.log(error);
+    }
+
+    let selectDefaultDevice = function()
+    {
+        for( let i = 0; i < deviceSelect.options.length; i++ )
+        {
+            let name = deviceSelect.options[i].text.toLowerCase();
+            if( name.includes("ndi") || name.includes("obs") )
+            {
+                continue;
+            }
+
+            return i;
+        }
+
+        return -1;
     }
 
     let findStream = async function( deviceId )
@@ -155,7 +188,6 @@ export function WebcamInput( domElement )
     let gotStream = async function( stream )
     {
         video.srcObject = stream;
-
         dispatchChangeEvent();
     }
 
