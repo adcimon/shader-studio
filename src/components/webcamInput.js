@@ -1,5 +1,7 @@
 "use strict";
 
+import * as THREE from '../../lib/three/build/three.module.js';
+
 const html = /*html*/
 `
 <div class="flex flex-col items-center justify-center px-2 py-4">
@@ -14,6 +16,35 @@ const html = /*html*/
             class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray">
         </select>
     </label>
+
+    <div class="flex items-center justify-center w-full">
+
+        <!-- Wrap Horizontal -->
+        <label class="block mt-4 text-sm px-2">
+            <span class="text-gray-700 dark:text-gray-400">Wrap Horizontal</span>
+            <select
+                id="wrapHorizontalSelect"
+                class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray">
+                    <option>Clamp to Edge</option>
+                    <option>Repeat Wrapping</option>
+                    <option>Mirrored Repeat Wrapping</option>
+            </select>
+        </label>
+
+        <!-- Wrap Vertical -->
+        <label class="block mt-4 text-sm px-2">
+            <span class="text-gray-700 dark:text-gray-400">Wrap Vertical</span>
+            <select
+                id="wrapVerticalSelect"
+                class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray">
+                    <option>Clamp to Edge</option>
+                    <option>Repeat Wrapping</option>
+                    <option>Mirrored Repeat Wrapping</option>
+            </select>
+        </label>
+
+    </div>
+
 </div>
 `;
 
@@ -23,6 +54,8 @@ export function WebcamInput( domElement )
     let root = null;
     let video = null;
     let deviceSelect = null;
+    let wrapHorizontalSelect = null;
+    let wrapVerticalSelect = null;
 
     let devices = { };
     let previousConstraints = null;
@@ -44,12 +77,24 @@ export function WebcamInput( domElement )
 
         video = root.querySelector("#video");
         deviceSelect = root.querySelector("#deviceSelect");
+        wrapHorizontalSelect = root.querySelector("#wrapHorizontalSelect");
+        wrapVerticalSelect = root.querySelector("#wrapVerticalSelect");
 
         deviceSelect.addEventListener("change", () =>
         {
             let name = deviceSelect.options[deviceSelect.selectedIndex].text;
             let id = devices[name];
             findStream(id);
+        });
+
+        wrapHorizontalSelect.addEventListener("change", () =>
+        {
+            dispatchChangeEvent();
+        });
+
+        wrapVerticalSelect.addEventListener("change", () =>
+        {
+            dispatchChangeEvent();
         });
 
         findDevices().then(() =>
@@ -72,9 +117,29 @@ export function WebcamInput( domElement )
         let name = (deviceSelect.selectedIndex in deviceSelect.options) ? deviceSelect.options[deviceSelect.selectedIndex].text : "";
         let id = (name in devices) ? devices[name] : "";
 
+        let wrapHorizontal = THREE.ClampToEdgeWrapping;
+        switch( wrapHorizontalSelect.selectedIndex )
+        {
+            case 0:     wrapHorizontal = THREE.ClampToEdgeWrapping; break;
+            case 1:     wrapHorizontal = THREE.RepeatWrapping; break;
+            case 2:     wrapHorizontal = THREE.MirroredRepeatWrapping; break;
+            default:    wrapHorizontal = THREE.ClampToEdgeWrapping; break;
+        }
+
+        let wrapVertical = THREE.ClampToEdgeWrapping;
+        switch( wrapVerticalSelect.selectedIndex )
+        {
+            case 0:     wrapVertical = THREE.ClampToEdgeWrapping; break;
+            case 1:     wrapVertical = THREE.RepeatWrapping; break;
+            case 2:     wrapVertical = THREE.MirroredRepeatWrapping; break;
+            default:    wrapVertical = THREE.ClampToEdgeWrapping; break;
+        }
+
         return {
-            device:         { id: id, index: index, name: name },
-            video:          video
+            device:             { id: id, index: index, name: name },
+            wrapHorizontal:     wrapHorizontal,
+            wrapVertical:       wrapVertical,
+            video:              video
         }
     }
 
@@ -103,6 +168,22 @@ export function WebcamInput( domElement )
         else
         {
             deviceSelect.selectedIndex = -1;
+        }
+
+        switch( value.wrapHorizontal )
+        {
+            case THREE.ClampToEdgeWrapping:     wrapHorizontalSelect.selectedIndex = 0; break;
+            case THREE.RepeatWrapping:          wrapHorizontalSelect.selectedIndex = 1; break;
+            case THREE.MirroredRepeatWrapping:  wrapHorizontalSelect.selectedIndex = 2; break;
+            default:                            wrapHorizontalSelect.selectedIndex = 0; break;
+        }
+
+        switch( value.wrapVertical )
+        {
+            case THREE.ClampToEdgeWrapping:     wrapVerticalSelect.selectedIndex = 0; break;
+            case THREE.RepeatWrapping:          wrapVerticalSelect.selectedIndex = 1; break;
+            case THREE.MirroredRepeatWrapping:  wrapVerticalSelect.selectedIndex = 2; break;
+            default:                            wrapVerticalSelect.selectedIndex = 0; break;
         }
     }
 

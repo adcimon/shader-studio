@@ -29,8 +29,6 @@ export function RenderView( domElement )
         const root = elements[0];
         const canvas = root.querySelector("canvas");
 
-        window.threeVersion = THREE.REVISION;
-
         initRenderer(canvas);
 
         document.addEventListener("mousemove", (event) =>
@@ -170,6 +168,9 @@ export function RenderView( domElement )
             case "webcam":
             {
                 let texture = new THREE.VideoTexture(value.video);
+                texture.wrapS = value.wrapHorizontal;
+                texture.wrapT = value.wrapVertical;
+                texture.generateMipmaps = false;
                 texture.needsUpdate = true;
                 uniforms[name] = { value: texture };
                 break;
@@ -256,6 +257,9 @@ export function RenderView( domElement )
                 compile();
 
                 texture = new THREE.VideoTexture(value.video);
+                texture.wrapS = value.wrapHorizontal;
+                texture.wrapT = value.wrapVertical;
+                texture.generateMipmaps = false;
                 texture.needsUpdate = true;
                 uniforms[name] = { value: texture };
                 compile();

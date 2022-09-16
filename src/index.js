@@ -56,6 +56,7 @@ function main()
     const profileMenu = new ProfileMenu(top);
     Alpine.store("profileMenu", profileMenu);
     window.profileMenu = Alpine.store("profileMenu");
+    window.app.setUser("");
 
     // Uniform list.
     const uniformList = new UniformList(sidebar);
@@ -99,8 +100,7 @@ function main()
     {
         node: window.nodeVersion,
         chrome: window.chromeVersion,
-        electron: window.electronVersion,
-        three: window.threeVersion
+        electron: window.electronVersion
     };
     aboutModal.updateVersions(versions);
     Alpine.store("aboutModal", aboutModal);

@@ -2,9 +2,6 @@
 
 function App()
 {
-    let theme = "dark";
-    let user = "User";
-
     let loadTheme = function()
     {
         if( window.localStorage.getItem("theme") )
@@ -33,23 +30,24 @@ function App()
 
     let getUser = function()
     {
-        return user;
+        return this.user;
     }
 
     let setUser = function( user )
     {
-        this.user = user || "User";
+        this.user = user || "";
     }
 
     let getAvatar = function()
     {
-        return "https://avatars.dicebear.com/api/bottts/" + user + ".svg"
+        return "https://avatars.dicebear.com/api/bottts/" + this.user + ".svg"
     }
 
-    theme = loadTheme();
+    this.theme = loadTheme();
 
     return {
-        theme,
+        theme: "dark",
+        user: "",
         toggleTheme,
         getUser,
         setUser,

@@ -36,7 +36,6 @@ const html = /*html*/
                     <!-- Version -->
                     <div class="mb-4 ml-auto">
                         <span
-                            id="versionLabel"
                             class="px-1 text-xs text-purple-600 border-2 rounded border-purple-600 select-none">
                             1.0.0
                         </span>
@@ -49,7 +48,7 @@ const html = /*html*/
                 </p>
                 <br>
 
-                <!-- Technologies -->
+                <!-- Made With -->
                 <div class="w-full mb-8 overflow-hidden rounded-lg shadow-xs">
                     <div class="w-full overflow-x-auto">
                         <table class="w-full whitespace-no-wrap">
@@ -121,7 +120,6 @@ const html = /*html*/
                                         </div>
                                     </td>
                                     <td
-                                        id="alpineLabel"
                                         class="px-4 py-3 text-sm">
                                         3.10.3
                                     </td>
@@ -137,7 +135,6 @@ const html = /*html*/
                                         </div>
                                     </td>
                                     <td
-                                        id="monacoLabel"
                                         class="px-4 py-3 text-sm">
                                         0.34.0
                                     </td>
@@ -153,9 +150,8 @@ const html = /*html*/
                                         </div>
                                     </td>
                                     <td
-                                        id="threeLabel"
                                         class="px-4 py-3 text-sm">
-                                        X.Y.Z
+                                        143
                                     </td>
                                 </tr>
 
@@ -216,9 +212,6 @@ export function AboutModal( domElement )
 
         let electronLabel = root.querySelector("#electronLabel");
         electronLabel.innerText = versions.electron;
-
-        let threeLabel = root.querySelector("#threeLabel");
-        threeLabel.innerText = versions.three;
     }
 
     init();
