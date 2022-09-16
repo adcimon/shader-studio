@@ -5,10 +5,14 @@ import * as THREE from '../../lib/three/build/three.module.js';
 const html = /*html*/
 `
 <div
-    class="block w-full h-full"
+    class="w-full h-full"
     x-show="$store.renderView.visible">
-        <canvas class="block w-full h-full">
+
+    <div class="w-full h-full resize overflow-hidden">
+        <canvas class="w-full h-full">
         </canvas>
+    </div>
+
 </div>
 `;
 
