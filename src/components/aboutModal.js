@@ -27,10 +27,21 @@ const html = /*html*/
             <!-- Body -->
             <div class="mt-4 mb-6">
 
-                <!-- Title -->
-                <p class="mb-2 text-lg font-semibold text-gray-700 dark:text-gray-300">
-                    About
-                </p>
+                <div class="flex items-center justify-start w-full">
+                    <!-- Title -->
+                    <p class="mb-2 text-lg font-semibold text-gray-700 dark:text-gray-300">
+                        About
+                    </p>
+
+                    <!-- Version -->
+                    <div class="mb-4 ml-auto">
+                        <span
+                            id="versionLabel"
+                            class="px-1 text-xs text-purple-600 border-2 rounded border-purple-600 select-none">
+                            1.0.0
+                        </span>
+                    </div>
+                </div>
 
                 <!-- Description -->
                 <p class="text-sm text-gray-700 dark:text-gray-400">
@@ -45,7 +56,7 @@ const html = /*html*/
 
                             <thead>
                                 <tr class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
-                                    <th class="px-4 py-3">Technology</th>
+                                    <th class="px-4 py-3">MADE WITH</th>
                                     <th class="px-4 py-3">Version</th>
                                 </tr>
                             </thead>
@@ -97,6 +108,22 @@ const html = /*html*/
                                         id="electronLabel"
                                         class="px-4 py-3 text-sm">
                                         X.Y.Z
+                                    </td>
+                                </tr>
+
+                                <!-- Alpine -->
+                                <tr class="text-gray-700 dark:text-gray-400">
+                                    <td class="px-4 py-3">
+                                        <div class="flex items-center text-sm">
+                                            <div>
+                                                <p class="font-semibold">Alpine</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td
+                                        id="alpineLabel"
+                                        class="px-4 py-3 text-sm">
+                                        3.10.3
                                     </td>
                                 </tr>
 

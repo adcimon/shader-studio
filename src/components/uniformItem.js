@@ -78,7 +78,8 @@ export function UniformItem( name, type )
             {
                 value =
                 {
-                    video: video
+                    device:     { id: "", index: -1, name: ""},
+                    video:      video
                 };
 
                 break;
@@ -148,7 +149,8 @@ export function UniformItem( name, type )
 
                 value =
                 {
-                    video: video
+                    device:         { id: newValue.device.id, index: newValue.device.index, name: newValue.device.name },
+                    video:          video
                 };
 
                 break;
