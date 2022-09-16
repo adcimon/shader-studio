@@ -87,9 +87,17 @@ const html = /*html*/
 
 export function ProfileMenu( domElement )
 {
+    let root = null;
+
     let init = function()
     {
-        createElements(html, domElement);
+        const elements = createElements(html, domElement);
+        root = elements[0];
+    }
+
+    let getElement = function()
+    {
+        return root;
     }
 
     let toggle = function()
@@ -106,6 +114,7 @@ export function ProfileMenu( domElement )
 
     return {
         opened: false,
+        getElement,
         toggle,
         close
     }
