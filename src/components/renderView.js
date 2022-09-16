@@ -8,9 +8,11 @@ const html = /*html*/
     class="w-full h-full"
     x-show="$store.renderView.visible">
 
-    <div class="w-full h-full resize overflow-hidden">
-        <canvas class="w-full h-full">
-        </canvas>
+    <div class="w-full h-full box-border">
+        <div class="w-full h-full box-border resize overflow-hidden border border-gray-100 dark:border-gray-700" style="max-width:100%; max-height:100%;">
+            <canvas class="w-full h-full box-border">
+            </canvas>
+        </div>
     </div>
 
 </div>
@@ -18,12 +20,13 @@ const html = /*html*/
 
 export function RenderView( domElement )
 {
+    let eventTarget = new EventTarget();
+
     let renderer = null;
     let scene = null;
     let camera = null;
     let material = null;
     let mesh = null;
-
     let fragmentShader = "";
     let uniforms = { };
 
@@ -81,13 +84,17 @@ export function RenderView( domElement )
     {
         const canvas = renderer.domElement;
         const rect = canvas.getBoundingClientRect();
-        const width = rect.width;
-        const height = rect.height;
+        const width = Math.floor(rect.width);
+        const height = Math.floor(rect.height);
 
-        const needResize = canvas.width !== width || canvas.height !== height;
+        const needResize = (canvas.width !== width) || (canvas.height !== height);
         if( needResize )
         {
             renderer.setSize(width, height, false);
+
+            // Dispatch resize event.
+            let newEvent = new CustomEvent("resize", { detail: { width: width, height: height }});
+            eventTarget.dispatchEvent(newEvent);
         }
     }
 
@@ -298,7 +305,7 @@ export function RenderView( domElement )
 
     init();
 
-    return {
+    return Object.assign(eventTarget, {
         visible: true,
         show,
         hide,
@@ -306,5 +313,5 @@ export function RenderView( domElement )
         addUniform,
         setUniform,
         deleteUniform
-    }
+    })
 }

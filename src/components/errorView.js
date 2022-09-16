@@ -5,6 +5,7 @@ const html = /*html*/
 <div
     class="block w-full h-full"
     x-show="$store.errorView.visible">
+
     <label class="block w-full h-full p-2 text-sm">
         <textarea
             id="errorTextarea"
@@ -12,6 +13,7 @@ const html = /*html*/
             disabled>
         </textarea>
     </label>
+
 </div>
 `;
 
