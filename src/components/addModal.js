@@ -1,10 +1,12 @@
 "use strict";
 
+import { BaseElement } from "./baseElement.js";
+
 const html = /*html*/
 `
 <div
     class="fixed inset-0 z-30 flex items-end bg-black bg-opacity-50 sm:items-center sm:justify-center"
-    x-show="$store.addModal.opened"
+    x-show="opened"
     x-transition:enter="transition ease-out duration-150"
     x-transition:enter-start="opacity-0"
     x-transition:enter-end="opacity-100"
@@ -14,15 +16,15 @@ const html = /*html*/
 
     <div
         class="w-full px-6 py-4 overflow-hidden bg-gray-300 rounded-t-lg dark:bg-gray-800 sm:rounded-lg sm:m-4 sm:max-w-xl border-1 border-gray-100 dark:border-gray-700"
-        x-show="$store.addModal.opened"
+        x-show="opened"
         x-transition:enter="transition ease-out duration-150"
         x-transition:enter-start="opacity-0 transform translate-y-1/2"
         x-transition:enter-end="opacity-100"
         x-transition:leave="transition ease-in duration-150"
         x-transition:leave-start="opacity-100"
         x-transition:leave-end="opacity-0 transform translate-y-1/2"
-        x-on:click.away="$store.addModal.close()"
-        x-on:keydown.escape="$store.addModal.close()">
+        x-on:click.away="close"
+        x-on:keydown.escape="close">
 
             <!-- Body -->
             <div class="mt-4 mb-6">
@@ -66,14 +68,14 @@ const html = /*html*/
                 <!-- Cancel Button -->
                 <button
                     class="w-full px-5 py-3 text-sm font-medium leading-5 text-white text-gray-700 transition-colors duration-150 border border-gray-300 rounded-lg dark:text-gray-400 sm:px-4 sm:py-2 sm:w-auto active:bg-transparent hover:border-gray-500 focus:border-gray-500 active:text-gray-500 focus:outline-none focus:shadow-outline-gray"
-                    x-on:click="$store.addModal.close()">
+                    x-on:click="close">
                     Cancel
                 </button>
 
                 <!-- Accept Button -->
                 <button
                     class="w-full px-5 py-3 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg sm:w-auto sm:px-4 sm:py-2 active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
-                    x-on:click="$store.addModal.accept()">
+                    x-on:click="accept">
                     Accept
                 </button>
 
@@ -84,53 +86,64 @@ const html = /*html*/
 </div>
 `;
 
-export function AddModal( domElement )
+export class AddModal extends BaseElement
 {
-    let nameInput = null;
-    let invalidLabel = null;
-    let typeSelect = null;
+    nameInput = null;
+    invalidLabel = null;
+    typeSelect = null;
 
-    let init = function()
+    constructor()
     {
-        let elements = createElements(html, domElement);
-        let root = elements[0];
-        nameInput = root.querySelector("#nameInput");
-        invalidLabel = root.querySelector("#invalidLabel");
-        invalidLabel.hide();
-        typeSelect = root.querySelector("#typeSelect");
+        super();
+
+        this.state =
+        {
+            opened: false,
+            accept: this.accept.bind(this),
+            close: this.close.bind(this)
+        };
     }
 
-    let open = function()
+    connectedCallback()
     {
-        invalidLabel.hide();
-        this.opened = true;
+        const template = document.createElement("template");
+        template.innerHTML = html;
+        this.appendChild(template.content.cloneNode(true));
+
+        this.nameInput = this.querySelector("#nameInput");
+        this.invalidLabel = this.querySelector("#invalidLabel");
+        this.invalidLabel.hide();
+        this.typeSelect = this.querySelector("#typeSelect");
+
+        this.setState(this.state);
     }
 
-    let close = function()
+    open()
     {
-        this.opened = false;
+        this.nameInput.value = "";
+        this.typeSelect.selectedIndex = 0;
+        this.invalidLabel.hide();
+        this.state.opened = true;
     }
 
-    let accept = function()
+    close()
     {
-        let name = nameInput.value;
-        let type = typeSelect.options[typeSelect.selectedIndex].text;
+        this.state.opened = false;
+    }
+
+    accept()
+    {
+        let name = this.nameInput.value;
+        let type = this.typeSelect.options[this.typeSelect.selectedIndex].text;
 
         if( !window.uniformList.addUniformItem(name, type) )
         {
-            invalidLabel.show();
+            this.invalidLabel.show();
             return;
         }
 
         window.addModal.close();
     }
-
-    init();
-
-    return {
-        opened: false,
-        open,
-        close,
-        accept
-    }
 }
+
+window.customElements.define("add-modal", AddModal);
