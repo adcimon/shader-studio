@@ -1,10 +1,12 @@
 "use strict";
 
+import { BaseElement } from "./baseElement.js";
+
 const html = /*html*/
 `
 <div
     class="fixed inset-0 z-30 flex items-end bg-black bg-opacity-50 sm:items-center sm:justify-center"
-    x-show="$store.aboutModal.opened"
+    x-show="opened"
     x-transition:enter="transition ease-out duration-150"
     x-transition:enter-start="opacity-0"
     x-transition:enter-end="opacity-100"
@@ -14,15 +16,15 @@ const html = /*html*/
 
     <div
         class="w-full px-6 py-4 overflow-hidden bg-gray-300 rounded-t-lg dark:bg-gray-800 sm:rounded-lg sm:m-4 sm:max-w-xl border-1 border-gray-100 dark:border-gray-700"
-        x-show="$store.aboutModal.opened"
+        x-show="opened"
         x-transition:enter="transition ease-out duration-150"
         x-transition:enter-start="opacity-0 transform translate-y-1/2"
         x-transition:enter-end="opacity-100"
         x-transition:leave="transition ease-in duration-150"
         x-transition:leave-start="opacity-100"
         x-transition:leave-end="opacity-0 transform translate-y-1/2"
-        x-on:click.away="$store.aboutModal.close()"
-        x-on:keydown.escape="$store.aboutModal.close()">
+        x-on:click.away="close"
+        x-on:keydown.escape="close">
 
             <!-- Body -->
             <div class="mt-4 mb-6">
@@ -172,7 +174,7 @@ const html = /*html*/
             <footer class="flex flex-col items-center justify-end px-6 py-3 -mx-6 -mb-4 space-y-4 sm:space-y-0 sm:space-x-6 sm:flex-row bg-gray-300 dark:bg-gray-800">
                 <button
                     class="w-full px-5 py-3 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg sm:w-auto sm:px-4 sm:py-2 active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
-                    x-on:click="$store.aboutModal.close()">
+                    x-on:click="close">
                     Close
                 </button>
             </footer>
@@ -182,44 +184,52 @@ const html = /*html*/
 </div>
 `;
 
-export function AboutModal( domElement )
+export class AboutModal extends BaseElement
 {
-    let root = null;
+    nodeLabel = null;
+    chromeLabel = null;
+    electronLabel = null;
 
-    let init = function()
+    constructor()
     {
-        const elements = createElements(html, domElement);
-        root = elements[0];
+        super();
+
+        this.state =
+        {
+            opened: false,
+            close: this.close.bind(this)
+        };
     }
 
-    let open = function()
+    connectedCallback()
     {
-        this.opened = true;
+        const template = document.createElement("template");
+        template.innerHTML = html;
+        this.appendChild(template.content.cloneNode(true));
+
+        this.nodeLabel = this.querySelector("#nodeLabel");
+        this.chromeLabel = this.querySelector("#chromeLabel");
+        this.electronLabel = this.querySelector("#electronLabel");
+
+        this.setState(this.state);
     }
 
-    let close = function()
+    open()
     {
-        this.opened = false;
+        this.state.opened = true;
     }
 
-    let updateVersions = function( versions )
+    close()
     {
-        let nodeLabel = root.querySelector("#nodeLabel");
-        nodeLabel.innerText = versions.node;
-
-        let chromeLabel = root.querySelector("#chromeLabel");
-        chromeLabel.innerText = versions.chrome;
-
-        let electronLabel = root.querySelector("#electronLabel");
-        electronLabel.innerText = versions.electron;
+        this.state.opened = false;
     }
 
-    init();
-
-    return {
-        opened: false,
-        open,
-        close,
-        updateVersions
+    updateVersions( versions )
+    {
+        this.nodeLabel.innerText = versions.node;
+        this.chromeLabel.innerText = versions.chrome;
+        this.electronLabel.innerText = versions.electron;
     }
 }
+
+window.customElements.define("about-modal", AboutModal);

@@ -115,7 +115,7 @@ function main()
         window.uniformModal = uniformModal;
 
         // About modal.
-        const aboutModal = new AboutModal(document.body);
+        const aboutModal = document.querySelector("about-modal");
         const versions =
         {
             node: window.nodeVersion,
@@ -123,8 +123,7 @@ function main()
             electron: window.electronVersion
         };
         aboutModal.updateVersions(versions);
-        Alpine.store("aboutModal", aboutModal);
-        window.aboutModal = Alpine.store("aboutModal");
+        window.aboutModal = aboutModal;
     }
 
     window.renderView.compile(fragmentShader);
