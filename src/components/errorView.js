@@ -1,14 +1,15 @@
 "use strict";
 
+import { BaseElement } from "./baseElement.js";
+
 const html = /*html*/
 `
 <div
     class="block w-full h-full"
-    x-show="$store.errorView.visible">
+    x-show="visible">
 
     <label class="block w-full h-full p-2 text-sm">
         <textarea
-            id="errorTextarea"
             class="block w-full h-full resize-none text-sm dark:text-gray-300 dark:bg-gray-700 border-red-600 form-textarea"
             disabled>
         </textarea>
@@ -17,41 +18,50 @@ const html = /*html*/
 </div>
 `;
 
-export function ErrorView( domElement )
+export class ErrorView extends BaseElement
 {
-    let errorTextarea = null;
+    textarea = null;
 
-    let init = function()
+    constructor()
     {
-        const elements = createElements(html, domElement);
-        const root = elements[0];
-        errorTextarea = root.querySelector("#errorTextarea");
+        super();
+
+        this.state =
+        {
+            visible: false,
+            show: this.show.bind(this),
+            hide: this.hide.bind(this)
+        };
     }
 
-    let show = function()
+    connectedCallback()
     {
-        this.visible = true;
+        const template = document.createElement("template");
+        template.innerHTML = html;
+        this.appendChild(template.content.cloneNode(true));
+
+        this.textarea = this.querySelector("textarea");
+
+        this.setState(this.state);
     }
 
-    let hide = function()
+    show()
     {
-        this.visible = false;
+        this.state.visible = true;
     }
 
-    let setText = function( text )
+    hide()
+    {
+        this.state.visible = false;
+    }
+
+    setText( text )
     {
         window.renderView.hide();
         this.show();
 
-        errorTextarea.value = text;
-    }
-
-    init();
-
-    return {
-        visible: true,
-        show,
-        hide,
-        setText
+        this.textarea.value = text;
     }
 }
+
+window.customElements.define("error-view", ErrorView);

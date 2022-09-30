@@ -1,15 +1,32 @@
 "use strict";
 
+import { BaseElement } from "./baseElement.js";
 import { } from '../utils/language.js';
 
-export function EditorView( domElement )
+export class EditorView extends BaseElement
 {
-    let editor = null;
+    editor = null;
 
-    let init = function()
+    constructor()
+    {
+        super();
+
+        this.state =
+        {
+        };
+    }
+
+    connectedCallback()
+    {
+        this.createEditor();
+
+        this.setState(this.state);
+    }
+
+    createEditor()
     {
         // https://microsoft.github.io/monaco-editor/api/interfaces/monaco.editor.IEditorOptions.html
-        editor = monaco.editor.create(domElement,
+        this.editor = monaco.editor.create(this.parentNode,
         {
             automaticLayout: true,
             horizontal: "auto",
@@ -24,20 +41,15 @@ export function EditorView( domElement )
         });
     }
 
-    let getValue = function()
+    getValue()
     {
-        return editor.getValue();
+        return this.editor.getValue();
     }
 
-    let setValue = function( value )
+    setValue( value )
     {
-        editor.setValue(value);
-    }
-
-    init();
-
-    return {
-        getValue,
-        setValue
+        this.editor.setValue(value);
     }
 }
+
+window.customElements.define("editor-view", EditorView);
