@@ -43,7 +43,6 @@ window.addEventListener("load", main);
 function main()
 {
     const header = document.getElementById("header");
-    const sidebar = document.getElementById("sidebar");
     const left = document.getElementById("left");
     const right = document.getElementById("right");
 
@@ -73,9 +72,8 @@ function main()
     }
 
     // Uniform list.
-    const uniformList = new UniformList(sidebar);
-    Alpine.store("uniformList", uniformList);
-    window.uniformList = Alpine.store("uniformList");
+    const uniformList = document.querySelector("uniform-list");
+    window.uniformList = uniformList;
 
     // Main view.
     {
@@ -113,9 +111,8 @@ function main()
         window.addModal = Alpine.store("addModal");
 
         // Uniform modal.
-        const uniformModal = new UniformModal(document.body);
-        Alpine.store("uniformModal", uniformModal);
-        window.uniformModal = Alpine.store("uniformModal");
+        const uniformModal = document.querySelector("uniform-modal");
+        window.uniformModal = uniformModal;
 
         // About modal.
         const aboutModal = new AboutModal(document.body);

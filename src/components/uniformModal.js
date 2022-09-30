@@ -1,5 +1,6 @@
 "use strict";
 
+import { BaseElement } from "./baseElement.js";
 import { Icons } from '../utils/icons.js';
 import { MatrixInput } from "./matrixInput.js";
 import { ImageInput } from "./imageInput.js";
@@ -9,7 +10,7 @@ const html = /*html*/
 `
 <div
     class="fixed inset-0 z-30 flex items-end bg-black bg-opacity-50 sm:items-center sm:justify-center"
-    x-show="$store.uniformModal.opened"
+    x-show="opened"
     x-transition:enter="transition ease-out duration-150"
     x-transition:enter-start="opacity-0"
     x-transition:enter-end="opacity-100"
@@ -20,7 +21,7 @@ const html = /*html*/
     <div
         id="uniformWindow"
         class="absolute w-full px-6 py-4 overflow-hidden bg-gray-300 rounded-t-lg dark:bg-gray-800 sm:rounded-lg sm:m-4 sm:max-w-xl border-1 border-gray-100 dark:border-gray-700"
-        x-show="$store.uniformModal.opened"
+        x-show="opened"
         x-transition:enter="transition ease-out duration-150"
         x-transition:enter-start="opacity-0"
         x-transition:enter-end="opacity-100"
@@ -136,23 +137,23 @@ const html = /*html*/
             <footer class="flex flex-col items-center justify-end px-6 py-3 -mx-6 -mb-4 space-y-4 sm:space-y-0 sm:space-x-6 sm:flex-row bg-gray-300 dark:bg-gray-800">
                 <button
                     class="flex items-center justify-between px-4 py-2 text-sm font-medium leading-5 text-white text-gray-700 transition-colors duration-150  border border-gray-300 rounded-lg dark:text-gray-400 sm:px-4 sm:py-2 sm:w-auto active:bg-transparent hover:border-gray-500 focus:border-gray-500 active:text-gray-500 focus:outline-none focus:shadow-outline-gray"
-                    x-show="!$store.uniformModal.deleting"
-                    x-on:click="$store.uniformModal.showDelete()">
+                    x-show="!deleting"
+                    x-on:click="showDelete">
                     $deleteIcon
                     <span class="ml-2">Delete</span>
                 </button>
                 <button
                     class="flex items-center justify-between px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-red-600 border border-transparent rounded-lg focus:outline-none"
-                    x-show="$store.uniformModal.deleting"
-                    x-on:click="$store.uniformModal.confirmDelete()"
-                    x-on:click.away="$store.uniformModal.hideDelete()"
-                    x-on:keydown.escape="$store.uniformModal.hideDelete()">
+                    x-show="deleting"
+                    x-on:click="confirmDelete"
+                    x-on:click.away="hideDelete"
+                    x-on:keydown.escape="hideDelete">
                     $deleteIcon
                     <span class="ml-2">Delete</span>
                 </button>
                 <button
                     class="w-full px-5 py-3 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg sm:w-auto sm:px-4 sm:py-2 active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
-                    x-on:click="$store.uniformModal.close()">
+                    x-on:click="close">
                     Close
                 </button>
             </footer>
@@ -162,46 +163,64 @@ const html = /*html*/
 </div>
 `;
 
-export function UniformModal( domElement )
+export class UniformModal extends BaseElement
 {
-    let uniformWindow = null;
-    let typeLabel = null;
+    uniformWindow = null;
+    typeLabel = null;
 
-    let intField = null;
-    let floatField = null;
-    let matrixField = null;
-    let colorField = null;
-    let imageField = null;
-    let webcamField = null;
+    intField = null;
+    floatField = null;
+    matrixField = null;
+    colorField = null;
+    imageField = null;
+    webcamField = null;
 
-    let intInput = null;
-    let floatInput = null;
-    let matrixInput = null;
-    let colorInput = null;
-    let imageInput = null;
-    let webcamInput = null;
+    intInput = null;
+    floatInput = null;
+    matrixInput = null;
+    colorInput = null;
+    imageInput = null;
+    webcamInput = null;
 
-    let init = function()
+    constructor()
     {
+        super();
+
+        this.state =
+        {
+            selectedItem: null,
+            opened: false,
+            deleting: false,
+            showDelete: this.showDelete.bind(this),
+            confirmDelete: this.confirmDelete.bind(this),
+            hideDelete: this.hideDelete.bind(this),
+            close: this.close.bind(this)
+        };
+    }
+
+    connectedCallback()
+    {
+        const template = document.createElement("template");
         const regexp = new RegExp("\\$deleteIcon", "g");
         const composedHtml = html.replace(regexp, Icons.deleteIcon);
-        createElements(composedHtml, domElement);
+        template.innerHTML = composedHtml;
+        this.appendChild(template.content.cloneNode(true));
 
-        uniformWindow = domElement.querySelector("#uniformWindow");
-        typeLabel = domElement.querySelector("#typeLabel");
+        this.uniformWindow = this.querySelector("#uniformWindow");
+        this.typeLabel = this.querySelector("#typeLabel");
 
-        intField = domElement.querySelector("#intField");
-        floatField = domElement.querySelector("#floatField");
-        matrixField = domElement.querySelector("#matrixField");
-        colorField = domElement.querySelector("#colorField");
-        imageField = domElement.querySelector("#imageField");
-        webcamField = domElement.querySelector("#webcamField");
+        this.intField = this.querySelector("#intField");
+        this.floatField = this.querySelector("#floatField");
+        this.matrixField = this.querySelector("#matrixField");
+        this.colorField = this.querySelector("#colorField");
+        this.imageField = this.querySelector("#imageField");
+        this.webcamField = this.querySelector("#webcamField");
 
         // Int.
-        intInput = domElement.querySelector("#intInput");
-        intInput.addEventListener("change", () =>
+        this.intInput = this.querySelector("#intInput");
+        this.intInput.addEventListener("change", () =>
         {
-            let item = window.uniformModal.selectedItem;
+            let item = this.getSelectedItem();
             if( !item )
             {
                 return;
@@ -212,10 +231,10 @@ export function UniformModal( domElement )
         });
 
         // Float.
-        floatInput = domElement.querySelector("#floatInput");
-        floatInput.addEventListener("change", () =>
+        this.floatInput = this.querySelector("#floatInput");
+        this.floatInput.addEventListener("change", () =>
         {
-            let item = window.uniformModal.selectedItem;
+            let item = this.getSelectedItem();
             if( !item )
             {
                 return;
@@ -226,11 +245,11 @@ export function UniformModal( domElement )
         });
 
         // Matrix.
-        let matrixContainer = domElement.querySelector("#matrixContainer");
-        matrixInput = new MatrixInput(matrixContainer);
-        matrixInput.addEventListener("change", () =>
+        let matrixContainer = this.querySelector("#matrixContainer");
+        this.matrixInput = new MatrixInput(matrixContainer);
+        this.matrixInput.addEventListener("change", () =>
         {
-            let item = window.uniformModal.selectedItem;
+            let item = this.getSelectedItem();
             if( !item )
             {
                 return;
@@ -255,10 +274,10 @@ export function UniformModal( domElement )
         });
 
         // Color.
-        colorInput = domElement.querySelector("#colorInput");
-        colorInput.addEventListener("change", () =>
+        this.colorInput = this.querySelector("#colorInput");
+        this.colorInput.addEventListener("change", () =>
         {
-            let item = window.uniformModal.selectedItem;
+            let item = this.getSelectedItem();
             if( !item )
             {
                 return;
@@ -269,11 +288,11 @@ export function UniformModal( domElement )
         });
 
         // Image.
-        let imageContainer = domElement.querySelector("#imageContainer");
-        imageInput = new ImageInput(imageContainer);
-        imageInput.addEventListener("change", (event) =>
+        let imageContainer = this.querySelector("#imageContainer");
+        this.imageInput = new ImageInput(imageContainer);
+        this.imageInput.addEventListener("change", (event) =>
         {
-            let item = window.uniformModal.selectedItem;
+            let item = this.getSelectedItem();
             if( !item )
             {
                 return;
@@ -284,11 +303,11 @@ export function UniformModal( domElement )
         });
 
         // Webcam.
-        let webcamContainer = domElement.querySelector("#webcamContainer");
-        webcamInput = new WebcamInput(webcamContainer);
-        webcamInput.addEventListener("change", (event) =>
+        let webcamContainer = this.querySelector("#webcamContainer");
+        this.webcamInput = new WebcamInput(webcamContainer);
+        this.webcamInput.addEventListener("change", (event) =>
         {
-            let item = window.uniformModal.selectedItem;
+            let item = this.getSelectedItem();
             if( !item )
             {
                 return;
@@ -297,11 +316,18 @@ export function UniformModal( domElement )
             item.setValue(event.detail.value);
             window.renderView.setUniform(item);
         });
+
+        this.setState(this.state);
     }
 
-    let open = function( name, x, y )
+    getSelectedItem()
     {
-        this.deleting = false;
+        return this.state.selectedItem;
+    }
+
+    open( name, x, y )
+    {
+        this.state.deleting = false;
 
         let item = window.uniformList.getUniformItem(name);
         if( !item )
@@ -309,140 +335,140 @@ export function UniformModal( domElement )
             return;
         }
 
-        this.selectedItem = item;
-        let type = this.selectedItem.getType();
-        let value = this.selectedItem.getValue();
+        this.state.selectedItem = item;
+        let type = this.state.selectedItem.getType();
+        let value = this.state.selectedItem.getValue();
 
         typeLabel.innerText = type;
-        setPosition(x, y);
+        this.setPosition(x, y);
 
         switch( type )
         {
             case "int":
             {
-                intInput.value = value;
-                intField.show();
-                floatField.hide();
-                matrixField.hide();
-                colorField.hide();
-                imageField.hide();
-                webcamField.hide();
+                this.intInput.value = value;
+                this.intField.show();
+                this.floatField.hide();
+                this.matrixField.hide();
+                this.colorField.hide();
+                this.imageField.hide();
+                this.webcamField.hide();
                 break;
             }
             case "float":
             {
-                floatInput.value = value;
-                intField.hide();
-                floatField.show();
-                matrixField.hide();
-                colorField.hide();
-                imageField.hide();
-                webcamField.hide();
+                this.floatInput.value = value;
+                this.intField.hide();
+                this.floatField.show();
+                this.matrixField.hide();
+                this.colorField.hide();
+                this.imageField.hide();
+                this.webcamField.hide();
                 break;
             }
             case "vec2":
             {
-                matrixInput.setVector2(value);
-                matrixInput.showVector2();
-                intField.hide();
-                floatField.hide();
-                matrixField.show();
-                colorField.hide();
-                imageField.hide();
-                webcamField.hide();
+                this.matrixInput.setVector2(value);
+                this.matrixInput.showVector2();
+                this.intField.hide();
+                this.floatField.hide();
+                this.matrixField.show();
+                this.colorField.hide();
+                this.imageField.hide();
+                this.webcamField.hide();
                 break;
             }
             case "vec3":
             {
-                matrixInput.setVector3(value);
-                matrixInput.showVector3();
-                intField.hide();
-                floatField.hide();
-                matrixField.show();
-                colorField.hide();
-                imageField.hide();
-                webcamField.hide();
+                this.matrixInput.setVector3(value);
+                this.matrixInput.showVector3();
+                this.intField.hide();
+                this.floatField.hide();
+                this.matrixField.show();
+                this.colorField.hide();
+                this.imageField.hide();
+                this.webcamField.hide();
                 break;
             }
             case "vec4":
             {
-                matrixInput.setVector4(value);
-                matrixInput.showVector4();
-                intField.hide();
-                floatField.hide();
-                matrixField.show();
-                colorField.hide();
-                imageField.hide();
-                webcamField.hide();
+                this.matrixInput.setVector4(value);
+                this.matrixInput.showVector4();
+                this.intField.hide();
+                this.floatField.hide();
+                this.matrixField.show();
+                this.colorField.hide();
+                this.imageField.hide();
+                this.webcamField.hide();
                 break;
             }
             case "mat2":
             {
-                matrixInput.setMatrix2(value);
-                matrixInput.showMatrix2();
-                intField.hide();
-                floatField.hide();
-                matrixField.show();
-                colorField.hide();
-                imageField.hide();
-                webcamField.hide();
+                this.matrixInput.setMatrix2(value);
+                this.matrixInput.showMatrix2();
+                this.intField.hide();
+                this.floatField.hide();
+                this.matrixField.show();
+                this.colorField.hide();
+                this.imageField.hide();
+                this.webcamField.hide();
                 break;
             }
             case "mat3":
             {
-                matrixInput.setMatrix3(value);
-                matrixInput.showMatrix3();
-                intField.hide();
-                floatField.hide();
-                matrixField.show();
-                colorField.hide();
-                imageField.hide();
-                webcamField.hide();
+                this.matrixInput.setMatrix3(value);
+                this.matrixInput.showMatrix3();
+                this.intField.hide();
+                this.floatField.hide();
+                this.matrixField.show();
+                this.colorField.hide();
+                this.imageField.hide();
+                this.webcamField.hide();
                 break;
             }
             case "mat4":
             {
-                matrixInput.setMatrix4(value);
-                matrixInput.showMatrix4();
-                intField.hide();
-                floatField.hide();
-                matrixField.show();
-                colorField.hide();
-                imageField.hide();
-                webcamField.hide();
+                this.matrixInput.setMatrix4(value);
+                this.matrixInput.showMatrix4();
+                this.intField.hide();
+                this.floatField.hide();
+                this.matrixField.show();
+                this.colorField.hide();
+                this.imageField.hide();
+                this.webcamField.hide();
                 break;
             }
             case "color":
             {
-                colorInput.value = rgbToHex(...value);
-                intField.hide();
-                floatField.hide();
-                matrixField.hide();
-                colorField.show();
-                imageField.hide();
-                webcamField.hide();
+                this.colorInput.value = rgbToHex(...value);
+                this.intField.hide();
+                this.floatField.hide();
+                this.matrixField.hide();
+                this.colorField.show();
+                this.imageField.hide();
+                this.webcamField.hide();
                 break;
             }
             case "image":
             {
-                imageInput.setValue(value);
-                intField.hide();
-                floatField.hide();
-                matrixField.hide();
-                colorField.hide();
-                imageField.show();
-                webcamField.hide();
+                this.imageInput.setValue(value);
+                this.intField.hide();
+                this.floatField.hide();
+                this.matrixField.hide();
+                this.colorField.hide();
+                this.imageField.show();
+                this.webcamField.hide();
                 break;
             }
             case "webcam":
             {
-                webcamInput.setValue(value);
-                intField.hide();
-                floatField.hide();
-                matrixField.hide();
-                colorField.hide();
-                imageField.hide();
-                webcamField.show();
+                this.webcamInput.setValue(value);
+                this.intField.hide();
+                this.floatField.hide();
+                this.matrixField.hide();
+                this.colorField.hide();
+                this.imageField.hide();
+                this.webcamField.show();
                 break;
             }
             default:
@@ -451,57 +477,44 @@ export function UniformModal( domElement )
             }
         }
 
-        this.opened = true;
+        this.state.opened = true;
     }
 
-    let close = function()
+    close()
     {
-        this.opened = false;
-        this.selectedItem = null;
+        this.state.opened = false;
+        this.state.selectedItem = null;
     }
 
-    let setPosition = function( x, y )
+    setPosition( x, y )
     {
         uniformWindow.style.left = (x - 10) + "px";
         uniformWindow.style.top = (y + 20) + "px";
     }
 
-    let resetPosition = function()
+    resetPosition()
     {
         uniformWindow.style.left = "50%";
         uniformWindow.style.top = "50%";
     }
 
-    let showDelete = function()
+    showDelete()
     {
-        this.deleting = true;
+        this.state.deleting = true;
     }
 
-    let hideDelete = function()
+    hideDelete()
     {
-        this.deleting = false;
+        this.state.deleting = false;
     }
 
-    let confirmDelete = function()
+    confirmDelete()
     {
-        window.uniformList.deleteUniformItem(this.selectedItem);
-        this.opened = false;
-        this.deleting = false;
-        this.selectedItem = null;
-    }
-
-    init();
-
-    return {
-        selectedItem: null,
-        opened: false,
-        deleting: false,
-        open,
-        close,
-        setPosition,
-        resetPosition,
-        showDelete,
-        hideDelete,
-        confirmDelete
+        window.uniformList.deleteUniformItem(this.state.selectedItem);
+        this.state.opened = false;
+        this.state.deleting = false;
+        this.state.selectedItem = null;
     }
 }
+
+window.customElements.define("uniform-modal", UniformModal);

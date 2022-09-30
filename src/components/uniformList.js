@@ -1,5 +1,6 @@
 "use strict";
 
+import { BaseElement } from "./baseElement.js";
 import { UniformItem } from './uniformItem.js';
 
 const html = /*html*/
@@ -15,75 +16,91 @@ const html = /*html*/
     <div class="px-6 my-4">
         <button
             class="w-full px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
-            x-on:click="$store.addModal.open()">
+            x-on:click="clickAddButton">
             Add Uniform
         </button>
     </div>
 
     <!-- List -->
-    <ul id="uniformList" class="mt-6">
+    <ul id="list" class="mt-6">
     </ul>
 
 </div>
 `;
 
-export function UniformList( domElement )
+export class UniformList extends BaseElement
 {
-    var regexp = /^[A-Za-z]\w*$/;
-    let list = null;
-    let items = { };
+    regexp = /^[A-Za-z]\w*$/;
+    list = null;
 
-    let init = function()
+    constructor()
     {
-        createElements(html, domElement);
-        list = domElement.querySelector("#uniformList");
+        super();
+
+        this.state =
+        {
+            items: { },
+            clickAddButton: this.clickAddButton.bind(this)
+        };
     }
 
-    let getUniformItem = function( name )
+    connectedCallback()
     {
-        return items[name];
+        const template = document.createElement("template");
+        template.innerHTML = html;
+        this.appendChild(template.content.cloneNode(true));
+
+        this.list = this.querySelector("#list");
+
+        this.setState(this.state);
     }
 
-    let addUniformItem = function( name, type )
+    clickAddButton()
     {
-        if( !regexp.test(name) )
+        window.addModal.open();
+    }
+
+    getUniformItem( name )
+    {
+        return this.state.items[name];
+    }
+
+    addUniformItem( name, type )
+    {
+        if( !this.regexp.test(name) )
         {
             return false;
         }
 
-        if( name in items )
+        if( name in this.state.items )
         {
             return false;
         }
 
-        let item = UniformItem(name, type);
-        items[name] = item;
-        list.appendChild(item.getElement());
+        let item = new UniformItem();
+        item.setName(name);
+        item.setType(type);
+        this.state.items[name] = item;
+        this.list.appendChild(item);
         window.renderView.addUniform(item);
 
         return true;
     }
 
-    let deleteUniformItem = function( item )
+    deleteUniformItem( item )
     {
         let name = item.getName();
-        if( !(name in items) )
+        if( !(name in this.state.items) )
         {
             return false;
         }
 
-        item.remove();
-        delete items[name];
+        this.state.items[name].remove();
+        delete this.state.items[name];
         window.renderView.deleteUniform(item);
 
         return true;
     }
-
-    init();
-
-    return {
-        getUniformItem,
-        addUniformItem,
-        deleteUniformItem
-    }
 }
+
+window.customElements.define("uniform-list", UniformList);
