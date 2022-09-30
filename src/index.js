@@ -106,9 +106,8 @@ function main()
     // Modals.
     {
         // Add modal.
-        const addModal = new AddModal(document.body);
-        Alpine.store("addModal", addModal);
-        window.addModal = Alpine.store("addModal");
+        const addModal = document.querySelector("add-modal");
+        window.addModal = addModal;
 
         // Uniform modal.
         const uniformModal = document.querySelector("uniform-modal");
