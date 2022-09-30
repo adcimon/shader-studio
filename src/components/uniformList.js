@@ -22,7 +22,9 @@ const html = /*html*/
     </div>
 
     <!-- List -->
-    <ul id="list" class="mt-6">
+    <ul
+        id="list"
+        class="mt-6">
     </ul>
 
 </div>
