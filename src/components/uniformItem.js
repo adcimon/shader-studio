@@ -1,5 +1,6 @@
 "use strict";
 
+import { BaseElement } from "./baseElement.js";
 import { Icons } from '../utils/icons.js';
 import * as THREE from '../../lib/three/build/three.module.js';
 
@@ -10,22 +11,21 @@ const html = /*html*/
     <!-- Border -->
     <span
         class="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg"
-        x-show="$store.uniformModal.selectedItem && $store.uniformModal.selectedItem.getName() === $el.parentNode.querySelector('#nameLabel').innerText">
+        x-show="selected">
     </span>
 
     <!-- Content -->
     <a
         class="inline-flex items-center w-full p-1 text-sm font-semibold text-gray-800 transition-colors duration-150 rounded-md hover:bg-gray-100 dark:text-gray-100 dark:hover:bg-gray-700"
         href="#"
-        x-on:click="$store.uniformModal.open($el.querySelector('#nameLabel').innerText, $el.getBoundingClientRect().left, $el.getBoundingClientRect().top)">
+        x-on:click="click">
             <!-- Icon -->
             $icon
 
             <!-- Name -->
             <span
-                id="nameLabel"
-                class="ml-4">
-                Name
+                class="ml-4"
+                x-text="name">
             </span>
     </a>
 
@@ -34,90 +34,72 @@ const html = /*html*/
 </li>
 `;
 
-export function UniformItem( name, type )
+export class UniformItem extends BaseElement
 {
-    let root = null;
-    let value = null;
-    let image = new Image(2, 2);
-    let video = null;
+    image = new Image(2, 2);
+    video = null;
 
-    let init = function()
+    constructor()
     {
-        const composedHtml = html.replace("$icon", Icons.getTypeIcon(type));
-        const elements = createElements(composedHtml);
-        root = elements[0];
+        super();
 
-        const nameLabel = root.querySelector("#nameLabel");
-        nameLabel.innerText = name;
-
-        video = root.querySelector("video");
-
-        switch( type )
+        this.state =
         {
-            case "int":         value = 1; break;
-            case "float":       value = 1; break;
-            case "vec2":        value = [1, 1]; break;
-            case "vec3":        value = [1, 1, 1]; break;
-            case "vec4":        value = [1, 1, 1, 1]; break;
-            case "mat2":        value = [[1, 0], [0, 1]]; break;
-            case "mat3":        value = [[1, 0, 0], [0, 1, 0], [0, 0, 1]]; break;
-            case "mat4":        value = [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]]; break;
-            case "color":       value = [1, 1, 1]; break;
-            case "image":
-            {
-                value =
-                {
-                    image:              image,
-                    wrapHorizontal:     THREE.ClampToEdgeWrapping,
-                    wrapVertical:       THREE.ClampToEdgeWrapping
-                };
+            name: "",
+            type: "",
+            value: null,
+            selected: false,
+            click: this.click.bind(this)
+        };
+    }
 
-                break;
-            }
-            case "webcam":
-            {
-                value =
-                {
-                    device:             { id: "", index: -1, name: ""},
-                    wrapHorizontal:     THREE.ClampToEdgeWrapping,
-                    wrapVertical:       THREE.ClampToEdgeWrapping,
-                    video:              video
-                };
+    connectedCallback()
+    {
+        const template = document.createElement("template");
+        const composedHtml = html.replace("$icon", Icons.getTypeIcon(this.state.type));
+        template.innerHTML = composedHtml;
+        this.appendChild(template.content.cloneNode(true));
 
-                break;
-            }
-            default: break;
+        this.video = this.querySelector("video");
+
+        this.setState(this.state);
+    }
+
+    getName()
+    {
+        return this.state.name;
+    }
+
+    getType()
+    {
+        return this.state.type;
+    }
+
+    getValue()
+    {
+        return this.state.value;
+    }
+
+    setName( name )
+    {
+        this.state.name = name;
+    }
+
+    setType( type )
+    {
+        if( this.state.type !== type )
+        {
+            this.state.type = type;
+            this.resetValue();
+            return;
         }
+
+        this.state.type = type;
     }
 
-    let remove = function()
+    setValue( newValue )
     {
-        root.remove();
-    }
-
-    let getElement = function()
-    {
-        return root;
-    }
-
-    let getName = function()
-    {
-        return name;
-    }
-
-    let getType = function()
-    {
-        return type;
-    }
-
-    let getValue = function()
-    {
-        return value;
-    }
-
-    let setValue = function( newValue )
-    {
-        switch( type )
+        switch( this.state.type )
         {
             case "int":
             case "float":
@@ -129,32 +111,32 @@ export function UniformItem( name, type )
             case "mat4":
             case "color":
             {
-                value = newValue;
+                this.state.value = newValue;
                 break;
             }
             case "image":
             {
-                image = newValue.image.cloneNode();
+                this.image = newValue.image.cloneNode();
 
-                value =
+                this.state.value =
                 {
-                    image: image,
-                    wrapHorizontal: newValue.wrapHorizontal,
-                    wrapVertical: newValue.wrapVertical
+                    image:              this.image,
+                    wrapHorizontal:     newValue.wrapHorizontal,
+                    wrapVertical:       newValue.wrapVertical
                 };
 
                 break;
             }
             case "webcam":
             {
-                video.srcObject = newValue.video.srcObject;
+                this.video.srcObject = newValue.video.srcObject;
 
-                value =
+                this.state.value =
                 {
                     device:             { id: newValue.device.id, index: newValue.device.index, name: newValue.device.name },
                     wrapHorizontal:     newValue.wrapHorizontal,
                     wrapVertical:       newValue.wrapVertical,
-                    video:              video
+                    video:              this.video
                 };
 
                 break;
@@ -166,14 +148,59 @@ export function UniformItem( name, type )
         }
     }
 
-    init();
+    resetValue()
+    {
+        switch( this.state.type )
+        {
+            case "int":         this.state.value = 1; break;
+            case "float":       this.state.value = 1; break;
+            case "vec2":        this.state.value = [1, 1]; break;
+            case "vec3":        this.state.value = [1, 1, 1]; break;
+            case "vec4":        this.state.value = [1, 1, 1, 1]; break;
+            case "mat2":        this.state.value = [[1, 0], [0, 1]]; break;
+            case "mat3":        this.state.value = [[1, 0, 0], [0, 1, 0], [0, 0, 1]]; break;
+            case "mat4":        this.state.value = [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]]; break;
+            case "color":       this.state.value = [1, 1, 1]; break;
+            case "image":
+            {
+                this.state.value =
+                {
+                    image:              this.image,
+                    wrapHorizontal:     THREE.ClampToEdgeWrapping,
+                    wrapVertical:       THREE.ClampToEdgeWrapping
+                };
 
-    return {
-        remove,
-        getElement,
-        getName,
-        getType,
-        getValue,
-        setValue
+                break;
+            }
+            case "webcam":
+            {
+                this.state.value =
+                {
+                    device:             { id: "", index: -1, name: ""},
+                    wrapHorizontal:     THREE.ClampToEdgeWrapping,
+                    wrapVertical:       THREE.ClampToEdgeWrapping,
+                    video:              this.video
+                };
+
+                break;
+            }
+        }
+    }
+
+    click()
+    {
+        window.uniformModal.open(this.state.name, this.getBoundingClientRect().left, this.getBoundingClientRect().top);
+    }
+
+    select()
+    {
+        this.state.selected = true;
+    }
+
+    deselect()
+    {
+        this.state.selected = false;
     }
 }
+
+window.customElements.define("uniform-item", UniformItem);
