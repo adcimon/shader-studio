@@ -1,5 +1,7 @@
 "use strict";
 
+import { BaseElement } from "./baseElement.js";
+
 const html = /*html*/
 `
 <table class="w-full whitespace-no-wrap">
@@ -144,52 +146,56 @@ const html = /*html*/
 </table>
 `;
 
-export function MatrixInput( domElement )
+export class MatrixInput extends BaseElement
 {
-    let eventTarget = new EventTarget();
-    let root = null;
-    let inputs = null;
+    inputs = null;
 
-    let init = function()
+    constructor()
     {
-        createElements(html, domElement);
+        super();
 
-        root = domElement.querySelector("table");
-        let table = root;
-        inputs = table.querySelectorAll("input");
-        inputs.forEach(input =>
+        this.state =
+        {
+        };
+    }
+
+    connectedCallback()
+    {
+        const template = document.createElement("template");
+        template.innerHTML = html;
+        this.appendChild(template.content.cloneNode(true));
+
+        this.inputs = this.querySelectorAll("input");
+        this.inputs.forEach(input =>
         {
             input.addEventListener("change", () =>
             {
-                let newEvent = new CustomEvent("change", { detail: { value: getValues() }});
-                eventTarget.dispatchEvent(newEvent);
+                let newEvent = new CustomEvent("change", { detail: { value: this.getValues() }});
+                this.dispatchEvent(newEvent);
             });
         });
+
+        this.setState(this.state);
     }
 
-    let getElement = function()
-    {
-        return root;
-    }
-
-    let getInputRow = function( input )
+    getInputRow( input )
     {
         let row = Array.from(input.parentNode.parentNode.parentNode.children).indexOf(input.parentNode.parentNode);
         return row;
     }
 
-    let getInputColumn = function( input )
+    getInputColumn( input )
     {
         let column = Array.from(input.parentNode.parentNode.children).indexOf(input.parentNode);
         return column;
     }
 
-    let getValues = function()
+    getValues()
     {
         let values = [];
-        inputs.forEach(input =>
+        this.inputs.forEach(input =>
         {
-            let row = getInputRow(input);
+            let row = this.getInputRow(input);
 
             if( typeof values[row] === "undefined" )
             {
@@ -202,36 +208,36 @@ export function MatrixInput( domElement )
         return values;
     }
 
-    let getVector2 = function()
+    getVector2()
     {
-        let values = getValues();
+        let values = this.getValues();
         return [values[0][0], values[0][1]];
     }
 
-    let getVector3 = function()
+    getVector3()
     {
-        let values = getValues();
+        let values = this.getValues();
         return [values[0][0], values[0][1], values[0][2]];
     }
 
-    let getVector4 = function()
+    getVector4()
     {
-        let values = getValues();
+        let values = this.getValues();
         return [values[0][0], values[0][1], values[0][2], values[0][3]];
     }
 
-    let getMatrix2 = function()
+    getMatrix2()
     {
-        let values = getValues();
+        let values = this.getValues();
         return [
             [values[0][0], values[0][1]],
             [values[1][0], values[1][1]]
         ];
     }
 
-    let getMatrix3 = function()
+    getMatrix3()
     {
-        let values = getValues();
+        let values = this.getValues();
         return [
             [values[0][0], values[0][1], values[0][2]],
             [values[1][0], values[1][1], values[1][2]],
@@ -239,80 +245,80 @@ export function MatrixInput( domElement )
         ];
     }
 
-    let getMatrix4 = function()
+    getMatrix4()
     {
-        let values = getValues();
+        let values = this.getValues();
         return values;
     }
 
-    let setVector2 = function( value )
+    setVector2( value )
     {
-        inputs[0].value = value[0][0];
-        inputs[1].value = value[0][1];
+        this.inputs[0].value = value[0][0];
+        this.inputs[1].value = value[0][1];
     }
 
-    let setVector3 = function( value )
+    setVector3( value )
     {
-        inputs[0].value = value[0][0];
-        inputs[1].value = value[0][1];
-        inputs[2].value = value[0][2];
+        this.inputs[0].value = value[0][0];
+        this.inputs[1].value = value[0][1];
+        this.inputs[2].value = value[0][2];
     }
 
-    let setVector4 = function( value )
+    setVector4( value )
     {
-        inputs[0].value = value[0][0];
-        inputs[1].value = value[0][1];
-        inputs[2].value = value[0][2];
-        inputs[3].value = value[0][3];
+        this.inputs[0].value = value[0][0];
+        this.inputs[1].value = value[0][1];
+        this.inputs[2].value = value[0][2];
+        this.inputs[3].value = value[0][3];
     }
 
-    let setMatrix2 = function( value )
+    setMatrix2( value )
     {
-        inputs[0].value = value[0][0];
-        inputs[1].value = value[0][1];
-        inputs[4].value = value[1][0];
-        inputs[5].value = value[1][1];
+        this.inputs[0].value = value[0][0];
+        this.inputs[1].value = value[0][1];
+        this.inputs[4].value = value[1][0];
+        this.inputs[5].value = value[1][1];
     }
 
-    let setMatrix3 = function( value )
+    setMatrix3( value )
     {
-        inputs[0].value = value[0][0];
-        inputs[1].value = value[0][1];
-        inputs[2].value = value[0][2];
-        inputs[4].value = value[1][0];
-        inputs[5].value = value[1][1];
-        inputs[6].value = value[1][2];
-        inputs[8].value = value[2][0];
-        inputs[9].value = value[2][1];
-        inputs[10].value = value[2][2];
+        this.inputs[0].value = value[0][0];
+        this.inputs[1].value = value[0][1];
+        this.inputs[2].value = value[0][2];
+        this.inputs[4].value = value[1][0];
+        this.inputs[5].value = value[1][1];
+        this.inputs[6].value = value[1][2];
+        this.inputs[8].value = value[2][0];
+        this.inputs[9].value = value[2][1];
+        this.inputs[10].value = value[2][2];
     }
 
-    let setMatrix4 = function( value )
+    setMatrix4( value )
     {
-        inputs[0].value = value[0][0];
-        inputs[1].value = value[0][1];
-        inputs[2].value = value[0][2];
-        inputs[3].value = value[0][3];
-        inputs[4].value = value[1][0];
-        inputs[5].value = value[1][1];
-        inputs[6].value = value[1][2];
-        inputs[7].value = value[1][3];
-        inputs[8].value = value[2][0];
-        inputs[9].value = value[2][1];
-        inputs[10].value = value[2][2];
-        inputs[11].value = value[2][3];
-        inputs[12].value = value[3][0];
-        inputs[13].value = value[3][1];
-        inputs[14].value = value[3][2];
-        inputs[15].value = value[3][3];
+        this.inputs[0].value = value[0][0];
+        this.inputs[1].value = value[0][1];
+        this.inputs[2].value = value[0][2];
+        this.inputs[3].value = value[0][3];
+        this.inputs[4].value = value[1][0];
+        this.inputs[5].value = value[1][1];
+        this.inputs[6].value = value[1][2];
+        this.inputs[7].value = value[1][3];
+        this.inputs[8].value = value[2][0];
+        this.inputs[9].value = value[2][1];
+        this.inputs[10].value = value[2][2];
+        this.inputs[11].value = value[2][3];
+        this.inputs[12].value = value[3][0];
+        this.inputs[13].value = value[3][1];
+        this.inputs[14].value = value[3][2];
+        this.inputs[15].value = value[3][3];
     }
 
-    let showVector2 = function()
+    showVector2()
     {
-        inputs.forEach(input =>
+        this.inputs.forEach(input =>
         {
-            let r = getInputRow(input);
-            let c = getInputColumn(input);
+            let r = this.getInputRow(input);
+            let c = this.getInputColumn(input);
             if( r === 0 && (c === 0 || c === 1) )
             {
                 input.parentNode.show();
@@ -324,12 +330,12 @@ export function MatrixInput( domElement )
         });
     }
 
-    let showVector3 = function()
+    showVector3()
     {
-        inputs.forEach(input =>
+        this.inputs.forEach(input =>
         {
-            let r = getInputRow(input);
-            let c = getInputColumn(input);
+            let r = this.getInputRow(input);
+            let c = this.getInputColumn(input);
             if( r === 0 && (c === 0 || c === 1 || c === 2) )
             {
                 input.parentNode.show();
@@ -341,11 +347,11 @@ export function MatrixInput( domElement )
         });
     }
 
-    let showVector4 = function()
+    showVector4()
     {
-        inputs.forEach(input =>
+        this.inputs.forEach(input =>
         {
-            let r = getInputRow(input);
+            let r = this.getInputRow(input);
             if( r === 0 )
             {
                 input.parentNode.show();
@@ -357,12 +363,12 @@ export function MatrixInput( domElement )
         });
     }
 
-    let showMatrix2 = function()
+    showMatrix2()
     {
-        inputs.forEach(input =>
+        this.inputs.forEach(input =>
         {
-            let r = getInputRow(input);
-            let c = getInputColumn(input);
+            let r = this.getInputRow(input);
+            let c = this.getInputColumn(input);
             if( (r === 0 || r === 1) && (c === 0 || c === 1) )
             {
                 input.parentNode.show();
@@ -374,12 +380,12 @@ export function MatrixInput( domElement )
         });
     }
 
-    let showMatrix3 = function()
+    showMatrix3()
     {
-        inputs.forEach(input =>
+        this.inputs.forEach(input =>
         {
-            let r = getInputRow(input);
-            let c = getInputColumn(input);
+            let r = this.getInputRow(input);
+            let c = this.getInputColumn(input);
             if( (r === 0 || r === 1 || r === 2) && (c === 0 || c === 1 || c === 2) )
             {
                 input.parentNode.show();
@@ -391,35 +397,13 @@ export function MatrixInput( domElement )
         });
     }
 
-    let showMatrix4 = function()
+    showMatrix4()
     {
-        inputs.forEach(input =>
+        this.inputs.forEach(input =>
         {
             input.parentNode.show();
         });
     }
-
-    init();
-
-    return Object.assign(eventTarget, {
-        getElement,
-        getVector2,
-        getVector3,
-        getVector4,
-        getMatrix2,
-        getMatrix3,
-        getMatrix4,
-        setVector2,
-        setVector3,
-        setVector4,
-        setMatrix2,
-        setMatrix3,
-        setMatrix4,
-        showVector2,
-        showVector3,
-        showVector4,
-        showMatrix2,
-        showMatrix3,
-        showMatrix4
-    })
 }
+
+window.customElements.define("matrix-input", MatrixInput);
