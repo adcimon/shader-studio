@@ -28,8 +28,8 @@ const html = /*html*/
         x-transition:leave="transition ease-in duration-150"
         x-transition:leave-start="opacity-100"
         x-transition:leave-end="opacity-0"
-        x-on:click.away="$store.uniformModal.close()"
-        x-on:keydown.escape="$store.uniformModal.close()">
+        x-on:click.away="close"
+        x-on:keydown.escape="close">
 
             <!-- Body -->
             <div class="mt-1 mb-6">
