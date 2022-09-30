@@ -44,9 +44,6 @@ window.addEventListener("load", main);
 
 function main()
 {
-    const left = document.getElementById("left");
-    const right = document.getElementById("right");
-
     // Sidebar.
     {
         // Uniform list.
@@ -73,24 +70,21 @@ function main()
     // Main.
     {
         // Editor view.
-        const editorView = new EditorView(left);
+        const editorView = document.querySelector("editor-view");
         editorView.setValue(fragmentShader);
-        Alpine.store("editorView", editorView);
-        window.editorView = Alpine.store("editorView");
+        window.editorView = editorView;
 
         // Render view.
-        const renderView = new RenderView(right);
-        Alpine.store("renderView", renderView);
-        window.renderView = Alpine.store("renderView");
+        const renderView = document.querySelector("render-view");
+        window.renderView = renderView;
         window.renderView.addEventListener("resize", (event) =>
         {
             window.resolutionLabel.setText(event.detail.width + "x" + event.detail.height);
         });
 
         // Error view.
-        const errorView = new ErrorView(right);
-        Alpine.store("errorView", errorView);
-        window.errorView = Alpine.store("errorView");
+        const errorView = document.querySelector("error-view");
+        window.errorView = errorView;
         window.errorView.hide();
         console.error = (message) =>
         {

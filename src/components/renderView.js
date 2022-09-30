@@ -1,12 +1,13 @@
 "use strict";
 
+import { BaseElement } from './baseElement.js';
 import * as THREE from '../../lib/three/build/three.module.js';
 
 const html = /*html*/
 `
 <div
     class="w-full h-full"
-    x-show="$store.renderView.visible">
+    x-show="visible">
 
     <div class="w-full h-full box-border">
         <div class="w-full h-full box-border resize overflow-hidden border border-gray-100 dark:border-gray-700" style="max-width:100%; max-height:100%;">
@@ -18,49 +19,72 @@ const html = /*html*/
 </div>
 `;
 
-export function RenderView( domElement )
+const DEFAULT_SHADER =
+`
+void main()
 {
-    let eventTarget = new EventTarget();
+    gl_FragColor = vec4(1.0, 0.0, 1.0, 1.0);
+}
+`;
 
-    let renderer = null;
-    let scene = null;
-    let camera = null;
-    let material = null;
-    let mesh = null;
-    let fragmentShader = "";
-    let uniforms = { };
+export class RenderView extends BaseElement
+{
+    renderer = null;
+    scene = null;
+    camera = null;
 
-    let init = function()
+    material = null;
+    mesh = null;
+
+    fragmentShader = DEFAULT_SHADER;
+    uniforms = { };
+
+    constructor()
     {
-        const elements = createElements(html, domElement);
-        const root = elements[0];
-        const canvas = root.querySelector("canvas");
+        super();
 
-        initRenderer(canvas);
+        this.state =
+        {
+            visible: false,
+            show: this.show.bind(this),
+            hide: this.hide.bind(this)
+        };
+    }
+
+    connectedCallback()
+    {
+        const template = document.createElement("template");
+        template.innerHTML = html;
+        this.appendChild(template.content.cloneNode(true));
+
+        const canvas = this.querySelector("canvas");
+        this.initRenderer(canvas);
 
         document.addEventListener("mousemove", (event) =>
         {
-            uniforms.mouse.value.set(event.clientX, event.clientY);
+            this.uniforms.mouse.value.set(event.clientX, event.clientY);
         });
+
+        this.setState(this.state);
     }
 
-    let show = function()
+    show()
     {
-        this.visible = true;
+        this.state.visible = true;
     }
 
-    let hide = function()
+    hide()
     {
-        this.visible = false;
+        this.state.visible = false;
     }
 
-    let initRenderer = function( canvas )
+    initRenderer( canvas )
     {
-        renderer = new THREE.WebGLRenderer({ canvas: canvas });
-        renderer.autoClearColor = false;
+        this.renderer = new THREE.WebGLRenderer({ canvas: canvas });
+        this.renderer.autoClearColor = false;
 
-        scene = new THREE.Scene();
-        camera = new THREE.OrthographicCamera(
+        this.scene = new THREE.Scene();
+        this.camera = new THREE.OrthographicCamera(
             -1, // left
             1,  // right
             1,  // top
@@ -70,17 +94,17 @@ export function RenderView( domElement )
         );
     
         const plane = new THREE.PlaneBufferGeometry(2, 2);
-        mesh = new THREE.Mesh(plane, null);
+        this.mesh = new THREE.Mesh(plane, null);
 
-        uniforms = resetUniforms();
-        compile();
+        this.uniforms = this.resetUniforms();
+        this.compile();
 
-        scene.add(mesh);
+        this.scene.add(this.mesh);
     
-        window.requestAnimationFrame(render);
+        window.requestAnimationFrame(this.render.bind(this));
     }
 
-    let resizeRenderer = function( renderer )
+    resizeRenderer( renderer )
     {
         const canvas = renderer.domElement;
         const rect = canvas.getBoundingClientRect();
@@ -94,40 +118,40 @@ export function RenderView( domElement )
 
             // Dispatch resize event.
             let newEvent = new CustomEvent("resize", { detail: { width: width, height: height }});
-            eventTarget.dispatchEvent(newEvent);
+            this.dispatchEvent(newEvent);
         }
     }
 
-    let render = function( time )
+    render( time )
     {
         time *= 0.001; // Convert to seconds.
 
-        resizeRenderer(renderer);
+        this.resizeRenderer(this.renderer);
 
-        const canvas = renderer.domElement;
-        uniforms.time.value = time;
-        uniforms.resolution.value.set(canvas.width, canvas.height);
+        const canvas = this.renderer.domElement;
+        this.uniforms.time.value = time;
+        this.uniforms.resolution.value.set(canvas.width, canvas.height);
 
-        renderer.setClearColor(0, 0, 0, 1);
-        renderer.render(scene, camera);
+        this.renderer.setClearColor(0, 0, 0, 1);
+        this.renderer.render(this.scene, this.camera);
 
-        window.requestAnimationFrame(render);
+        window.requestAnimationFrame(this.render.bind(this));
     }
 
-    let compile = function( shader )
+    compile( shader )
     {
         if( shader )
         {
-            fragmentShader = shader;
+            this.fragmentShader = shader;
         }
 
-        material = new THREE.ShaderMaterial({ uniforms: uniforms });
-        material.fragmentShader = fragmentShader;
-        material.needsUpdate = true;
-        mesh.material = material;
+        this.material = new THREE.ShaderMaterial({ uniforms: this.uniforms });
+        this.material.fragmentShader = this.fragmentShader;
+        this.material.needsUpdate = true;
+        this.mesh.material = this.material;
     }
 
-    let resetUniforms = function()
+    resetUniforms()
     {
         return {
             time:           { value: 0 },
@@ -136,13 +160,13 @@ export function RenderView( domElement )
         }
     }
 
-    let addUniform = function( item )
+    addUniform( item )
     {
         let name = item.getName();
         let type = item.getType();
         let value = item.getValue();
 
-        if( name in uniforms )
+        if( name in this.uniforms )
         {
             return false;
         }
@@ -152,7 +176,7 @@ export function RenderView( domElement )
             case "int":
             case "float":
             {
-                uniforms[name] = { value: value };
+                this.uniforms[name] = { value: value };
                 break;
             }
             case "vec2":
@@ -163,7 +187,7 @@ export function RenderView( domElement )
             case "mat4":
             case "color":
             {
-                uniforms[name] = { value: value.flat() };
+                this.uniforms[name] = { value: value.flat() };
                 break;
             }
             case "image":
@@ -173,7 +197,7 @@ export function RenderView( domElement )
                 texture.wrapT = value.wrapVertical;
                 texture.generateMipmaps = false;
                 texture.needsUpdate = true;
-                uniforms[name] = { value: texture };
+                this.uniforms[name] = { value: texture };
                 break;
             }
             case "webcam":
@@ -183,7 +207,7 @@ export function RenderView( domElement )
                 texture.wrapT = value.wrapVertical;
                 texture.generateMipmaps = false;
                 texture.needsUpdate = true;
-                uniforms[name] = { value: texture };
+                this.uniforms[name] = { value: texture };
                 break;
             }
             default:
@@ -192,18 +216,18 @@ export function RenderView( domElement )
             }
         }
 
-        compile();
+        this.compile();
 
         return true;
     }
 
-    let setUniform = function( item )
+    setUniform( item )
     {
         let name = item.getName();
         let type = item.getType();
         let value = item.getValue();
 
-        if( !(name in uniforms) )
+        if( !(name in this.uniforms) )
         {
             return false;
         }
@@ -213,7 +237,7 @@ export function RenderView( domElement )
             case "int":
             case "float":
             {
-                uniforms[name].value = value;
+                this.uniforms[name].value = value;
                 break;
             }
             case "vec2":
@@ -224,7 +248,7 @@ export function RenderView( domElement )
             case "mat4":
             case "color":
             {
-                uniforms[name].value = value.flat();
+                this.uniforms[name].value = value.flat();
                 break;
             }
             case "image":
@@ -232,24 +256,24 @@ export function RenderView( domElement )
                 // After the initial use of a texture, its dimensions, format, and type cannot be changed.
                 // Instead, call .dispose() on the texture and instantiate a new one.
 
-                let texture = uniforms[name].value;
+                let texture = this.uniforms[name].value;
                 texture.dispose();
-                delete uniforms[name];
-                compile();
+                delete this.uniforms[name];
+                this.compile();
 
                 const loader = new THREE.TextureLoader();
                 loader.load(value.image.src,
-                    function( texture )
+                    ( texture ) =>
                     {
                         texture.wrapS = value.wrapHorizontal;
                         texture.wrapT = value.wrapVertical;
                         texture.generateMipmaps = false;
                         texture.needsUpdate = true;
-                        uniforms[name] = { value: texture };
-                        compile();
+                        this.uniforms[name] = { value: texture };
+                        this.compile();
                     },
                     undefined,
-                    function( error )
+                    ( error ) =>
                     {
                         console.log(error);
                     }
@@ -262,18 +286,18 @@ export function RenderView( domElement )
                 // After the initial use of a texture, its dimensions, format, and type cannot be changed.
                 // Instead, call .dispose() on the texture and instantiate a new one.
 
-                let texture = uniforms[name].value;
+                let texture = this.uniforms[name].value;
                 texture.dispose();
-                delete uniforms[name];
-                compile();
+                delete this.uniforms[name];
+                this.compile();
 
                 texture = new THREE.VideoTexture(value.video);
                 texture.wrapS = value.wrapHorizontal;
                 texture.wrapT = value.wrapVertical;
                 texture.generateMipmaps = false;
                 texture.needsUpdate = true;
-                uniforms[name] = { value: texture };
-                compile();
+                this.uniforms[name] = { value: texture };
+                this.compile();
 
                 break;
             }
@@ -283,35 +307,25 @@ export function RenderView( domElement )
             }
         }
 
-        material.needsUpdate = true;
+        this.material.needsUpdate = true;
 
         return true;
     }
 
-    let deleteUniform = function( item )
+    deleteUniform( item )
     {
         let name = item.getName();
 
-        if( !(name in uniforms) )
+        if( !(name in this.uniforms) )
         {
             return false;
         }
 
-        delete uniforms[name];
-        compile();
+        delete this.uniforms[name];
+        this.compile();
 
         return true;
     }
-
-    init();
-
-    return Object.assign(eventTarget, {
-        visible: true,
-        show,
-        hide,
-        compile,
-        addUniform,
-        setUniform,
-        deleteUniform
-    })
 }
+
+window.customElements.define("render-view", RenderView);
