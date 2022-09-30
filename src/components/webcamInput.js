@@ -1,5 +1,6 @@
 "use strict";
 
+import { BaseElement } from "./baseElement.js";
 import * as THREE from '../../lib/three/build/three.module.js';
 
 const html = /*html*/
@@ -48,18 +49,16 @@ const html = /*html*/
 </div>
 `;
 
-export function WebcamInput( domElement )
+export class WebcamInput extends BaseElement
 {
-    let eventTarget = new EventTarget();
-    let root = null;
-    let video = null;
-    let deviceSelect = null;
-    let wrapHorizontalSelect = null;
-    let wrapVerticalSelect = null;
+    video = null;
+    deviceSelect = null;
+    wrapHorizontalSelect = null;
+    wrapVerticalSelect = null;
 
-    let devices = { };
-    let previousConstraints = null;
-    let constraints =
+    devices = { };
+    previousConstraints = null;
+    constraints =
     {
         video:
         {
@@ -70,55 +69,68 @@ export function WebcamInput( domElement )
         }
     };
 
-    let init = function()
+    constructor()
     {
-        const elements = createElements(html, domElement);
-        root = elements[0];
+        super();
 
-        video = root.querySelector("#video");
-        deviceSelect = root.querySelector("#deviceSelect");
-        wrapHorizontalSelect = root.querySelector("#wrapHorizontalSelect");
-        wrapVerticalSelect = root.querySelector("#wrapVerticalSelect");
-
-        deviceSelect.addEventListener("change", () =>
+        this.state =
         {
-            let name = deviceSelect.options[deviceSelect.selectedIndex].text;
-            let id = devices[name];
-            findStream(id);
-        });
-
-        wrapHorizontalSelect.addEventListener("change", () =>
-        {
-            dispatchChangeEvent();
-        });
-
-        wrapVerticalSelect.addEventListener("change", () =>
-        {
-            dispatchChangeEvent();
-        });
-
-        findDevices().then(() =>
-        {
-            deviceSelect.selectedIndex = selectDefaultDevice();
-            let name = deviceSelect.options[deviceSelect.selectedIndex].text;
-            let id = devices[name];
-            findStream(id);
-        });
+        };
     }
 
-    let getElement = function()
+    connectedCallback()
     {
-        return root;
+        const template = document.createElement("template");
+        template.innerHTML = html;
+        this.appendChild(template.content.cloneNode(true));
+
+        this.video = this.querySelector("#video");
+        this.deviceSelect = this.querySelector("#deviceSelect");
+        this.wrapHorizontalSelect = this.querySelector("#wrapHorizontalSelect");
+        this.wrapVerticalSelect = this.querySelector("#wrapVerticalSelect");
+
+        this.deviceSelect.addEventListener("change", (event) =>
+        {
+            event.stopPropagation();
+
+            let name = this.deviceSelect.options[this.deviceSelect.selectedIndex].text;
+            let id = this.devices[name];
+            this.findStream(id);
+        });
+
+        this.wrapHorizontalSelect.addEventListener("change", (event) =>
+        {
+            event.stopPropagation();
+
+            this.dispatchChangeEvent();
+        });
+
+        this.wrapVerticalSelect.addEventListener("change", (event) =>
+        {
+            event.stopPropagation();
+
+            this.dispatchChangeEvent();
+        });
+
+        this.findDevices().then(() =>
+        {
+            this.deviceSelect.selectedIndex = this.selectDefaultDevice();
+            let name = this.deviceSelect.options[this.deviceSelect.selectedIndex].text;
+            let id = this.devices[name];
+            this.findStream(id);
+        });
+
+        this.setState(this.state);
     }
 
-    let getValue = function()
+    getValue()
     {
-        let index = deviceSelect.selectedIndex;
-        let name = (deviceSelect.selectedIndex in deviceSelect.options) ? deviceSelect.options[deviceSelect.selectedIndex].text : "";
-        let id = (name in devices) ? devices[name] : "";
+        let index = this.deviceSelect.selectedIndex;
+        let name = (this.deviceSelect.selectedIndex in this.deviceSelect.options) ? this.deviceSelect.options[this.deviceSelect.selectedIndex].text : "";
+        let id = (name in this.devices) ? this.devices[name] : "";
 
         let wrapHorizontal = THREE.ClampToEdgeWrapping;
-        switch( wrapHorizontalSelect.selectedIndex )
+        switch( this.wrapHorizontalSelect.selectedIndex )
         {
             case 0:     wrapHorizontal = THREE.ClampToEdgeWrapping; break;
             case 1:     wrapHorizontal = THREE.RepeatWrapping; break;
@@ -127,7 +139,7 @@ export function WebcamInput( domElement )
         }
 
         let wrapVertical = THREE.ClampToEdgeWrapping;
-        switch( wrapVerticalSelect.selectedIndex )
+        switch( this.wrapVerticalSelect.selectedIndex )
         {
             case 0:     wrapVertical = THREE.ClampToEdgeWrapping; break;
             case 1:     wrapVertical = THREE.RepeatWrapping; break;
@@ -139,27 +151,27 @@ export function WebcamInput( domElement )
             device:             { id: id, index: index, name: name },
             wrapHorizontal:     wrapHorizontal,
             wrapVertical:       wrapVertical,
-            video:              video
+            video:              this.video
         }
     }
 
-    let setValue = function( value )
+    setValue( value )
     {
-        video.srcObject = value.video.srcObject;
+        this.video.srcObject = value.video.srcObject;
 
-        if( value.device.name in devices )
+        if( value.device.name in this.devices )
         {
-            if( deviceSelect.options[value.device.index].value === value.device.id )
+            if( this.deviceSelect.options[value.device.index].value === value.device.id )
             {
-                deviceSelect.selectedIndex = value.device.index;
+                this.deviceSelect.selectedIndex = value.device.index;
             }
             else
             {
-                for( let i = 0; i < deviceSelect.options.length; i++ )
+                for( let i = 0; i < this.deviceSelect.options.length; i++ )
                 {
-                    if( deviceSelect.options[i].value === value.device.id )
+                    if( this.deviceSelect.options[i].value === value.device.id )
                     {
-                        deviceSelect.selectedIndex = i;
+                        this.deviceSelect.selectedIndex = i;
                         break;
                     }
                 }
@@ -167,45 +179,45 @@ export function WebcamInput( domElement )
         }
         else
         {
-            deviceSelect.selectedIndex = -1;
+            this.deviceSelect.selectedIndex = -1;
         }
 
         switch( value.wrapHorizontal )
         {
-            case THREE.ClampToEdgeWrapping:     wrapHorizontalSelect.selectedIndex = 0; break;
-            case THREE.RepeatWrapping:          wrapHorizontalSelect.selectedIndex = 1; break;
-            case THREE.MirroredRepeatWrapping:  wrapHorizontalSelect.selectedIndex = 2; break;
-            default:                            wrapHorizontalSelect.selectedIndex = 0; break;
+            case THREE.ClampToEdgeWrapping:     this.wrapHorizontalSelect.selectedIndex = 0; break;
+            case THREE.RepeatWrapping:          this.wrapHorizontalSelect.selectedIndex = 1; break;
+            case THREE.MirroredRepeatWrapping:  this.wrapHorizontalSelect.selectedIndex = 2; break;
+            default:                            this.wrapHorizontalSelect.selectedIndex = 0; break;
         }
 
         switch( value.wrapVertical )
         {
-            case THREE.ClampToEdgeWrapping:     wrapVerticalSelect.selectedIndex = 0; break;
-            case THREE.RepeatWrapping:          wrapVerticalSelect.selectedIndex = 1; break;
-            case THREE.MirroredRepeatWrapping:  wrapVerticalSelect.selectedIndex = 2; break;
-            default:                            wrapVerticalSelect.selectedIndex = 0; break;
+            case THREE.ClampToEdgeWrapping:     this.wrapVerticalSelect.selectedIndex = 0; break;
+            case THREE.RepeatWrapping:          this.wrapVerticalSelect.selectedIndex = 1; break;
+            case THREE.MirroredRepeatWrapping:  this.wrapVerticalSelect.selectedIndex = 2; break;
+            default:                            this.wrapVerticalSelect.selectedIndex = 0; break;
         }
     }
 
-    let dispatchChangeEvent = function()
+    dispatchChangeEvent()
     {
-        let newEvent = new CustomEvent("change", { detail: { value: getValue() }});
-        eventTarget.dispatchEvent(newEvent);
+        let newEvent = new CustomEvent("change", { detail: { value: this.getValue() }});
+        this.dispatchEvent(newEvent);
     }
 
-    let findDevices = async function()
+    async findDevices()
     {
-        return getDevices();
+        return this.getDevices();
     }
 
-    let getDevices = async function()
+    async getDevices()
     {
-        return window.navigator.mediaDevices.enumerateDevices().then(gotDevices).catch(errorDevices);
+        return window.navigator.mediaDevices.enumerateDevices().then(this.gotDevices.bind(this)).catch(this.errorDevices.bind(this));
     }
 
-    let gotDevices = async function( deviceInfos )
+    async gotDevices( deviceInfos )
     {
-        devices = { };
+        this.devices = { };
 
         let i = 0;
         for( let info of deviceInfos )
@@ -213,35 +225,35 @@ export function WebcamInput( domElement )
             if( info.kind === "videoinput" )
             {
                 let name = (info.label === "" ) ? ("Video input " + i) : info.label;
-                devices[name] = info.deviceId;
+                this.devices[name] = info.deviceId;
                 i++;
             }
         }
 
-        while( deviceSelect.firstChild )
+        while( this.deviceSelect.firstChild )
         {
-            deviceSelect.removeChild(deviceSelect.lastChild);
+            this.deviceSelect.removeChild(this.deviceSelect.lastChild);
         }
     
-        for( let name in devices )
+        for( let name in this.devices )
         {
             let option = document.createElement("option");
-            option.value = devices[name]; // id
+            option.value = this.devices[name]; // id
             option.text = name;
-            deviceSelect.appendChild(option);
+            this.deviceSelect.appendChild(option);
         }
     }
 
-    let errorDevices = async function( error )
+    async errorDevices( error )
     {
         console.log(error);
     }
 
-    let selectDefaultDevice = function()
+    selectDefaultDevice()
     {
-        for( let i = 0; i < deviceSelect.options.length; i++ )
+        for( let i = 0; i < this.deviceSelect.options.length; i++ )
         {
-            let name = deviceSelect.options[i].text.toLowerCase();
+            let name = this.deviceSelect.options[i].text.toLowerCase();
             if( name.includes("ndi") || name.includes("obs") )
             {
                 continue;
@@ -250,53 +262,47 @@ export function WebcamInput( domElement )
             return i;
         }
 
-        return -1;
+        return 0;
     }
 
-    let findStream = async function( deviceId )
+    async findStream( deviceId )
     {
-        previousConstraints = clone(constraints);
-        constraints.video.deviceId = deviceId;
-        return getStream();
+        this.previousConstraints = clone(this.constraints);
+        this.constraints.video.deviceId = deviceId;
+        return this.getStream();
     }
 
-    let getStream = async function()
+    async getStream()
     {
-        stopStream(video.srcObject);
-        return window.navigator.mediaDevices.getUserMedia(constraints).then(gotStream).catch(errorStream);
+        this.stopStream(this.video.srcObject);
+        return window.navigator.mediaDevices.getUserMedia(this.constraints).then(this.gotStream.bind(this)).catch(this.errorStream.bind(this));
     }
 
-    let gotStream = async function( stream )
+    async gotStream( stream )
     {
-        video.srcObject = stream;
-        dispatchChangeEvent();
+        this.video.srcObject = stream;
+        this.dispatchChangeEvent();
     }
 
-    let errorStream = async function( error )
+    async errorStream( error )
     {
         console.log(error);
 
-        if( previousConstraints )
+        if( this.previousConstraints )
         {
-            constraints = clone(previousConstraints);
-            previousConstraints = null;
-            getStream();
+            this.constraints = clone(this.previousConstraints);
+            this.previousConstraints = null;
+            this.getStream();
         }
     }
 
-    let stopStream = async function( stream )
+    async stopStream( stream )
     {
         if( stream )
         {
             stream.getTracks().forEach(track => track.stop());
         }
     }
-
-    init();
-
-    return Object.assign(eventTarget, {
-        getElement,
-        getValue,
-        setValue
-    })
 }
+
+window.customElements.define("webcam-input", WebcamInput);

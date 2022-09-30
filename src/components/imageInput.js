@@ -1,5 +1,6 @@
 "use strict";
 
+import { BaseElement } from "./baseElement.js";
 import * as THREE from '../../lib/three/build/three.module.js';
 
 const html = /*html*/
@@ -48,53 +49,63 @@ const html = /*html*/
 </div>
 `;
 
-export function ImageInput( domElement )
+export class ImageInput extends BaseElement
 {
-    let eventTarget = new EventTarget();
-    let root = null;
-    let fileInput = null;
-    let image = null;
-    let wrapHorizontalSelect = null;
-    let wrapVerticalSelect = null;
-    let initializing = false;
+    fileInput = null;
+    image = null;
+    wrapHorizontalSelect = null;
+    wrapVerticalSelect = null;
 
-    let init = function()
+    constructor()
     {
-        const elements = createElements(html, domElement);
-        root = elements[0];
+        super();
 
-        fileInput = root.querySelector("#fileInput");
-        image = root.querySelector("#image");
-        wrapHorizontalSelect = root.querySelector("#wrapHorizontalSelect");
-        wrapVerticalSelect = root.querySelector("#wrapVerticalSelect");
-
-        image.addEventListener("load", () =>
+        this.state =
         {
-            if( !initializing )
+            initializing: false
+        };
+    }
+
+    connectedCallback()
+    {
+        const template = document.createElement("template");
+        template.innerHTML = html;
+        this.appendChild(template.content.cloneNode(true));
+
+        this.fileInput = this.querySelector("#fileInput");
+        this.image = this.querySelector("#image");
+        this.wrapHorizontalSelect = this.querySelector("#wrapHorizontalSelect");
+        this.wrapVerticalSelect = this.querySelector("#wrapVerticalSelect");
+
+        this.image.addEventListener("load", () =>
+        {
+            if( !this.state.initializing )
             {
-                dispatchChangeEvent();
+                this.dispatchChangeEvent();
             }
 
-            initializing = false;
+            this.state.initializing = false;
         });
 
-        image.addEventListener("error", () =>
+        this.image.addEventListener("error", () =>
         {
-            initializing = false;
+            this.state.initializing = false;
         });
 
-        fileInput.addEventListener("change", (event) =>
+        this.fileInput.addEventListener("change", (event) =>
         {
+            event.stopPropagation();
+
             if( event.target.files.length <= 0 )
             {
                 return;
             }
 
             //let fileName = event.target.files[0].name;
-            image.src = URL.createObjectURL(event.target.files[0]);
+            this.image.src = URL.createObjectURL(event.target.files[0]);
         });
 
-        image.addEventListener("click", () =>
+        this.image.addEventListener("click", () =>
         {
             let newEvent = new MouseEvent("click",
             {
@@ -102,31 +113,28 @@ export function ImageInput( domElement )
                 "bubbles": true,
                 "cancelable": false
             });
-            fileInput.dispatchEvent(newEvent);
+            this.fileInput.dispatchEvent(newEvent);
         });
 
-        wrapHorizontalSelect.addEventListener("change", () =>
+        this.wrapHorizontalSelect.addEventListener("change", () =>
         {
-            dispatchChangeEvent();
+            this.dispatchChangeEvent();
         });
 
-        wrapVerticalSelect.addEventListener("change", () =>
+        this.wrapVerticalSelect.addEventListener("change", () =>
         {
-            dispatchChangeEvent();
+            this.dispatchChangeEvent();
         });
 
-        reset();
+        this.reset();
+
+        this.setState(this.state);
     }
 
-    let getElement = function()
-    {
-        return root;
-    }
-
-    let getValue = function()
+    getValue()
     {
         let wrapHorizontal = THREE.ClampToEdgeWrapping;
-        switch( wrapHorizontalSelect.selectedIndex )
+        switch( this.wrapHorizontalSelect.selectedIndex )
         {
             case 0:     wrapHorizontal = THREE.ClampToEdgeWrapping; break;
             case 1:     wrapHorizontal = THREE.RepeatWrapping; break;
@@ -135,7 +143,7 @@ export function ImageInput( domElement )
         }
 
         let wrapVertical = THREE.ClampToEdgeWrapping;
-        switch( wrapVerticalSelect.selectedIndex )
+        switch( this.wrapVerticalSelect.selectedIndex )
         {
             case 0:     wrapVertical = THREE.ClampToEdgeWrapping; break;
             case 1:     wrapVertical = THREE.RepeatWrapping; break;
@@ -150,55 +158,48 @@ export function ImageInput( domElement )
         };
     }
 
-    let setValue = function( value )
+    setValue( value )
     {
-        initializing = true;
+        this.state.initializing = true;
 
         if( !value.image.src )
         {
-            reset();
+            this.reset();
         }
         else
         {
-            image.src = value.image.src;
+            this.image.src = value.image.src;
         }
 
         switch( value.wrapHorizontal )
         {
-            case THREE.ClampToEdgeWrapping:     wrapHorizontalSelect.selectedIndex = 0; break;
-            case THREE.RepeatWrapping:          wrapHorizontalSelect.selectedIndex = 1; break;
-            case THREE.MirroredRepeatWrapping:  wrapHorizontalSelect.selectedIndex = 2; break;
-            default:                            wrapHorizontalSelect.selectedIndex = 0; break;
+            case THREE.ClampToEdgeWrapping:     this.wrapHorizontalSelect.selectedIndex = 0; break;
+            case THREE.RepeatWrapping:          this.wrapHorizontalSelect.selectedIndex = 1; break;
+            case THREE.MirroredRepeatWrapping:  this.wrapHorizontalSelect.selectedIndex = 2; break;
+            default:                            this.wrapHorizontalSelect.selectedIndex = 0; break;
         }
 
         switch( value.wrapVertical )
         {
-            case THREE.ClampToEdgeWrapping:     wrapVerticalSelect.selectedIndex = 0; break;
-            case THREE.RepeatWrapping:          wrapVerticalSelect.selectedIndex = 1; break;
-            case THREE.MirroredRepeatWrapping:  wrapVerticalSelect.selectedIndex = 2; break;
-            default:                            wrapVerticalSelect.selectedIndex = 0; break;
+            case THREE.ClampToEdgeWrapping:     this.wrapVerticalSelect.selectedIndex = 0; break;
+            case THREE.RepeatWrapping:          this.wrapVerticalSelect.selectedIndex = 1; break;
+            case THREE.MirroredRepeatWrapping:  this.wrapVerticalSelect.selectedIndex = 2; break;
+            default:                            this.wrapVerticalSelect.selectedIndex = 0; break;
         }
     }
 
-    let dispatchChangeEvent = function()
+    dispatchChangeEvent()
     {
-        let newEvent = new CustomEvent("change", { detail: { value: getValue() }});
-        eventTarget.dispatchEvent(newEvent);
+        let newEvent = new CustomEvent("change", { detail: { value: this.getValue() }});
+        this.dispatchEvent(newEvent);
     }
 
-    let reset = function()
+    reset()
     {
-        image.src = "../assets/placeholder_image.png";
-        wrapHorizontalSelect.selectedIndex = 0;
-        wrapVerticalSelect.selectedIndex = 0;
+        this.image.src = "../assets/placeholder_image.png";
+        this.wrapHorizontalSelect.selectedIndex = 0;
+        this.wrapVerticalSelect.selectedIndex = 0;
     }
-
-    init();
-
-    return Object.assign(eventTarget, {
-        getElement,
-        getValue,
-        setValue,
-        reset
-    })
 }
+
+window.customElements.define("image-input", ImageInput);

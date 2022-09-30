@@ -80,9 +80,8 @@ const html = /*html*/
                     <label class="block text-sm">
                         <span class="text-gray-700 dark:text-gray-400">Value</span>
                         <div class="w-full mb-8 overflow-hidden rounded-lg shadow-xs">
-                            <div
-                                id="matrixContainer"
-                                class="w-full">
+                            <div class="w-full">
+                                <matrix-input></matrix-input>
                             </div>
                         </div>
                     </label>
@@ -109,9 +108,8 @@ const html = /*html*/
                     <label class="block text-sm">
                         <span class="text-gray-700 dark:text-gray-400">Click to select the image</span>
                         <div class="w-full mb-8 overflow-hidden rounded-lg shadow-xs">
-                            <div
-                                id="imageContainer"
-                                class="w-full">
+                            <div class="w-full">
+                                <image-input></image-input>
                             </div>
                         </div>
                     </label>
@@ -123,9 +121,8 @@ const html = /*html*/
                     class="mb-2">
                     <label class="block text-sm">
                         <div class="w-full mb-8 overflow-hidden rounded-lg shadow-xs">
-                            <div
-                                id="webcamContainer"
-                                class="w-full">
+                            <div class="w-full">
+                                <webcam-input></webcam-input>
                             </div>
                         </div>
                     </label>
@@ -245,8 +242,7 @@ export class UniformModal extends BaseElement
         });
 
         // Matrix.
-        let matrixContainer = this.querySelector("#matrixContainer");
-        this.matrixInput = new MatrixInput(matrixContainer);
+        this.matrixInput = this.querySelector("matrix-input");
         this.matrixInput.addEventListener("change", () =>
         {
             let item = this.getSelectedItem();
@@ -260,12 +256,12 @@ export class UniformModal extends BaseElement
 
             switch( type )
             {
-                case "vec2": value = matrixInput.getVector2(); break;
-                case "vec3": value = matrixInput.getVector3(); break;
-                case "vec4": value = matrixInput.getVector4(); break;
-                case "mat2": value = matrixInput.getMatrix2(); break;
-                case "mat3": value = matrixInput.getMatrix3(); break;
-                case "mat4": value = matrixInput.getMatrix4(); break;
+                case "vec2": value = this.matrixInput.getVector2(); break;
+                case "vec3": value = this.matrixInput.getVector3(); break;
+                case "vec4": value = this.matrixInput.getVector4(); break;
+                case "mat2": value = this.matrixInput.getMatrix2(); break;
+                case "mat3": value = this.matrixInput.getMatrix3(); break;
+                case "mat4": value = this.matrixInput.getMatrix4(); break;
                 default: return;
             }
 
@@ -288,8 +284,7 @@ export class UniformModal extends BaseElement
         });
 
         // Image.
-        let imageContainer = this.querySelector("#imageContainer");
-        this.imageInput = new ImageInput(imageContainer);
+        this.imageInput = this.querySelector("image-input");
         this.imageInput.addEventListener("change", (event) =>
         {
             let item = this.getSelectedItem();
@@ -298,13 +293,13 @@ export class UniformModal extends BaseElement
                 return;
             }
 
+            console.log(event);
             item.setValue(event.detail.value);
             window.renderView.setUniform(item);
         });
 
         // Webcam.
-        let webcamContainer = this.querySelector("#webcamContainer");
-        this.webcamInput = new WebcamInput(webcamContainer);
+        this.webcamInput = this.querySelector("webcam-input");
         this.webcamInput.addEventListener("change", (event) =>
         {
             let item = this.getSelectedItem();

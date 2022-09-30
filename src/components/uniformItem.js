@@ -29,8 +29,6 @@ const html = /*html*/
             </span>
     </a>
 
-    <video autoplay loop muted playsinline hidden></video>
-
 </li>
 `;
 
@@ -42,6 +40,13 @@ export class UniformItem extends BaseElement
     constructor()
     {
         super();
+
+        this.video = document.createElement("video");
+        this.video.autoplay = true;
+        this.video.loop = true;
+        this.video.muted = true;
+        this.video.playsinline = true;
+        this.video.hidden = true;
 
         this.state =
         {
@@ -60,7 +65,7 @@ export class UniformItem extends BaseElement
         template.innerHTML = composedHtml;
         this.appendChild(template.content.cloneNode(true));
 
-        this.video = this.querySelector("video");
+        this.querySelector("li").appendChild(this.video);
 
         this.setState(this.state);
     }
