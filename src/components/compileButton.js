@@ -1,36 +1,41 @@
 "use strict";
 
+import { BaseElement } from "./baseElement.js";
 import { Icons } from '../utils/icons.js';
 
 const html = /*html*/
 `
 <button
-    class="flex items-center justify-between mx-4 px-1 py-1 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
+    class="flex items-center justify-between mx-4 px-1 py-1 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
+    x-on:click="click">
         <!-- Icon -->
         $icon
 </button>
 `;
 
-export function CompileButton( domElement )
+export class CompileButton extends BaseElement
 {
-    let root = null;
-
-    let init = function()
+    constructor()
     {
+        super();
+
+        this.state =
+        {
+            click: this.click.bind(this)
+        };
+    }
+
+    connectedCallback()
+    {
+        const template = document.createElement("template");
         const composedHtml = html.replace("$icon", Icons.compileIcon);
-        const elements = createElements(composedHtml, domElement);
-        root = elements[0];
+        template.innerHTML = composedHtml;
+        this.appendChild(template.content.cloneNode(true));
 
-        const button = root;
-        button.addEventListener("click", click);
+        this.setState(this.state);
     }
 
-    let getElement = function()
-    {
-        return root;
-    }
-
-    let click = function()
+    click()
     {
         window.renderView.show();
         window.errorView.hide();
@@ -38,10 +43,6 @@ export function CompileButton( domElement )
         let code = window.editorView.getValue();
         window.renderView.compile(code);
     }
-
-    init();
-
-    return {
-        getElement
-    }
 }
+
+window.customElements.define("compile-button", CompileButton);

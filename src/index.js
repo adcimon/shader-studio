@@ -1,13 +1,15 @@
 "use strict";
 
-import { MenuBar } from './components/menuBar.js';
-import { Label } from './components/label.js';
+import { GenericLabel } from './components/genericLabel.js';
+
 import { CompileButton } from './components/compileButton.js';
 import { ProfileMenu } from './components/profileMenu.js';
+
 import { UniformList } from './components/uniformList.js';
 import { EditorView } from './components/editorView.js';
 import { RenderView } from './components/renderView.js';
 import { ErrorView } from './components/errorView.js';
+
 import { AddModal } from './components/addModal.js';
 import { UniformModal } from './components/uniformModal.js';
 import { AboutModal } from './components/aboutModal.js';
@@ -19,7 +21,6 @@ const fragmentShader =
 uniform float time;
 uniform vec2 resolution;
 uniform vec2 mouse;
-uniform sampler2D test;
 
 void mainImage( out vec4 fragColor, in vec2 fragCoord )
 {
@@ -30,8 +31,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     vec3 color = 0.5 + 0.5 * cos(time + uv.xyx + vec3(0, 2, 4));
 
     // Output to screen.
-    //fragColor = vec4(color, 1.0);
-    fragColor = texture(test, uv);
+    fragColor = vec4(color, 1.0);
 }
 
 void main()
@@ -44,40 +44,33 @@ window.addEventListener("load", main);
 
 function main()
 {
-    const header = document.getElementById("header");
     const left = document.getElementById("left");
     const right = document.getElementById("right");
 
-    // Menu bar.
-    const menuBar = new MenuBar(header);
-    Alpine.store("menuBar", menuBar);
-    window.menuBar = Alpine.store("menuBar");
+    // Sidebar.
     {
-        // Compile button.
-        const compileButton = new CompileButton();
-        Alpine.store("compileButton", compileButton);
-        window.compileButton = Alpine.store("compileButton");
-        window.menuBar.addMenuItem(window.compileButton);
-
-        // Resolution label.
-        const resolutionLabel = new Label();
-        Alpine.store("resolutionLabel", resolutionLabel);
-        window.resolutionLabel = Alpine.store("resolutionLabel");
-        window.menuBar.addMenuItem(window.resolutionLabel);
-
-        // Profile menu.
-        const profileMenu = new ProfileMenu();
-        Alpine.store("profileMenu", profileMenu);
-        window.profileMenu = Alpine.store("profileMenu");
-        window.app.setUser("");
-        window.menuBar.addMenuItem(window.profileMenu);
+        // Uniform list.
+        const uniformList = document.querySelector("uniform-list");
+        window.uniformList = uniformList;
     }
 
-    // Uniform list.
-    const uniformList = document.querySelector("uniform-list");
-    window.uniformList = uniformList;
+    // Header.
+    {
+        // Compile button.
+        const compileButton = document.querySelector("compile-button");
+        window.compileButton = compileButton;
 
-    // Main view.
+        // Resolution label.
+        const resolutionLabel = document.querySelector("#resolutionLabel");
+        window.resolutionLabel = resolutionLabel;
+
+        // Profile menu.
+        const profileMenu = document.querySelector("profile-menu");
+        window.profileMenu = profileMenu;
+        window.app.setUser("");
+    }
+
+    // Main.
     {
         // Editor view.
         const editorView = new EditorView(left);

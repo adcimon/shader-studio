@@ -1,8 +1,10 @@
 "use strict";
 
+import { BaseElement } from "./baseElement.js";
+
 const html = /*html*/
 `
-<ul class="flex items-center flex-shrink-0 space-x-6 ml-auto">
+<ul class="flex items-center flex-shrink-0 space-x-6">
     <li class="relative">
 
         <span class="mr-2 font-bold" x-text="$store.app.getUser()"></span>
@@ -10,10 +12,8 @@ const html = /*html*/
         <!-- Button -->
         <button
             class="align-middle rounded-full focus:shadow-outline-purple focus:outline-none border-2 border-purple-600 dark:border-purple-300"
-            x-on:click="$store.profileMenu.toggle()"
-            x-on:keydown.escape="$store.profileMenu.close()"
-            aria-label="Profile"
-            aria-haspopup="true">
+            x-on:click="toggle"
+            x-on:keydown.escape="close">
             <!--
             <img
                 class="object-cover w-8 h-8 rounded-full"
@@ -27,19 +27,19 @@ const html = /*html*/
         <!-- Menu -->
         <ul
             class="absolute right-0 w-56 p-2 mt-2 space-y-2 text-gray-600 bg-gray-300 border border-gray-100 rounded-md shadow-md dark:border-gray-700 dark:text-gray-300 dark:bg-gray-700"
-            x-show="$store.profileMenu.opened"
+            x-show="opened"
             x-transition:leave="transition ease-in duration-150"
             x-transition:leave-start="opacity-100"
             x-transition:leave-end="opacity-0"
-            x-on:click.away="$store.profileMenu.close()"
-            x-on:keydown.escape="$store.profileMenu.close()">
+            x-on:click.away="close"
+            x-on:keydown.escape="close">
 
             <!-- About -->
             <li class="flex">
                 <a
                     class="inline-flex items-center w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200"
                     href="#"
-                    x-on:click="$store.profileMenu.close(); window.aboutModal.open()">
+                    x-on:click="close; window.aboutModal.open()">
                     <svg
                         class="w-4 h-4 mr-3"
                         fill="none"
@@ -85,37 +85,40 @@ const html = /*html*/
 </ul>
 `;
 
-export function ProfileMenu( domElement )
+export class ProfileMenu extends BaseElement
 {
-    let root = null;
-
-    let init = function()
+    constructor()
     {
-        const elements = createElements(html, domElement);
-        root = elements[0];
+        super();
+
+        this.state =
+        {
+            opened: false,
+            toggle: this.toggle.bind(this),
+            close: this.close.bind(this)
+        };
     }
 
-    let getElement = function()
+    connectedCallback()
     {
-        return root;
+        const template = document.createElement("template");
+        template.innerHTML = html;
+        this.appendChild(template.content.cloneNode(true));
+
+        this.classList.add("ml-auto");
+
+        this.setState(this.state);
     }
 
-    let toggle = function()
+    toggle()
     {
-        this.opened = !this.opened;
+        this.state.opened = !this.state.opened;
     }
 
-    let close = function()
+    close()
     {
-        this.opened = false;
-    }
-
-    init();
-
-    return {
-        opened: false,
-        getElement,
-        toggle,
-        close
+        this.state.opened = false;
     }
 }
+
+window.customElements.define("profile-menu", ProfileMenu);
