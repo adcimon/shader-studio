@@ -1,6 +1,7 @@
 "use strict";
 
 import { BaseElement } from './baseElement.js';
+import { Shaders } from '../utils/shaders.js';
 import * as THREE from '../../lib/three/build/three.module.js';
 
 const html = /*html*/
@@ -19,14 +20,6 @@ const html = /*html*/
 </div>
 `;
 
-const DEFAULT_SHADER =
-`
-void main()
-{
-    gl_FragColor = vec4(1.0, 0.0, 1.0, 1.0);
-}
-`;
-
 export class RenderView extends BaseElement
 {
     renderer = null;
@@ -36,7 +29,7 @@ export class RenderView extends BaseElement
     material = null;
     mesh = null;
 
-    fragmentShader = DEFAULT_SHADER;
+    fragmentShader = Shaders.errorShader;
     uniforms = { };
 
     constructor()
@@ -45,7 +38,7 @@ export class RenderView extends BaseElement
 
         this.state =
         {
-            visible: false,
+            visible: true,
             show: this.show.bind(this),
             hide: this.hide.bind(this)
         };
