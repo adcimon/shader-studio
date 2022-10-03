@@ -52,6 +52,7 @@ export class RenderView extends BaseElement
 
         const canvas = this.querySelector("canvas");
         this.initRenderer(canvas);
+        this.dispatchResizeEvent();
 
         document.addEventListener("mousemove", (event) =>
         {
@@ -89,7 +90,7 @@ export class RenderView extends BaseElement
         const plane = new THREE.PlaneBufferGeometry(2, 2);
         this.mesh = new THREE.Mesh(plane, null);
 
-        this.uniforms = this.resetUniforms();
+        this.uniforms = this.getDefaultUniforms();
         this.compile();
 
         this.scene.add(this.mesh);
@@ -108,11 +109,15 @@ export class RenderView extends BaseElement
         if( needResize )
         {
             renderer.setSize(width, height, false);
-
-            // Dispatch resize event.
-            let newEvent = new CustomEvent("resize", { detail: { width: width, height: height }});
-            this.dispatchEvent(newEvent);
+            this.dispatchResizeEvent();
         }
+    }
+
+    dispatchResizeEvent()
+    {
+        const canvas = this.renderer.domElement;
+        let newEvent = new CustomEvent("resize", { detail: { width: canvas.width, height: canvas.height }});
+        this.dispatchEvent(newEvent);
     }
 
     render( time )
@@ -144,7 +149,7 @@ export class RenderView extends BaseElement
         this.mesh.material = this.material;
     }
 
-    resetUniforms()
+    getDefaultUniforms()
     {
         return {
             time:           { value: 0 },

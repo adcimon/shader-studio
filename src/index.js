@@ -91,4 +91,5 @@ function main()
     }
 
     window.renderView.compile(Shaders.defaultShader);
+    window.renderView.dispatchResizeEvent();
 }
