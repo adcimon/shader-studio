@@ -28,7 +28,6 @@ const html = /*html*/
 
             <!-- Body -->
             <div class="mt-4 mb-6">
-
                 <div class="flex items-center justify-start w-full">
                     <!-- Title -->
                     <p class="mb-2 text-lg font-semibold text-gray-700 dark:text-gray-300">
@@ -57,20 +56,17 @@ const html = /*html*/
 
                             <thead>
                                 <tr class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
-                                    <th class="px-4 py-3">MADE WITH</th>
+                                    <th class="px-4 py-3">Made With</th>
                                     <th class="px-4 py-3">Version</th>
                                 </tr>
                             </thead>
 
                             <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
-
                                 <!-- Node -->
                                 <tr class="text-gray-700 dark:text-gray-400">
                                     <td class="px-4 py-3">
                                         <div class="flex items-center text-sm">
-                                            <div>
-                                                <p class="font-semibold">Node</p>
-                                            </div>
+                                            <p class="font-semibold">Node</p>
                                         </div>
                                     </td>
                                     <td
@@ -84,9 +80,7 @@ const html = /*html*/
                                 <tr class="text-gray-700 dark:text-gray-400">
                                     <td class="px-4 py-3">
                                         <div class="flex items-center text-sm">
-                                            <div>
-                                                <p class="font-semibold">Chrome</p>
-                                            </div>
+                                            <p class="font-semibold">Chrome</p>
                                         </div>
                                     </td>
                                     <td
@@ -100,9 +94,7 @@ const html = /*html*/
                                 <tr class="text-gray-700 dark:text-gray-400">
                                     <td class="px-4 py-3">
                                         <div class="flex items-center text-sm">
-                                            <div>
-                                                <p class="font-semibold">Electron</p>
-                                            </div>
+                                            <p class="font-semibold">Electron</p>
                                         </div>
                                     </td>
                                     <td
@@ -116,9 +108,7 @@ const html = /*html*/
                                 <tr class="text-gray-700 dark:text-gray-400">
                                     <td class="px-4 py-3">
                                         <div class="flex items-center text-sm">
-                                            <div>
-                                                <p class="font-semibold">Alpine</p>
-                                            </div>
+                                            <p class="font-semibold">Alpine</p>
                                         </div>
                                     </td>
                                     <td
@@ -131,9 +121,7 @@ const html = /*html*/
                                 <tr class="text-gray-700 dark:text-gray-400">
                                     <td class="px-4 py-3">
                                         <div class="flex items-center text-sm">
-                                            <div>
-                                                <p class="font-semibold">Monaco</p>
-                                            </div>
+                                            <p class="font-semibold">Monaco</p>
                                         </div>
                                     </td>
                                     <td
@@ -146,9 +134,7 @@ const html = /*html*/
                                 <tr class="text-gray-700 dark:text-gray-400">
                                     <td class="px-4 py-3">
                                         <div class="flex items-center text-sm">
-                                            <div>
-                                                <p class="font-semibold">THREE</p>
-                                            </div>
+                                            <p class="font-semibold">THREE</p>
                                         </div>
                                     </td>
                                     <td
@@ -156,19 +142,35 @@ const html = /*html*/
                                         143
                                     </td>
                                 </tr>
-
                             </tbody>
 
                         </table>
                     </div>
 
                     <!-- Separator -->
-                    <div class="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9 dark:text-gray-400 dark:bg-gray-800">
+                    <div class="grid px-4 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9 dark:text-gray-400 dark:bg-gray-800">
                     </div>
-
                 </div>
-
             </div>
+
+            <!-- Star -->
+            <div class="text-sm text-gray-700 dark:text-gray-400">
+                <a
+                    class="flex items-center justify-between p-4 mb-8 text-sm font-semibold text-purple-100 bg-purple-600 rounded-lg shadow-md focus:outline-none focus:shadow-outline-purple"
+                    href="https://github.com/adcimon/shader-studio"
+                    target="popup">
+                    <div class="flex items-center">
+                        <svg
+                            class="w-5 h-5 mr-2"
+                            fill="currentColor"
+                            viewBox="0 0 20 20">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                        </svg>
+                        <span>Star this project on GitHub</span>
+                    </div>
+                </a>
+            </div>
+            <br>
 
             <!-- Footer -->
             <footer class="flex flex-col items-center justify-end px-6 py-3 -mx-6 -mb-4 space-y-4 sm:space-y-0 sm:space-x-6 sm:flex-row bg-gray-300 dark:bg-gray-800">

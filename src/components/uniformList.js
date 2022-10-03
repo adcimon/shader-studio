@@ -9,7 +9,9 @@ const html = /*html*/
 
     <!-- Title -->
     <div class="flex justify-center">
-        <span class="text-lg font-bold text-gray-800 dark:text-gray-200 select-none">Uniforms</span>
+        <span class="text-lg font-bold text-gray-800 dark:text-gray-200 select-none">
+            Uniforms
+        </span>
     </div>
 
     <!-- Add Button -->
@@ -17,7 +19,7 @@ const html = /*html*/
         <button
             class="w-full px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
             x-on:click="openAddModal">
-            Add Uniform
+            Add
         </button>
     </div>
 
