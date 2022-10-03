@@ -82,11 +82,15 @@ export class UniformList extends BaseElement
         let item = new UniformItem();
         item.setName(name);
         item.setType(type);
-        this.state.items[name] = item;
-        this.list.appendChild(item);
-        window.renderView.addUniform(item);
 
-        return true;
+        const added = window.renderView.addUniform(item);
+        if( added )
+        {
+            this.state.items[name] = item;
+            this.list.appendChild(item);
+        }
+
+        return added;
     }
 
     deleteUniformItem( item )
@@ -97,11 +101,14 @@ export class UniformList extends BaseElement
             return false;
         }
 
-        this.state.items[name].remove();
-        delete this.state.items[name];
-        window.renderView.deleteUniform(item);
+        const deleted = window.renderView.deleteUniform(item);
+        if( deleted )
+        {
+            this.state.items[name].remove();
+            delete this.state.items[name];
+        }
 
-        return true;
+        return deleted;
     }
 }
 

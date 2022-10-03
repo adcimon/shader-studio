@@ -2,10 +2,6 @@
 
 const errorShader =
 `
-uniform float time;
-uniform vec2 resolution;
-uniform vec2 mouse;
-
 void main()
 {
     gl_FragColor = vec4(1.0, 0.0, 1.0, 1.0);
@@ -14,10 +10,6 @@ void main()
 
 const defaultShader =
 `// Reference: https://www.shadertoy.com/user/iq
-
-uniform float time;
-uniform vec2 resolution;
-uniform vec2 mouse;
 
 void main()
 {
