@@ -15,6 +15,7 @@ import { ErrorView } from './components/errorView.js';
 import { AddModal } from './components/addModal.js';
 import { UniformModal } from './components/uniformModal.js';
 import { AboutModal } from './components/aboutModal.js';
+import { HelpModal } from './components/helpModal.js';
 
 window.addEventListener("load", main);
 
@@ -88,6 +89,10 @@ function main()
         };
         aboutModal.updateVersions(versions);
         window.aboutModal = aboutModal;
+
+        // Help modal.
+        const helpModal = document.querySelector("help-modal");
+        window.helpModal = helpModal;
     }
 
     window.renderView.compile(Shaders.defaultShader);
