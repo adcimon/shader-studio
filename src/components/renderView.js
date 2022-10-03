@@ -90,7 +90,7 @@ export class RenderView extends BaseElement
         const plane = new THREE.PlaneBufferGeometry(2, 2);
         this.mesh = new THREE.Mesh(plane, null);
 
-        this.uniforms = this.getDefaultUniforms();
+        this.uniforms = this.createDefaultUniforms();
         this.compile();
 
         this.scene.add(this.mesh);
@@ -144,18 +144,31 @@ export class RenderView extends BaseElement
         }
 
         this.material = new THREE.ShaderMaterial({ uniforms: this.uniforms });
-        this.material.fragmentShader = this.fragmentShader;
+        this.material.fragmentShader = this.appendUniforms() + this.fragmentShader;
         this.material.needsUpdate = true;
         this.mesh.material = this.material;
     }
 
-    getDefaultUniforms()
+    createDefaultUniforms()
     {
         return {
-            time:           { value: 0 },
-            resolution:     { value: new THREE.Vector2() },
-            mouse:          { value: new THREE.Vector2() },
+            time:           { value: 0,                     type: "float" },
+            resolution:     { value: new THREE.Vector2(),   type: "vec2" },
+            mouse:          { value: new THREE.Vector2(),   type: "vec2" },
         }
+    }
+
+    appendUniforms()
+    {
+        let declarations = "";
+
+        for( const name in this.uniforms )
+        {
+            const uniform = this.uniforms[name];
+            declarations += "uniform " + uniform.type + " " + name + ";\n";
+        }
+
+        return declarations;
     }
 
     addUniform( item )
@@ -174,7 +187,7 @@ export class RenderView extends BaseElement
             case "int":
             case "float":
             {
-                this.uniforms[name] = { value: value };
+                this.uniforms[name] = { value: value, type: type };
                 break;
             }
             case "vec2":
@@ -183,9 +196,13 @@ export class RenderView extends BaseElement
             case "mat2":
             case "mat3":
             case "mat4":
+            {
+                this.uniforms[name] = { value: value.flat(), type: type };
+                break;
+            }
             case "color":
             {
-                this.uniforms[name] = { value: value.flat() };
+                this.uniforms[name] = { value: value.flat(), type: "vec3" };
                 break;
             }
             case "image":
@@ -195,7 +212,7 @@ export class RenderView extends BaseElement
                 texture.wrapT = value.wrapVertical;
                 texture.generateMipmaps = false;
                 texture.needsUpdate = true;
-                this.uniforms[name] = { value: texture };
+                this.uniforms[name] = { value: texture, type: "sampler2D" };
                 break;
             }
             case "webcam":
@@ -205,7 +222,7 @@ export class RenderView extends BaseElement
                 texture.wrapT = value.wrapVertical;
                 texture.generateMipmaps = false;
                 texture.needsUpdate = true;
-                this.uniforms[name] = { value: texture };
+                this.uniforms[name] = { value: texture, type: "sampler2D" };
                 break;
             }
             default:
