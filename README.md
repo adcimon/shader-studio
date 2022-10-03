@@ -2,6 +2,8 @@
 
 Shader Studio is a tool to create and experiment with fragment shaders.
 
+<p align="center"><img align="center" src="shader_studio.png"></p>
+
 Install.
 ```
 cd shader-studio
