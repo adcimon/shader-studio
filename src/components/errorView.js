@@ -26,12 +26,7 @@ export class ErrorView extends BaseElement
     {
         super();
 
-        this.state =
-        {
-            visible: false,
-            show: this.show.bind(this),
-            hide: this.hide.bind(this)
-        };
+        this.state = { };
     }
 
     connectedCallback()
@@ -41,16 +36,6 @@ export class ErrorView extends BaseElement
         this.textarea = this.querySelector("textarea");
 
         this.setState(this.state);
-    }
-
-    show()
-    {
-        this.state.visible = true;
-    }
-
-    hide()
-    {
-        this.state.visible = false;
     }
 
     setText( text )

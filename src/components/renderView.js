@@ -36,12 +36,7 @@ export class RenderView extends BaseElement
     {
         super();
 
-        this.state =
-        {
-            visible: true,
-            show: this.show.bind(this),
-            hide: this.hide.bind(this)
-        };
+        this.state = { };
     }
 
     connectedCallback()
@@ -58,16 +53,6 @@ export class RenderView extends BaseElement
         });
 
         this.setState(this.state);
-    }
-
-    show()
-    {
-        this.state.visible = true;
-    }
-
-    hide()
-    {
-        this.state.visible = false;
     }
 
     getShader()

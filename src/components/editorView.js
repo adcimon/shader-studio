@@ -11,9 +11,7 @@ export class EditorView extends BaseElement
     {
         super();
 
-        this.state =
-        {
-        };
+        this.state = { };
     }
 
     connectedCallback()

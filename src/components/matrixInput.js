@@ -154,9 +154,7 @@ export class MatrixInput extends BaseElement
     {
         super();
 
-        this.state =
-        {
-        };
+        this.state = { };
     }
 
     connectedCallback()
