@@ -60,10 +60,8 @@ export class UniformItem extends BaseElement
 
     connectedCallback()
     {
-        const template = document.createElement("template");
         const composedHtml = html.replace("$icon", Icons.getTypeIcon(this.state.type));
-        template.innerHTML = composedHtml;
-        this.appendChild(template.content.cloneNode(true));
+        this.createElement(composedHtml);
 
         this.querySelector("li").appendChild(this.video);
 

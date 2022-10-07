@@ -27,10 +27,8 @@ export class CompileButton extends BaseElement
 
     connectedCallback()
     {
-        const template = document.createElement("template");
         const composedHtml = html.replace("$icon", Icons.compileIcon);
-        template.innerHTML = composedHtml;
-        this.appendChild(template.content.cloneNode(true));
+        this.createElement(composedHtml);
 
         this.setState(this.state);
     }

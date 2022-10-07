@@ -36,9 +36,7 @@ export class ErrorView extends BaseElement
 
     connectedCallback()
     {
-        const template = document.createElement("template");
-        template.innerHTML = html;
-        this.appendChild(template.content.cloneNode(true));
+        this.createElement(html);
 
         this.textarea = this.querySelector("textarea");
 

@@ -46,9 +46,7 @@ export class RenderView extends BaseElement
 
     connectedCallback()
     {
-        const template = document.createElement("template");
-        template.innerHTML = html;
-        this.appendChild(template.content.cloneNode(true));
+        this.createElement(html);
 
         const canvas = this.querySelector("canvas");
         this.initRenderer(canvas);
@@ -284,7 +282,7 @@ export class RenderView extends BaseElement
                         texture.wrapT = value.wrapVertical;
                         texture.generateMipmaps = false;
                         texture.needsUpdate = true;
-                        this.uniforms[name] = { value: texture };
+                        this.uniforms[name] = { value: texture, type: "sampler2D" };
                         this.compile();
                     },
                     undefined,
@@ -311,7 +309,7 @@ export class RenderView extends BaseElement
                 texture.wrapT = value.wrapVertical;
                 texture.generateMipmaps = false;
                 texture.needsUpdate = true;
-                this.uniforms[name] = { value: texture };
+                this.uniforms[name] = { value: texture, type: "sampler2D" };
                 this.compile();
 
                 break;
