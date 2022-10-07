@@ -19,9 +19,7 @@ export class GenericLabel extends BaseElement
     {
         super();
 
-        this.state =
-        {
-        };
+        this.state = { };
     }
 
     connectedCallback()

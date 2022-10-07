@@ -73,9 +73,7 @@ export class WebcamInput extends BaseElement
     {
         super();
 
-        this.state =
-        {
-        };
+        this.state = { };
     }
 
     connectedCallback()

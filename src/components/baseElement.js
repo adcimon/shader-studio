@@ -16,6 +16,16 @@ export class BaseElement extends HTMLElement
 
     setState( state )
     {
+        if( !state )
+        {
+            state = { };
+        }
+
+        // Add default show/hide functionality.
+        state.visible = true;
+        state.show = this.show.bind(this);
+        state.hide = this.hide.bind(this);
+
         if( !window.Alpine )
         {
             document.addEventListener("alpine:init", () =>
@@ -30,5 +40,15 @@ export class BaseElement extends HTMLElement
         this.state = window.Alpine.reactive(state);
 
         window.Alpine.addScopeToNode(this, this.state);
+    }
+
+    show()
+    {
+        this.state.visible = true;
+    }
+
+    hide()
+    {
+        this.state.visible = false;
     }
 }
