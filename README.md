@@ -19,5 +19,5 @@ npm start
 Build.
 ```
 cd shader-studio
-npm run make
+npm run build
 ```
