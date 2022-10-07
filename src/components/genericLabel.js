@@ -6,7 +6,7 @@ const html = /*html*/
 `
 <div
     id="text"
-    class="text-base text-gray-800 dark:text-gray-200">
+    class="mx-1 my-1 text-base text-gray-800 dark:text-gray-200">
     Placeholder
 </div>
 `;

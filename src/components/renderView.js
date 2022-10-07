@@ -70,6 +70,16 @@ export class RenderView extends BaseElement
         this.state.visible = false;
     }
 
+    getShader()
+    {
+        if( !this.material )
+        {
+            return "";
+        }
+
+        return this.material.fragmentShader;
+    }
+
     initRenderer( canvas )
     {
         this.renderer = new THREE.WebGLRenderer({ canvas: canvas });

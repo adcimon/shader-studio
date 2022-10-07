@@ -1,5 +1,14 @@
 "use strict";
 
+/*
+|--------------------------------------------------------------------------
+| Reference
+|--------------------------------------------------------------------------
+|
+| https://heroicons.dev/
+|
+*/
+
 const defaultIcon = /*html*/
 `
 <svg
@@ -128,6 +137,22 @@ const compileIcon = /*html*/
 </svg>
 `;
 
+const saveIcon = /*html*/
+`
+<svg
+    class="w-6 h-6"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24">
+    <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4">
+    </path>
+</svg>
+`;
+
 const deleteIcon = /*html*/
 `
 <svg
@@ -143,8 +168,7 @@ const deleteIcon = /*html*/
 `;
 
 /**
- * Get the corresponding svg icon.
- * Reference: https://heroicons.dev/
+ * Get the corresponding svg icon for each uniform item type.
  */
 function getTypeIcon( type )
 {
@@ -175,6 +199,7 @@ export const Icons =
     imageIcon,
     webcamIcon,
     compileIcon,
+    saveIcon,
     deleteIcon,
     getTypeIcon
 }

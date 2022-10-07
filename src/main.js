@@ -1,7 +1,7 @@
 const { app, BrowserWindow, Menu } = require("electron");
 const path = require("path");
 
-Menu.setApplicationMenu(false);
+//Menu.setApplicationMenu(false);
 
 const createWindow = () =>
 {
@@ -9,7 +9,7 @@ const createWindow = () =>
     {
         width: 1280,
         height: 720,
-        autoHideMenuBar: true,
+        //autoHideMenuBar: true,
         icon: path.join(__dirname, "..", "assets", "favicon", "favicon.ico"),
         webPreferences:
         {

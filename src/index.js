@@ -5,6 +5,7 @@ import { Shaders } from './utils/shaders.js';
 import { GenericLabel } from './components/genericLabel.js';
 
 import { CompileButton } from './components/compileButton.js';
+import { SaveButton } from './components/saveButton.js';
 import { ProfileMenu } from './components/profileMenu.js';
 
 import { UniformList } from './components/uniformList.js';
@@ -33,6 +34,10 @@ function main()
         // Compile button.
         const compileButton = document.querySelector("compile-button");
         window.compileButton = compileButton;
+
+        // Save button.
+        const saveButton = document.querySelector("save-button");
+        window.saveButton = saveButton;
 
         // Resolution label.
         const resolutionLabel = document.querySelector("#resolutionLabel");
