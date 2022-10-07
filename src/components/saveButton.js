@@ -13,7 +13,7 @@ const html = /*html*/
 </button>
 `;
 
-export class CompileButton extends BaseElement
+export class SaveButton extends BaseElement
 {
     constructor()
     {
@@ -27,7 +27,7 @@ export class CompileButton extends BaseElement
 
     connectedCallback()
     {
-        const composedHtml = html.replace("$icon", Icons.compileIcon);
+        const composedHtml = html.replace("$icon", Icons.saveIcon);
         this.createElement(composedHtml);
 
         this.setState(this.state);
@@ -35,12 +35,8 @@ export class CompileButton extends BaseElement
 
     click()
     {
-        window.renderView.show();
-        window.errorView.hide();
-
-        let code = window.editorView.getValue();
-        window.renderView.compile(code);
+        downloadTextFile("shader.frag", window.renderView.getShader());
     }
 }
 
-window.customElements.define("compile-button", CompileButton);
+window.customElements.define("save-button", SaveButton);
