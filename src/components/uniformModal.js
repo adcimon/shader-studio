@@ -197,11 +197,9 @@ export class UniformModal extends BaseElement
 
     connectedCallback()
     {
-        const template = document.createElement("template");
         const regexp = new RegExp("\\$deleteIcon", "g");
         const composedHtml = html.replace(regexp, Icons.deleteIcon);
-        template.innerHTML = composedHtml;
-        this.appendChild(template.content.cloneNode(true));
+        this.createElement(composedHtml);
 
         this.uniformWindow = this.querySelector("#uniformWindow");
         this.typeLabel = this.querySelector("#typeLabel");

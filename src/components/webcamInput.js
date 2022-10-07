@@ -80,9 +80,7 @@ export class WebcamInput extends BaseElement
 
     connectedCallback()
     {
-        const template = document.createElement("template");
-        template.innerHTML = html;
-        this.appendChild(template.content.cloneNode(true));
+        this.createElement(html);
 
         this.video = this.querySelector("#video");
         this.deviceSelect = this.querySelector("#deviceSelect");

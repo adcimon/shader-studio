@@ -7,6 +7,13 @@ export class BaseElement extends HTMLElement
         super();
     }
 
+    createElement( html )
+    {
+        const template = document.createElement("template");
+        template.innerHTML = html;
+        this.appendChild(template.content.cloneNode(true));
+    }
+
     setState( state )
     {
         if( !window.Alpine )
