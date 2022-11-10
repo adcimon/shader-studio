@@ -1,12 +1,12 @@
 {
   "name": "shader-studio",
   "productName": "Shader Studio",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Shader Studio",
   "main": "src/main.js",
   "scripts": {
     "start": "electron .",
-    "build": "electron-builder"
+    "build": "electron-builder --win portable"
   },
   "author": "adcimon",
   "license": "MIT",
