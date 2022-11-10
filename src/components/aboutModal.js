@@ -38,7 +38,7 @@ const html = /*html*/
                     <div class="mb-4 ml-auto">
                         <span
                             class="px-1 text-xs text-purple-600 border-2 rounded border-purple-600 select-none">
-                            1.0.0
+                            1.0.1
                         </span>
                     </div>
                 </div>
