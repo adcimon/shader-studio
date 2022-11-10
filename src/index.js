@@ -22,83 +22,36 @@ window.addEventListener("load", main);
 
 function main()
 {
-    // Sidebar.
+    // App.
+    window.app.setUser("");
+
+    // Resolution label.
+    const resolutionLabel = document.querySelector("#resolutionLabel");
+    window.resolutionLabel = resolutionLabel;
+
+    // Editor view.
+    editorView.setValue(Shaders.defaultShader);
+
+    // Render view.
+    window.renderView.addEventListener("resize", (event) =>
     {
-        // Uniform list.
-        const uniformList = document.querySelector("uniform-list");
-        window.uniformList = uniformList;
-    }
+        window.resolutionLabel.setText(event.detail.width + "x" + event.detail.height);
+    });
 
-    // Header.
+    // Error view.
+    console.error = (message) =>
     {
-        // Compile button.
-        const compileButton = document.querySelector("compile-button");
-        window.compileButton = compileButton;
+        window.errorView.setText(message);
+    };
 
-        // Save button.
-        const saveButton = document.querySelector("save-button");
-        window.saveButton = saveButton;
-
-        // Resolution label.
-        const resolutionLabel = document.querySelector("#resolutionLabel");
-        window.resolutionLabel = resolutionLabel;
-
-        // Profile menu.
-        const profileMenu = document.querySelector("profile-menu");
-        window.profileMenu = profileMenu;
-        window.app.setUser("");
-    }
-
-    // Main.
+    // About modal.
+    const versions =
     {
-        // Editor view.
-        const editorView = document.querySelector("editor-view");
-        editorView.setValue(Shaders.defaultShader);
-        window.editorView = editorView;
-
-        // Render view.
-        const renderView = document.querySelector("render-view");
-        window.renderView = renderView;
-        window.renderView.addEventListener("resize", (event) =>
-        {
-            window.resolutionLabel.setText(event.detail.width + "x" + event.detail.height);
-        });
-
-        // Error view.
-        const errorView = document.querySelector("error-view");
-        window.errorView = errorView;
-        window.errorView.hide();
-        console.error = (message) =>
-        {
-            window.errorView.setText(message);
-        };
-    }
-
-    // Modals.
-    {
-        // Add modal.
-        const addModal = document.querySelector("add-modal");
-        window.addModal = addModal;
-
-        // Uniform modal.
-        const uniformModal = document.querySelector("uniform-modal");
-        window.uniformModal = uniformModal;
-
-        // About modal.
-        const aboutModal = document.querySelector("about-modal");
-        const versions =
-        {
-            node: window.nodeVersion,
-            chrome: window.chromeVersion,
-            electron: window.electronVersion
-        };
-        aboutModal.updateVersions(versions);
-        window.aboutModal = aboutModal;
-
-        // Help modal.
-        const helpModal = document.querySelector("help-modal");
-        window.helpModal = helpModal;
-    }
+        node: window.nodeVersion,
+        chrome: window.chromeVersion,
+        electron: window.electronVersion
+    };
+    window.aboutModal.updateVersions(versions);
 
     window.renderView.compile(Shaders.defaultShader);
     window.renderView.dispatchResizeEvent();

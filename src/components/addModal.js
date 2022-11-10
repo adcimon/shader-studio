@@ -113,8 +113,8 @@ export class AddModal extends BaseElement
         this.typeSelect = this.querySelector("#typeSelect");
 
         this.setState(this.state);
-
         this.hide();
+        window.addModal = this;
     }
 
     open()

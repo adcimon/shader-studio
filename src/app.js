@@ -57,7 +57,7 @@ function App()
 
 document.addEventListener("alpine:init", () =>
 {
-    let app = new App();
+    const app = new App();
     Alpine.store("app", app);
     window.app = Alpine.store("app");
 });

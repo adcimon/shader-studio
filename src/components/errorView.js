@@ -4,9 +4,7 @@ import { BaseElement } from "./baseElement.js";
 
 const html = /*html*/
 `
-<div
-    class="block w-full h-full"
-    x-show="visible">
+<div class="block w-full h-full">
 
     <label class="block w-full h-full p-2 text-sm">
         <textarea
@@ -36,6 +34,8 @@ export class ErrorView extends BaseElement
         this.textarea = this.querySelector("textarea");
 
         this.setState(this.state);
+        this.hide();
+        window.errorView = this;
     }
 
     setText( text )

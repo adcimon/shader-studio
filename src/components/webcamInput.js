@@ -89,8 +89,8 @@ export class WebcamInput extends BaseElement
         {
             event.stopPropagation();
 
-            let name = this.deviceSelect.options[this.deviceSelect.selectedIndex].text;
-            let id = this.devices[name];
+            const name = this.deviceSelect.options[this.deviceSelect.selectedIndex].text;
+            const id = this.devices[name];
             this.findStream(id);
         });
 
@@ -111,8 +111,8 @@ export class WebcamInput extends BaseElement
         this.findDevices().then(() =>
         {
             this.deviceSelect.selectedIndex = this.selectDefaultDevice();
-            let name = this.deviceSelect.options[this.deviceSelect.selectedIndex].text;
-            let id = this.devices[name];
+            const name = this.deviceSelect.options[this.deviceSelect.selectedIndex].text;
+            const id = this.devices[name];
             this.findStream(id);
         });
 
@@ -121,9 +121,9 @@ export class WebcamInput extends BaseElement
 
     getValue()
     {
-        let index = this.deviceSelect.selectedIndex;
-        let name = (this.deviceSelect.selectedIndex in this.deviceSelect.options) ? this.deviceSelect.options[this.deviceSelect.selectedIndex].text : "";
-        let id = (name in this.devices) ? this.devices[name] : "";
+        const index = this.deviceSelect.selectedIndex;
+        const name = (this.deviceSelect.selectedIndex in this.deviceSelect.options) ? this.deviceSelect.options[this.deviceSelect.selectedIndex].text : "";
+        const id = (name in this.devices) ? this.devices[name] : "";
 
         let wrapHorizontal = THREE.ClampToEdgeWrapping;
         switch( this.wrapHorizontalSelect.selectedIndex )
@@ -197,7 +197,7 @@ export class WebcamInput extends BaseElement
 
     dispatchChangeEvent()
     {
-        let newEvent = new CustomEvent("change", { detail: { value: this.getValue() }});
+        const newEvent = new CustomEvent("change", { detail: { value: this.getValue() }});
         this.dispatchEvent(newEvent);
     }
 

@@ -31,6 +31,7 @@ export class CompileButton extends BaseElement
         this.createElement(composedHtml);
 
         this.setState(this.state);
+        window.compileButton = this;
     }
 
     click()
@@ -38,7 +39,7 @@ export class CompileButton extends BaseElement
         window.renderView.show();
         window.errorView.hide();
 
-        let code = window.editorView.getValue();
+        const code = window.editorView.getValue();
         window.renderView.compile(code);
     }
 }

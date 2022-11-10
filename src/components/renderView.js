@@ -6,9 +6,7 @@ import * as THREE from '../../lib/three/build/three.module.js';
 
 const html = /*html*/
 `
-<div
-    class="w-full h-full"
-    x-show="visible">
+<div class="w-full h-full">
 
     <div class="w-full h-full box-border">
         <div class="w-full h-full box-border resize overflow-hidden border border-gray-100 dark:border-gray-700" style="max-width:100%; max-height:100%;">
@@ -53,6 +51,7 @@ export class RenderView extends BaseElement
         });
 
         this.setState(this.state);
+        window.renderView = this;
     }
 
     getShader()
@@ -109,7 +108,7 @@ export class RenderView extends BaseElement
     dispatchResizeEvent()
     {
         const canvas = this.renderer.domElement;
-        let newEvent = new CustomEvent("resize", { detail: { width: canvas.width, height: canvas.height }});
+        const newEvent = new CustomEvent("resize", { detail: { width: canvas.width, height: canvas.height }});
         this.dispatchEvent(newEvent);
     }
 
@@ -155,9 +154,9 @@ export class RenderView extends BaseElement
     {
         let declarations = "";
 
-        for( const name in this.uniforms )
+        for( let name in this.uniforms )
         {
-            const uniform = this.uniforms[name];
+            let uniform = this.uniforms[name];
             declarations += "uniform " + uniform.type + " " + name + ";\n";
         }
 
@@ -166,9 +165,9 @@ export class RenderView extends BaseElement
 
     addUniform( item )
     {
-        let name = item.getName();
-        let type = item.getType();
-        let value = item.getValue();
+        const name = item.getName();
+        const type = item.getType();
+        const value = item.getValue();
 
         if( name in this.uniforms )
         {
@@ -231,9 +230,9 @@ export class RenderView extends BaseElement
 
     setUniform( item )
     {
-        let name = item.getName();
-        let type = item.getType();
-        let value = item.getValue();
+        const name = item.getName();
+        const type = item.getType();
+        const value = item.getValue();
 
         if( !(name in this.uniforms) )
         {
@@ -322,7 +321,7 @@ export class RenderView extends BaseElement
 
     deleteUniform( item )
     {
-        let name = item.getName();
+        const name = item.getName();
 
         if( !(name in this.uniforms) )
         {

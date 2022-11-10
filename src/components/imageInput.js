@@ -99,13 +99,13 @@ export class ImageInput extends BaseElement
                 return;
             }
 
-            //let fileName = event.target.files[0].name;
+            //const fileName = event.target.files[0].name;
             this.image.src = URL.createObjectURL(event.target.files[0]);
         });
 
         this.image.addEventListener("click", () =>
         {
-            let newEvent = new MouseEvent("click",
+            const newEvent = new MouseEvent("click",
             {
                 "view": window,
                 "bubbles": true,

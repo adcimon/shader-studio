@@ -55,6 +55,7 @@ export class UniformList extends BaseElement
         this.list = this.querySelector("#list");
 
         this.setState(this.state);
+        window.uniformList = this;
     }
 
     openAddModal()
@@ -79,7 +80,7 @@ export class UniformList extends BaseElement
             return false;
         }
 
-        let item = new UniformItem();
+        const item = new UniformItem();
         item.setName(name);
         item.setType(type);
 
@@ -95,7 +96,7 @@ export class UniformList extends BaseElement
 
     deleteUniformItem( item )
     {
-        let name = item.getName();
+        const name = item.getName();
         if( !(name in this.state.items) )
         {
             return false;

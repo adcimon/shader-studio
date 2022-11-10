@@ -31,11 +31,12 @@ export class SaveButton extends BaseElement
         this.createElement(composedHtml);
 
         this.setState(this.state);
+        window.saveButton = this;
     }
 
     click()
     {
-        downloadTextFile("shader.frag", window.renderView.getShader());
+        downloadTextFile("shader", window.renderView.getShader());
     }
 }
 
