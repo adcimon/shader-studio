@@ -17,8 +17,8 @@ export class EditorView extends BaseElement
     connectedCallback()
     {
         this.createEditor();
-
         this.setState(this.state);
+        window.editorView = this;
     }
 
     createEditor()

@@ -13,7 +13,7 @@ const html = /*html*/
         <button
             class="align-middle rounded-full focus:shadow-outline-purple focus:outline-none border-2 border-purple-600 dark:border-purple-300"
             x-on:click="toggle"
-            x-on:keydown.escape="close">
+            x-on:keydown.escape="fold">
             <!--
             <img
                 class="object-cover w-8 h-8 rounded-full"
@@ -27,19 +27,19 @@ const html = /*html*/
         <!-- Menu -->
         <ul
             class="absolute right-0 w-56 p-2 mt-2 space-y-2 text-gray-600 bg-gray-300 border border-gray-100 rounded-md shadow-md dark:border-gray-700 dark:text-gray-300 dark:bg-gray-700"
-            x-show="opened"
+            x-show="!folded"
             x-transition:leave="transition ease-in duration-150"
             x-transition:leave-start="opacity-100"
             x-transition:leave-end="opacity-0"
-            x-on:click.away="close"
-            x-on:keydown.escape="close">
+            x-on:click.away="fold"
+            x-on:keydown.escape="fold">
 
             <!-- Theme -->
             <li class="flex">
                 <a
                     class="inline-flex items-center w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200"
                     href="#"
-                    x-on:click="$store.app.toggleTheme()">
+                    x-on:click="theme">
                     <svg
                         class="w-5 h-5 mr-2"
                         fill="currentColor"
@@ -63,7 +63,7 @@ const html = /*html*/
                 <a
                     class="inline-flex items-center w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200"
                     href="#"
-                    x-on:click="close; window.aboutModal.open()">
+                    x-on:click="about">
                     <svg
                         class="w-4 h-4 mr-3"
                         fill="none"
@@ -83,7 +83,7 @@ const html = /*html*/
                 <a
                     class="inline-flex items-center w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200"
                     href="#"
-                    x-on:click="close; window.helpModal.open()">
+                    x-on:click="help">
                     <svg
                         class="w-4 h-4 mr-3"
                         fill="none"
@@ -109,29 +109,48 @@ export class ProfileMenu extends BaseElement
 
         this.state =
         {
-            opened: false,
+            folded: true,
             toggle: this.toggle.bind(this),
-            close: this.close.bind(this)
+            fold: this.fold.bind(this),
+            theme: this.theme.bind(this),
+            about: this.about.bind(this),
+            help: this.help.bind(this)
         };
     }
 
     connectedCallback()
     {
         this.createElement(html);
-
         this.classList.add("ml-auto");
-
         this.setState(this.state);
+        window.profileMenu = this;
     }
 
     toggle()
     {
-        this.state.opened = !this.state.opened;
+        this.state.folded = !this.state.folded;
     }
 
-    close()
+    fold()
     {
-        this.state.opened = false;
+        this.state.folded = true;
+    }
+
+    theme()
+    {
+        window.app.toggleTheme();
+    }
+
+    about()
+    {
+        this.fold();
+        window.aboutModal.open();
+    }
+
+    help()
+    {
+        this.fold();
+        window.helpModal.open();
     }
 }
 

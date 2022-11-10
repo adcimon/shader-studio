@@ -25,6 +25,7 @@ export class BaseElement extends HTMLElement
         state.visible = true;
         state.show = this.show.bind(this);
         state.hide = this.hide.bind(this);
+        this.setAttribute("x-show", "visible");
 
         if( !window.Alpine )
         {
@@ -38,7 +39,6 @@ export class BaseElement extends HTMLElement
         }
 
         this.state = window.Alpine.reactive(state);
-
         window.Alpine.addScopeToNode(this, this.state);
     }
 

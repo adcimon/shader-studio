@@ -166,7 +166,7 @@ export class MatrixInput extends BaseElement
         {
             input.addEventListener("change", () =>
             {
-                let newEvent = new CustomEvent("change", { detail: { value: this.getValues() }});
+                const newEvent = new CustomEvent("change", { detail: { value: this.getValues() }});
                 this.dispatchEvent(newEvent);
             });
         });
@@ -176,13 +176,13 @@ export class MatrixInput extends BaseElement
 
     getInputRow( input )
     {
-        let row = Array.from(input.parentNode.parentNode.parentNode.children).indexOf(input.parentNode.parentNode);
+        const row = Array.from(input.parentNode.parentNode.parentNode.children).indexOf(input.parentNode.parentNode);
         return row;
     }
 
     getInputColumn( input )
     {
-        let column = Array.from(input.parentNode.parentNode.children).indexOf(input.parentNode);
+        const column = Array.from(input.parentNode.parentNode.children).indexOf(input.parentNode);
         return column;
     }
 
@@ -206,25 +206,25 @@ export class MatrixInput extends BaseElement
 
     getVector2()
     {
-        let values = this.getValues();
+        const values = this.getValues();
         return [values[0][0], values[0][1]];
     }
 
     getVector3()
     {
-        let values = this.getValues();
+        const values = this.getValues();
         return [values[0][0], values[0][1], values[0][2]];
     }
 
     getVector4()
     {
-        let values = this.getValues();
+        const values = this.getValues();
         return [values[0][0], values[0][1], values[0][2], values[0][3]];
     }
 
     getMatrix2()
     {
-        let values = this.getValues();
+        const values = this.getValues();
         return [
             [values[0][0], values[0][1]],
             [values[1][0], values[1][1]]
@@ -233,7 +233,7 @@ export class MatrixInput extends BaseElement
 
     getMatrix3()
     {
-        let values = this.getValues();
+        const values = this.getValues();
         return [
             [values[0][0], values[0][1], values[0][2]],
             [values[1][0], values[1][1], values[1][2]],
@@ -249,23 +249,23 @@ export class MatrixInput extends BaseElement
 
     setVector2( value )
     {
-        this.inputs[0].value = value[0][0];
-        this.inputs[1].value = value[0][1];
+        this.inputs[0].value = value[0];
+        this.inputs[1].value = value[1];
     }
 
     setVector3( value )
     {
-        this.inputs[0].value = value[0][0];
-        this.inputs[1].value = value[0][1];
-        this.inputs[2].value = value[0][2];
+        this.inputs[0].value = value[0];
+        this.inputs[1].value = value[1];
+        this.inputs[2].value = value[2];
     }
 
     setVector4( value )
     {
-        this.inputs[0].value = value[0][0];
-        this.inputs[1].value = value[0][1];
-        this.inputs[2].value = value[0][2];
-        this.inputs[3].value = value[0][3];
+        this.inputs[0].value = value[0];
+        this.inputs[1].value = value[1];
+        this.inputs[2].value = value[2];
+        this.inputs[3].value = value[3];
     }
 
     setMatrix2( value )

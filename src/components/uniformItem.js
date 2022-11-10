@@ -90,14 +90,8 @@ export class UniformItem extends BaseElement
 
     setType( type )
     {
-        if( this.state.type !== type )
-        {
-            this.state.type = type;
-            this.resetValue();
-            return;
-        }
-
         this.state.type = type;
+        this.resetValue();
     }
 
     setValue( newValue )

@@ -211,8 +211,8 @@ export class AboutModal extends BaseElement
         this.electronLabel = this.querySelector("#electronLabel");
 
         this.setState(this.state);
-
         this.hide();
+        window.aboutModal = this;
     }
 
     open()

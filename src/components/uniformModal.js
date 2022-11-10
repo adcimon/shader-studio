@@ -214,7 +214,7 @@ export class UniformModal extends BaseElement
         this.intInput = this.querySelector("#intInput");
         this.intInput.addEventListener("change", () =>
         {
-            let item = this.getSelectedItem();
+            const item = this.getSelectedItem();
             if( !item )
             {
                 return;
@@ -228,7 +228,7 @@ export class UniformModal extends BaseElement
         this.floatInput = this.querySelector("#floatInput");
         this.floatInput.addEventListener("change", () =>
         {
-            let item = this.getSelectedItem();
+            const item = this.getSelectedItem();
             if( !item )
             {
                 return;
@@ -242,13 +242,13 @@ export class UniformModal extends BaseElement
         this.matrixInput = this.querySelector("matrix-input");
         this.matrixInput.addEventListener("change", () =>
         {
-            let item = this.getSelectedItem();
+            const item = this.getSelectedItem();
             if( !item )
             {
                 return;
             }
 
-            let type = item.getType();
+            const type = item.getType();
             let value = null;
 
             switch( type )
@@ -270,7 +270,7 @@ export class UniformModal extends BaseElement
         this.colorInput = this.querySelector("#colorInput");
         this.colorInput.addEventListener("change", () =>
         {
-            let item = this.getSelectedItem();
+            const item = this.getSelectedItem();
             if( !item )
             {
                 return;
@@ -284,13 +284,12 @@ export class UniformModal extends BaseElement
         this.imageInput = this.querySelector("image-input");
         this.imageInput.addEventListener("change", (event) =>
         {
-            let item = this.getSelectedItem();
+            const item = this.getSelectedItem();
             if( !item )
             {
                 return;
             }
 
-            console.log(event);
             item.setValue(event.detail.value);
             window.renderView.setUniform(item);
         });
@@ -299,7 +298,7 @@ export class UniformModal extends BaseElement
         this.webcamInput = this.querySelector("webcam-input");
         this.webcamInput.addEventListener("change", (event) =>
         {
-            let item = this.getSelectedItem();
+            const item = this.getSelectedItem();
             if( !item )
             {
                 return;
@@ -310,8 +309,8 @@ export class UniformModal extends BaseElement
         });
 
         this.setState(this.state);
-
         this.hide();
+        window.uniformModal = this;
     }
 
     getSelectedItem()
@@ -323,7 +322,7 @@ export class UniformModal extends BaseElement
     {
         this.state.deleting = false;
 
-        let item = window.uniformList.getUniformItem(name);
+        const item = window.uniformList.getUniformItem(name);
         if( !item )
         {
             return;

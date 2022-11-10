@@ -141,8 +141,8 @@ export class HelpModal extends BaseElement
         this.createElement(html);
 
         this.setState(this.state);
-
         this.hide();
+        window.helpModal = this;
     }
 
     open()
