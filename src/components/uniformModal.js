@@ -1,13 +1,14 @@
-"use strict";
+'use strict';
 
-import { BaseElement } from "./baseElement.js";
+import { BaseElement } from './baseElement.js';
 import { Icons } from '../utils/icons.js';
-import { MatrixInput } from "./matrixInput.js";
-import { ImageInput } from "./imageInput.js";
-import { WebcamInput } from "./webcamInput.js";
+import { MatrixInput } from './matrixInput.js';
+import { ImageInput } from './imageInput.js';
+import { WebcamInput } from './webcamInput.js';
 
-const html = /*html*/
-`
+const html =
+	/*html*/
+	`
 <div
     class="fixed inset-0 z-30 flex items-end bg-black bg-opacity-50 sm:items-center sm:justify-center"
     x-show="visible"
@@ -160,356 +161,330 @@ const html = /*html*/
 </div>
 `;
 
-export class UniformModal extends BaseElement
-{
-    uniformWindow = null;
-    typeLabel = null;
+export class UniformModal extends BaseElement {
+	uniformWindow = null;
+	typeLabel = null;
 
-    intField = null;
-    floatField = null;
-    matrixField = null;
-    colorField = null;
-    imageField = null;
-    webcamField = null;
+	intField = null;
+	floatField = null;
+	matrixField = null;
+	colorField = null;
+	imageField = null;
+	webcamField = null;
 
-    intInput = null;
-    floatInput = null;
-    matrixInput = null;
-    colorInput = null;
-    imageInput = null;
-    webcamInput = null;
+	intInput = null;
+	floatInput = null;
+	matrixInput = null;
+	colorInput = null;
+	imageInput = null;
+	webcamInput = null;
 
-    constructor()
-    {
-        super();
+	constructor() {
+		super();
 
-        this.state =
-        {
-            selectedItem: null,
-            deleting: false,
-            showDelete: this.showDelete.bind(this),
-            confirmDelete: this.confirmDelete.bind(this),
-            hideDelete: this.hideDelete.bind(this),
-            close: this.close.bind(this)
-        };
-    }
+		this.state = {
+			selectedItem: null,
+			deleting: false,
+			showDelete: this.showDelete.bind(this),
+			confirmDelete: this.confirmDelete.bind(this),
+			hideDelete: this.hideDelete.bind(this),
+			close: this.close.bind(this),
+		};
+	}
 
-    connectedCallback()
-    {
-        const regexp = new RegExp("\\$deleteIcon", "g");
-        const composedHtml = html.replace(regexp, Icons.deleteIcon);
-        this.createElement(composedHtml);
+	connectedCallback() {
+		const regexp = new RegExp('\\$deleteIcon', 'g');
+		const composedHtml = html.replace(regexp, Icons.deleteIcon);
+		this.createElement(composedHtml);
 
-        this.uniformWindow = this.querySelector("#uniformWindow");
-        this.typeLabel = this.querySelector("#typeLabel");
+		this.uniformWindow = this.querySelector('#uniformWindow');
+		this.typeLabel = this.querySelector('#typeLabel');
 
-        this.intField = this.querySelector("#intField");
-        this.floatField = this.querySelector("#floatField");
-        this.matrixField = this.querySelector("#matrixField");
-        this.colorField = this.querySelector("#colorField");
-        this.imageField = this.querySelector("#imageField");
-        this.webcamField = this.querySelector("#webcamField");
+		this.intField = this.querySelector('#intField');
+		this.floatField = this.querySelector('#floatField');
+		this.matrixField = this.querySelector('#matrixField');
+		this.colorField = this.querySelector('#colorField');
+		this.imageField = this.querySelector('#imageField');
+		this.webcamField = this.querySelector('#webcamField');
 
-        // Int.
-        this.intInput = this.querySelector("#intInput");
-        this.intInput.addEventListener("change", () =>
-        {
-            const item = this.getSelectedItem();
-            if( !item )
-            {
-                return;
-            }
+		// Int.
+		this.intInput = this.querySelector('#intInput');
+		this.intInput.addEventListener('change', () => {
+			const item = this.getSelectedItem();
+			if (!item) {
+				return;
+			}
 
-            item.setValue(intInput.value);
-            window.renderView.setUniform(item);
-        });
+			item.setValue(intInput.value);
+			window.renderView.setUniform(item);
+		});
 
-        // Float.
-        this.floatInput = this.querySelector("#floatInput");
-        this.floatInput.addEventListener("change", () =>
-        {
-            const item = this.getSelectedItem();
-            if( !item )
-            {
-                return;
-            }
+		// Float.
+		this.floatInput = this.querySelector('#floatInput');
+		this.floatInput.addEventListener('change', () => {
+			const item = this.getSelectedItem();
+			if (!item) {
+				return;
+			}
 
-            item.setValue(floatInput.value);
-            window.renderView.setUniform(item);
-        });
+			item.setValue(floatInput.value);
+			window.renderView.setUniform(item);
+		});
 
-        // Matrix.
-        this.matrixInput = this.querySelector("matrix-input");
-        this.matrixInput.addEventListener("change", () =>
-        {
-            const item = this.getSelectedItem();
-            if( !item )
-            {
-                return;
-            }
+		// Matrix.
+		this.matrixInput = this.querySelector('matrix-input');
+		this.matrixInput.addEventListener('change', () => {
+			const item = this.getSelectedItem();
+			if (!item) {
+				return;
+			}
 
-            const type = item.getType();
-            let value = null;
+			const type = item.getType();
+			let value = null;
 
-            switch( type )
-            {
-                case "vec2": value = this.matrixInput.getVector2(); break;
-                case "vec3": value = this.matrixInput.getVector3(); break;
-                case "vec4": value = this.matrixInput.getVector4(); break;
-                case "mat2": value = this.matrixInput.getMatrix2(); break;
-                case "mat3": value = this.matrixInput.getMatrix3(); break;
-                case "mat4": value = this.matrixInput.getMatrix4(); break;
-                default: return;
-            }
+			switch (type) {
+				case 'vec2':
+					value = this.matrixInput.getVector2();
+					break;
+				case 'vec3':
+					value = this.matrixInput.getVector3();
+					break;
+				case 'vec4':
+					value = this.matrixInput.getVector4();
+					break;
+				case 'mat2':
+					value = this.matrixInput.getMatrix2();
+					break;
+				case 'mat3':
+					value = this.matrixInput.getMatrix3();
+					break;
+				case 'mat4':
+					value = this.matrixInput.getMatrix4();
+					break;
+				default:
+					return;
+			}
 
-            item.setValue(value);
-            window.renderView.setUniform(item);
-        });
+			item.setValue(value);
+			window.renderView.setUniform(item);
+		});
 
-        // Color.
-        this.colorInput = this.querySelector("#colorInput");
-        this.colorInput.addEventListener("change", () =>
-        {
-            const item = this.getSelectedItem();
-            if( !item )
-            {
-                return;
-            }
+		// Color.
+		this.colorInput = this.querySelector('#colorInput');
+		this.colorInput.addEventListener('change', () => {
+			const item = this.getSelectedItem();
+			if (!item) {
+				return;
+			}
 
-            item.setValue(hexToRgb(colorInput.value));
-            window.renderView.setUniform(item);
-        });
+			item.setValue(hexToRgb(colorInput.value));
+			window.renderView.setUniform(item);
+		});
 
-        // Image.
-        this.imageInput = this.querySelector("image-input");
-        this.imageInput.addEventListener("change", (event) =>
-        {
-            const item = this.getSelectedItem();
-            if( !item )
-            {
-                return;
-            }
+		// Image.
+		this.imageInput = this.querySelector('image-input');
+		this.imageInput.addEventListener('change', (event) => {
+			const item = this.getSelectedItem();
+			if (!item) {
+				return;
+			}
 
-            item.setValue(event.detail.value);
-            window.renderView.setUniform(item);
-        });
+			item.setValue(event.detail.value);
+			window.renderView.setUniform(item);
+		});
 
-        // Webcam.
-        this.webcamInput = this.querySelector("webcam-input");
-        this.webcamInput.addEventListener("change", (event) =>
-        {
-            const item = this.getSelectedItem();
-            if( !item )
-            {
-                return;
-            }
+		// Webcam.
+		this.webcamInput = this.querySelector('webcam-input');
+		this.webcamInput.addEventListener('change', (event) => {
+			const item = this.getSelectedItem();
+			if (!item) {
+				return;
+			}
 
-            item.setValue(event.detail.value);
-            window.renderView.setUniform(item);
-        });
+			item.setValue(event.detail.value);
+			window.renderView.setUniform(item);
+		});
 
-        this.setState(this.state);
-        this.hide();
-        window.uniformModal = this;
-    }
+		this.setState(this.state);
+		this.hide();
+		window.uniformModal = this;
+	}
 
-    getSelectedItem()
-    {
-        return this.state.selectedItem;
-    }
+	getSelectedItem() {
+		return this.state.selectedItem;
+	}
 
-    open( name, x, y )
-    {
-        this.state.deleting = false;
+	open(name, x, y) {
+		this.state.deleting = false;
 
-        const item = window.uniformList.getUniformItem(name);
-        if( !item )
-        {
-            return;
-        }
+		const item = window.uniformList.getUniformItem(name);
+		if (!item) {
+			return;
+		}
 
-        this.state.selectedItem = item;
-        this.state.selectedItem.select();
-        let type = this.state.selectedItem.getType();
-        let value = this.state.selectedItem.getValue();
+		this.state.selectedItem = item;
+		this.state.selectedItem.select();
+		let type = this.state.selectedItem.getType();
+		let value = this.state.selectedItem.getValue();
 
-        typeLabel.innerText = type;
-        this.setPosition(x, y);
+		typeLabel.innerText = type;
+		this.setPosition(x, y);
 
-        switch( type )
-        {
-            case "int":
-            {
-                this.intInput.value = value;
-                this.intField.show();
-                this.floatField.hide();
-                this.matrixField.hide();
-                this.colorField.hide();
-                this.imageField.hide();
-                this.webcamField.hide();
-                break;
-            }
-            case "float":
-            {
-                this.floatInput.value = value;
-                this.intField.hide();
-                this.floatField.show();
-                this.matrixField.hide();
-                this.colorField.hide();
-                this.imageField.hide();
-                this.webcamField.hide();
-                break;
-            }
-            case "vec2":
-            {
-                this.matrixInput.setVector2(value);
-                this.matrixInput.showVector2();
-                this.intField.hide();
-                this.floatField.hide();
-                this.matrixField.show();
-                this.colorField.hide();
-                this.imageField.hide();
-                this.webcamField.hide();
-                break;
-            }
-            case "vec3":
-            {
-                this.matrixInput.setVector3(value);
-                this.matrixInput.showVector3();
-                this.intField.hide();
-                this.floatField.hide();
-                this.matrixField.show();
-                this.colorField.hide();
-                this.imageField.hide();
-                this.webcamField.hide();
-                break;
-            }
-            case "vec4":
-            {
-                this.matrixInput.setVector4(value);
-                this.matrixInput.showVector4();
-                this.intField.hide();
-                this.floatField.hide();
-                this.matrixField.show();
-                this.colorField.hide();
-                this.imageField.hide();
-                this.webcamField.hide();
-                break;
-            }
-            case "mat2":
-            {
-                this.matrixInput.setMatrix2(value);
-                this.matrixInput.showMatrix2();
-                this.intField.hide();
-                this.floatField.hide();
-                this.matrixField.show();
-                this.colorField.hide();
-                this.imageField.hide();
-                this.webcamField.hide();
-                break;
-            }
-            case "mat3":
-            {
-                this.matrixInput.setMatrix3(value);
-                this.matrixInput.showMatrix3();
-                this.intField.hide();
-                this.floatField.hide();
-                this.matrixField.show();
-                this.colorField.hide();
-                this.imageField.hide();
-                this.webcamField.hide();
-                break;
-            }
-            case "mat4":
-            {
-                this.matrixInput.setMatrix4(value);
-                this.matrixInput.showMatrix4();
-                this.intField.hide();
-                this.floatField.hide();
-                this.matrixField.show();
-                this.colorField.hide();
-                this.imageField.hide();
-                this.webcamField.hide();
-                break;
-            }
-            case "color":
-            {
-                this.colorInput.value = rgbToHex(...value);
-                this.intField.hide();
-                this.floatField.hide();
-                this.matrixField.hide();
-                this.colorField.show();
-                this.imageField.hide();
-                this.webcamField.hide();
-                break;
-            }
-            case "image":
-            {
-                this.imageInput.setValue(value);
-                this.intField.hide();
-                this.floatField.hide();
-                this.matrixField.hide();
-                this.colorField.hide();
-                this.imageField.show();
-                this.webcamField.hide();
-                break;
-            }
-            case "webcam":
-            {
-                this.webcamInput.setValue(value);
-                this.intField.hide();
-                this.floatField.hide();
-                this.matrixField.hide();
-                this.colorField.hide();
-                this.imageField.hide();
-                this.webcamField.show();
-                break;
-            }
-            default:
-            {
-                return;
-            }
-        }
+		switch (type) {
+			case 'int': {
+				this.intInput.value = value;
+				this.intField.show();
+				this.floatField.hide();
+				this.matrixField.hide();
+				this.colorField.hide();
+				this.imageField.hide();
+				this.webcamField.hide();
+				break;
+			}
+			case 'float': {
+				this.floatInput.value = value;
+				this.intField.hide();
+				this.floatField.show();
+				this.matrixField.hide();
+				this.colorField.hide();
+				this.imageField.hide();
+				this.webcamField.hide();
+				break;
+			}
+			case 'vec2': {
+				this.matrixInput.setVector2(value);
+				this.matrixInput.showVector2();
+				this.intField.hide();
+				this.floatField.hide();
+				this.matrixField.show();
+				this.colorField.hide();
+				this.imageField.hide();
+				this.webcamField.hide();
+				break;
+			}
+			case 'vec3': {
+				this.matrixInput.setVector3(value);
+				this.matrixInput.showVector3();
+				this.intField.hide();
+				this.floatField.hide();
+				this.matrixField.show();
+				this.colorField.hide();
+				this.imageField.hide();
+				this.webcamField.hide();
+				break;
+			}
+			case 'vec4': {
+				this.matrixInput.setVector4(value);
+				this.matrixInput.showVector4();
+				this.intField.hide();
+				this.floatField.hide();
+				this.matrixField.show();
+				this.colorField.hide();
+				this.imageField.hide();
+				this.webcamField.hide();
+				break;
+			}
+			case 'mat2': {
+				this.matrixInput.setMatrix2(value);
+				this.matrixInput.showMatrix2();
+				this.intField.hide();
+				this.floatField.hide();
+				this.matrixField.show();
+				this.colorField.hide();
+				this.imageField.hide();
+				this.webcamField.hide();
+				break;
+			}
+			case 'mat3': {
+				this.matrixInput.setMatrix3(value);
+				this.matrixInput.showMatrix3();
+				this.intField.hide();
+				this.floatField.hide();
+				this.matrixField.show();
+				this.colorField.hide();
+				this.imageField.hide();
+				this.webcamField.hide();
+				break;
+			}
+			case 'mat4': {
+				this.matrixInput.setMatrix4(value);
+				this.matrixInput.showMatrix4();
+				this.intField.hide();
+				this.floatField.hide();
+				this.matrixField.show();
+				this.colorField.hide();
+				this.imageField.hide();
+				this.webcamField.hide();
+				break;
+			}
+			case 'color': {
+				this.colorInput.value = rgbToHex(...value);
+				this.intField.hide();
+				this.floatField.hide();
+				this.matrixField.hide();
+				this.colorField.show();
+				this.imageField.hide();
+				this.webcamField.hide();
+				break;
+			}
+			case 'image': {
+				this.imageInput.setValue(value);
+				this.intField.hide();
+				this.floatField.hide();
+				this.matrixField.hide();
+				this.colorField.hide();
+				this.imageField.show();
+				this.webcamField.hide();
+				break;
+			}
+			case 'webcam': {
+				this.webcamInput.setValue(value);
+				this.intField.hide();
+				this.floatField.hide();
+				this.matrixField.hide();
+				this.colorField.hide();
+				this.imageField.hide();
+				this.webcamField.show();
+				break;
+			}
+			default: {
+				return;
+			}
+		}
 
-        this.show();
-    }
+		this.show();
+	}
 
-    close()
-    {
-        this.hide();
-        this.state.selectedItem.deselect();
-        this.state.selectedItem = null;
-    }
+	close() {
+		this.hide();
+		this.state.selectedItem.deselect();
+		this.state.selectedItem = null;
+	}
 
-    setPosition( x, y )
-    {
-        uniformWindow.style.left = (x - 10) + "px";
-        uniformWindow.style.top = (y + 20) + "px";
-    }
+	setPosition(x, y) {
+		uniformWindow.style.left = x - 10 + 'px';
+		uniformWindow.style.top = y + 20 + 'px';
+	}
 
-    resetPosition()
-    {
-        uniformWindow.style.left = "50%";
-        uniformWindow.style.top = "50%";
-    }
+	resetPosition() {
+		uniformWindow.style.left = '50%';
+		uniformWindow.style.top = '50%';
+	}
 
-    showDelete()
-    {
-        this.state.deleting = true;
-    }
+	showDelete() {
+		this.state.deleting = true;
+	}
 
-    hideDelete()
-    {
-        this.state.deleting = false;
-    }
+	hideDelete() {
+		this.state.deleting = false;
+	}
 
-    confirmDelete()
-    {
-        window.uniformList.deleteUniformItem(this.state.selectedItem);
-        this.hide();
-        this.state.deleting = false;
-        this.state.selectedItem = null;
-    }
+	confirmDelete() {
+		window.uniformList.deleteUniformItem(this.state.selectedItem);
+		this.hide();
+		this.state.deleting = false;
+		this.state.selectedItem = null;
+	}
 }
 
-window.customElements.define("uniform-modal", UniformModal);
+window.customElements.define('uniform-modal', UniformModal);

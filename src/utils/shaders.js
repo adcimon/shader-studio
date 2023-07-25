@@ -1,16 +1,13 @@
-"use strict";
+'use strict';
 
-const errorShader =
-`
+const errorShader = `
 void main()
 {
     gl_FragColor = vec4(1.0, 0.0, 1.0, 1.0);
 }
 `;
 
-const defaultShader =
-`// Reference: https://www.shadertoy.com/user/iq
-
+const defaultShader = `
 void main()
 {
     // Normalized pixel coordinates (from 0 to 1).
@@ -24,8 +21,7 @@ void main()
 }
 `;
 
-export const Shaders =
-{
-    errorShader,
-    defaultShader
+export const Shaders = {
+	errorShader,
+	defaultShader,
 };

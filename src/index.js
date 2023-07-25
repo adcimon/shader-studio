@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 import { Shaders } from './utils/shaders.js';
 
@@ -18,41 +18,37 @@ import { UniformModal } from './components/uniformModal.js';
 import { AboutModal } from './components/aboutModal.js';
 import { HelpModal } from './components/helpModal.js';
 
-window.addEventListener("load", main);
+window.addEventListener('load', main);
 
-function main()
-{
-    // App.
-    window.app.setUser("");
+function main() {
+	// App.
+	window.app.setUser('');
 
-    // Resolution label.
-    const resolutionLabel = document.querySelector("#resolutionLabel");
-    window.resolutionLabel = resolutionLabel;
+	// Resolution label.
+	const resolutionLabel = document.querySelector('#resolutionLabel');
+	window.resolutionLabel = resolutionLabel;
 
-    // Editor view.
-    editorView.setValue(Shaders.defaultShader);
+	// Editor view.
+	editorView.setValue(Shaders.defaultShader);
 
-    // Render view.
-    window.renderView.addEventListener("resize", (event) =>
-    {
-        window.resolutionLabel.setText(event.detail.width + "x" + event.detail.height);
-    });
+	// Render view.
+	window.renderView.addEventListener('resize', (event) => {
+		window.resolutionLabel.setText(event.detail.width + 'x' + event.detail.height);
+	});
 
-    // Error view.
-    console.error = (message) =>
-    {
-        window.errorView.setText(message);
-    };
+	// Error view.
+	console.error = (message) => {
+		window.errorView.setText(message);
+	};
 
-    // About modal.
-    const versions =
-    {
-        node: window.nodeVersion,
-        chrome: window.chromeVersion,
-        electron: window.electronVersion
-    };
-    window.aboutModal.updateVersions(versions);
+	// About modal.
+	const versions = {
+		node: window.nodeVersion,
+		chrome: window.chromeVersion,
+		electron: window.electronVersion,
+	};
+	window.aboutModal.updateVersions(versions);
 
-    window.renderView.compile(Shaders.defaultShader);
-    window.renderView.dispatchResizeEvent();
+	window.renderView.compile(Shaders.defaultShader);
+	window.renderView.dispatchResizeEvent();
 }

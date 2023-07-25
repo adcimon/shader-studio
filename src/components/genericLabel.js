@@ -1,9 +1,10 @@
-"use strict";
+'use strict';
 
-import { BaseElement } from "./baseElement.js";
+import { BaseElement } from './baseElement.js';
 
-const html = /*html*/
-`
+const html =
+	/*html*/
+	`
 <div
     id="text"
     class="mx-1 my-1 text-base text-gray-800 dark:text-gray-200">
@@ -11,30 +12,26 @@ const html = /*html*/
 </div>
 `;
 
-export class GenericLabel extends BaseElement
-{
-    text = null;
+export class GenericLabel extends BaseElement {
+	text = null;
 
-    constructor()
-    {
-        super();
+	constructor() {
+		super();
 
-        this.state = { };
-    }
+		this.state = {};
+	}
 
-    connectedCallback()
-    {
-        this.createElement(html);
+	connectedCallback() {
+		this.createElement(html);
 
-        this.text = this.querySelector("#text");
+		this.text = this.querySelector('#text');
 
-        this.setState(this.state);
-    }
+		this.setState(this.state);
+	}
 
-    setText( text )
-    {
-        this.text.innerText = text;
-    }
+	setText(text) {
+		this.text.innerText = text;
+	}
 }
 
-window.customElements.define("generic-label", GenericLabel);
+window.customElements.define('generic-label', GenericLabel);

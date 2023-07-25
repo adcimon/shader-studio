@@ -1,9 +1,10 @@
-"use strict";
+'use strict';
 
-import { BaseElement } from "./baseElement.js";
+import { BaseElement } from './baseElement.js';
 
-const html = /*html*/
-`
+const html =
+	/*html*/
+	`
 <div class="block w-full h-full">
 
     <label class="block w-full h-full p-2 text-sm">
@@ -16,35 +17,31 @@ const html = /*html*/
 </div>
 `;
 
-export class ErrorView extends BaseElement
-{
-    textarea = null;
+export class ErrorView extends BaseElement {
+	textarea = null;
 
-    constructor()
-    {
-        super();
+	constructor() {
+		super();
 
-        this.state = { };
-    }
+		this.state = {};
+	}
 
-    connectedCallback()
-    {
-        this.createElement(html);
+	connectedCallback() {
+		this.createElement(html);
 
-        this.textarea = this.querySelector("textarea");
+		this.textarea = this.querySelector('textarea');
 
-        this.setState(this.state);
-        this.hide();
-        window.errorView = this;
-    }
+		this.setState(this.state);
+		this.hide();
+		window.errorView = this;
+	}
 
-    setText( text )
-    {
-        window.renderView.hide();
-        this.show();
+	setText(text) {
+		window.renderView.hide();
+		this.show();
 
-        this.textarea.value = text;
-    }
+		this.textarea.value = text;
+	}
 }
 
-window.customElements.define("error-view", ErrorView);
+window.customElements.define('error-view', ErrorView);

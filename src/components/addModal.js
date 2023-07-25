@@ -1,9 +1,10 @@
-"use strict";
+'use strict';
 
-import { BaseElement } from "./baseElement.js";
+import { BaseElement } from './baseElement.js';
 
-const html = /*html*/
-`
+const html =
+	/*html*/
+	`
 <div
     class="fixed inset-0 z-30 flex items-end bg-black bg-opacity-50 sm:items-center sm:justify-center"
     x-show="visible"
@@ -86,63 +87,55 @@ const html = /*html*/
 </div>
 `;
 
-export class AddModal extends BaseElement
-{
-    nameInput = null;
-    invalidLabel = null;
-    typeSelect = null;
+export class AddModal extends BaseElement {
+	nameInput = null;
+	invalidLabel = null;
+	typeSelect = null;
 
-    constructor()
-    {
-        super();
+	constructor() {
+		super();
 
-        this.state =
-        {
-            accept: this.accept.bind(this),
-            close: this.close.bind(this)
-        };
-    }
+		this.state = {
+			accept: this.accept.bind(this),
+			close: this.close.bind(this),
+		};
+	}
 
-    connectedCallback()
-    {
-        this.createElement(html);
+	connectedCallback() {
+		this.createElement(html);
 
-        this.nameInput = this.querySelector("#nameInput");
-        this.invalidLabel = this.querySelector("#invalidLabel");
-        this.invalidLabel.hide();
-        this.typeSelect = this.querySelector("#typeSelect");
+		this.nameInput = this.querySelector('#nameInput');
+		this.invalidLabel = this.querySelector('#invalidLabel');
+		this.invalidLabel.hide();
+		this.typeSelect = this.querySelector('#typeSelect');
 
-        this.setState(this.state);
-        this.hide();
-        window.addModal = this;
-    }
+		this.setState(this.state);
+		this.hide();
+		window.addModal = this;
+	}
 
-    open()
-    {
-        this.nameInput.value = "";
-        this.typeSelect.selectedIndex = 0;
-        this.invalidLabel.hide();
-        this.show();
-    }
+	open() {
+		this.nameInput.value = '';
+		this.typeSelect.selectedIndex = 0;
+		this.invalidLabel.hide();
+		this.show();
+	}
 
-    close()
-    {
-        this.hide();
-    }
+	close() {
+		this.hide();
+	}
 
-    accept()
-    {
-        let name = this.nameInput.value;
-        let type = this.typeSelect.options[this.typeSelect.selectedIndex].text;
+	accept() {
+		let name = this.nameInput.value;
+		let type = this.typeSelect.options[this.typeSelect.selectedIndex].text;
 
-        if( !window.uniformList.addUniformItem(name, type) )
-        {
-            this.invalidLabel.show();
-            return;
-        }
+		if (!window.uniformList.addUniformItem(name, type)) {
+			this.invalidLabel.show();
+			return;
+		}
 
-        window.addModal.close();
-    }
+		window.addModal.close();
+	}
 }
 
-window.customElements.define("add-modal", AddModal);
+window.customElements.define('add-modal', AddModal);

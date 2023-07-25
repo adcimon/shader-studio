@@ -1,93 +1,118 @@
 <!DOCTYPE html>
 
-<html lang="en" x-data>
+<html
+	lang="en"
+	x-data>
+	<head>
+		<title>Shader Studio</title>
 
-<head>
+		<meta charset="utf-8" />
 
-    <title>Shader Studio</title>
+		<meta
+			name="author"
+			content="" />
+		<meta
+			name="description"
+			content="" />
+		<meta
+			name="keywords"
+			content="" />
+		<meta
+			name="language"
+			content="en" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1" />
 
-    <meta charset="utf-8"/>
+		<!-- Libraries -->
 
-    <meta name="author" content="">
-    <meta name="description" content="">
-    <meta name="keywords" content="">
-    <meta name="language" content="en">
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+		<!-- Tailwind -->
+		<link
+			type="text/css"
+			rel="stylesheet"
+			href="../lib/tailwind/font.css" />
+		<link
+			type="text/css"
+			rel="stylesheet"
+			href="../lib/tailwind/tailwind.main.css" />
 
-    <!-- Libraries -->
+		<!-- Alpine -->
+		<script
+			type="module"
+			src="../lib/alpine/packages/alpinejs/dist/cdn.js"
+			defer></script>
 
-        <!-- Tailwind -->
-        <link type="text/css" rel="stylesheet" href="../lib/tailwind/font.css"/>
-        <link type="text/css" rel="stylesheet" href="../lib/tailwind/tailwind.main.css"/>
+		<!-- Monaco -->
+		<link
+			type="text/css"
+			rel="stylesheet"
+			href="../lib/monaco/min/vs/editor/editor.main.css" />
+		<script>
+			var require = { paths: { vs: '../lib/monaco/min/vs' } };
+		</script>
+		<script src="../lib/monaco/min/vs/loader.js"></script>
+		<script src="../lib/monaco/min/vs/editor/editor.main.nls.js"></script>
+		<script src="../lib/monaco/min/vs/editor/editor.main.js"></script>
 
-        <!-- Alpine -->
-        <script type="module" src="../lib/alpine/packages/alpinejs/dist/cdn.js" defer></script>
+		<!-- Scripts -->
+		<script
+			type="text/javascript"
+			src="./utils/utils.js"></script>
+		<script
+			type="text/javascript"
+			src="./app.js"></script>
+		<script
+			type="module"
+			src="./index.js"></script>
+	</head>
 
-        <!-- Monaco -->
-        <link type="text/css" rel="stylesheet" href="../lib/monaco/min/vs/editor/editor.main.css"/>
-        <script>var require = { paths: { vs: '../lib/monaco/min/vs' } };</script>
-        <script src="../lib/monaco/min/vs/loader.js"></script>
-        <script src="../lib/monaco/min/vs/editor/editor.main.nls.js"></script>
-        <script src="../lib/monaco/min/vs/editor/editor.main.js"></script>
+	<body
+		class="m-0 overflow-hidden bg-gray-300 dark:bg-gray-900"
+		x-bind:class="{ 'theme-dark': $store.app.theme === 'dark' }">
+		<div class="flex h-screen bg-gray-300 dark:bg-gray-900">
+			<!-- Sidebar -->
+			<aside
+				class="z-20 w-64 overflow-y-auto bg-gray-300 dark:bg-gray-800 md:block flex-shrink-0 border-1 border-gray-100 dark:border-gray-700">
+				<uniform-list></uniform-list>
+			</aside>
 
-    <!-- Scripts -->
-    <script type="text/javascript" src="./utils/utils.js"></script>
-    <script type="text/javascript" src="./app.js"></script>
-    <script type="module" src="./index.js"></script>
+			<!-- Content -->
+			<div class="flex flex-col flex-1 w-full h-full">
+				<!-- Header -->
+				<header
+					class="z-10 py-4 bg-gray-300 shadow-md dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
+					<div
+						class="flex items-center justify-start h-full px-6 mx-auto text-purple-600 dark:text-purple-300">
+						<compile-button></compile-button>
+						<save-button></save-button>
+						<generic-label id="resolutionLabel"></generic-label>
+						<profile-menu></profile-menu>
+					</div>
+				</header>
 
-</head>
+				<!-- Main -->
+				<main class="flex flex-row flex-1 w-full h-full">
+					<!-- Left -->
+					<div
+						id="left"
+						class="w-1/2 h-full">
+						<editor-view></editor-view>
+					</div>
 
-<body class="m-0 overflow-hidden bg-gray-300 dark:bg-gray-900" x-bind:class="{ 'theme-dark': $store.app.theme === 'dark' }">
+					<!-- Right -->
+					<div
+						id="right"
+						class="w-1/2 h-full">
+						<render-view></render-view>
+						<error-view></error-view>
+					</div>
+				</main>
+			</div>
+		</div>
 
-    <div class="flex h-screen bg-gray-300 dark:bg-gray-900">
-
-        <!-- Sidebar -->
-        <aside class="z-20 w-64 overflow-y-auto bg-gray-300 dark:bg-gray-800 md:block flex-shrink-0 border-1 border-gray-100 dark:border-gray-700">
-            <uniform-list></uniform-list>
-        </aside>
-
-        <!-- Content -->
-        <div class="flex flex-col flex-1 w-full h-full">
-
-            <!-- Header -->
-            <header class="z-10 py-4 bg-gray-300 shadow-md dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
-                <div class="flex items-center justify-start h-full px-6 mx-auto text-purple-600 dark:text-purple-300">
-                    <compile-button></compile-button>
-                    <save-button></save-button>
-                    <generic-label id="resolutionLabel"></generic-label>
-                    <profile-menu></profile-menu>
-                </div>
-            </header>
-
-            <!-- Main -->
-            <main class="flex flex-row flex-1 w-full h-full">
-
-                <!-- Left -->
-                <div
-                    id="left"
-                    class="w-1/2 h-full">
-                        <editor-view></editor-view>
-                </div>
-
-                <!-- Right -->
-                <div
-                    id="right"
-                    class="w-1/2 h-full">
-                        <render-view></render-view>
-                        <error-view></error-view>
-                </div>
-
-            </main>
-
-        </div>
-
-    </div>
-
-    <add-modal></add-modal>
-    <uniform-modal></uniform-modal>
-    <about-modal></about-modal>
-    <help-modal></help-modal>
-
-</body>
-
+		<add-modal></add-modal>
+		<uniform-modal></uniform-modal>
+		<about-modal></about-modal>
+		<help-modal></help-modal>
+	</body>
 </html>

@@ -1,11 +1,12 @@
-"use strict";
+'use strict';
 
 import { BaseElement } from './baseElement.js';
 import { Shaders } from '../utils/shaders.js';
 import * as THREE from '../../lib/three/build/three.module.js';
 
-const html = /*html*/
-`
+const html =
+	/*html*/
+	`
 <div class="w-full h-full">
 
     <div class="w-full h-full box-border">
@@ -18,321 +19,285 @@ const html = /*html*/
 </div>
 `;
 
-export class RenderView extends BaseElement
-{
-    renderer = null;
-    scene = null;
-    camera = null;
+export class RenderView extends BaseElement {
+	renderer = null;
+	scene = null;
+	camera = null;
 
-    material = null;
-    mesh = null;
+	material = null;
+	mesh = null;
 
-    fragmentShader = Shaders.errorShader;
-    uniforms = { };
+	fragmentShader = Shaders.errorShader;
+	uniforms = {};
 
-    constructor()
-    {
-        super();
+	constructor() {
+		super();
 
-        this.state = { };
-    }
+		this.state = {};
+	}
 
-    connectedCallback()
-    {
-        this.createElement(html);
+	connectedCallback() {
+		this.createElement(html);
 
-        const canvas = this.querySelector("canvas");
-        this.initRenderer(canvas);
-        this.dispatchResizeEvent();
+		const canvas = this.querySelector('canvas');
+		this.initRenderer(canvas);
+		this.dispatchResizeEvent();
 
-        document.addEventListener("mousemove", (event) =>
-        {
-            this.uniforms.mouse.value.set(event.clientX, event.clientY);
-        });
+		document.addEventListener('mousemove', (event) => {
+			this.uniforms.mouse.value.set(event.clientX, event.clientY);
+		});
 
-        this.setState(this.state);
-        window.renderView = this;
-    }
+		this.setState(this.state);
+		window.renderView = this;
+	}
 
-    getShader()
-    {
-        if( !this.material )
-        {
-            return "";
-        }
+	getShader() {
+		if (!this.material) {
+			return '';
+		}
 
-        return this.material.fragmentShader;
-    }
+		return this.material.fragmentShader;
+	}
 
-    initRenderer( canvas )
-    {
-        this.renderer = new THREE.WebGLRenderer({ canvas: canvas });
-        this.renderer.autoClearColor = false;
+	initRenderer(canvas) {
+		this.renderer = new THREE.WebGLRenderer({ canvas: canvas });
+		this.renderer.autoClearColor = false;
 
-        this.scene = new THREE.Scene();
-        this.camera = new THREE.OrthographicCamera(
-            -1, // left
-            1,  // right
-            1,  // top
-            -1, // bottom
-            -1, // near
-            1,  // far
-        );
-    
-        const plane = new THREE.PlaneBufferGeometry(2, 2);
-        this.mesh = new THREE.Mesh(plane, null);
+		this.scene = new THREE.Scene();
+		this.camera = new THREE.OrthographicCamera(
+			-1, // left
+			1, // right
+			1, // top
+			-1, // bottom
+			-1, // near
+			1, // far
+		);
 
-        this.uniforms = this.createDefaultUniforms();
-        this.compile();
+		const plane = new THREE.PlaneBufferGeometry(2, 2);
+		this.mesh = new THREE.Mesh(plane, null);
 
-        this.scene.add(this.mesh);
-    
-        window.requestAnimationFrame(this.render.bind(this));
-    }
+		this.uniforms = this.createDefaultUniforms();
+		this.compile();
 
-    resizeRenderer( renderer )
-    {
-        const canvas = renderer.domElement;
-        const rect = canvas.getBoundingClientRect();
-        const width = Math.floor(rect.width);
-        const height = Math.floor(rect.height);
+		this.scene.add(this.mesh);
 
-        const needResize = (canvas.width !== width) || (canvas.height !== height);
-        if( needResize )
-        {
-            renderer.setSize(width, height, false);
-            this.dispatchResizeEvent();
-        }
-    }
+		window.requestAnimationFrame(this.render.bind(this));
+	}
 
-    dispatchResizeEvent()
-    {
-        const canvas = this.renderer.domElement;
-        const newEvent = new CustomEvent("resize", { detail: { width: canvas.width, height: canvas.height }});
-        this.dispatchEvent(newEvent);
-    }
+	resizeRenderer(renderer) {
+		const canvas = renderer.domElement;
+		const rect = canvas.getBoundingClientRect();
+		const width = Math.floor(rect.width);
+		const height = Math.floor(rect.height);
 
-    render( time )
-    {
-        time *= 0.001; // Convert to seconds.
+		const needResize = canvas.width !== width || canvas.height !== height;
+		if (needResize) {
+			renderer.setSize(width, height, false);
+			this.dispatchResizeEvent();
+		}
+	}
 
-        this.resizeRenderer(this.renderer);
+	dispatchResizeEvent() {
+		const canvas = this.renderer.domElement;
+		const newEvent = new CustomEvent('resize', { detail: { width: canvas.width, height: canvas.height } });
+		this.dispatchEvent(newEvent);
+	}
 
-        const canvas = this.renderer.domElement;
-        this.uniforms.time.value = time;
-        this.uniforms.resolution.value.set(canvas.width, canvas.height);
+	render(time) {
+		time *= 0.001; // Convert to seconds.
 
-        this.renderer.setClearColor(0, 0, 0, 1);
-        this.renderer.render(this.scene, this.camera);
+		this.resizeRenderer(this.renderer);
 
-        window.requestAnimationFrame(this.render.bind(this));
-    }
+		const canvas = this.renderer.domElement;
+		this.uniforms.time.value = time;
+		this.uniforms.resolution.value.set(canvas.width, canvas.height);
 
-    compile( shader )
-    {
-        if( shader )
-        {
-            this.fragmentShader = shader;
-        }
+		this.renderer.setClearColor(0, 0, 0, 1);
+		this.renderer.render(this.scene, this.camera);
 
-        this.material = new THREE.ShaderMaterial({ uniforms: this.uniforms });
-        this.material.fragmentShader = this.appendUniforms() + this.fragmentShader;
-        this.material.needsUpdate = true;
-        this.mesh.material = this.material;
-    }
+		window.requestAnimationFrame(this.render.bind(this));
+	}
 
-    createDefaultUniforms()
-    {
-        return {
-            time:           { value: 0,                     type: "float" },
-            resolution:     { value: new THREE.Vector2(),   type: "vec2" },
-            mouse:          { value: new THREE.Vector2(),   type: "vec2" },
-        }
-    }
+	compile(shader) {
+		if (shader) {
+			this.fragmentShader = shader;
+		}
 
-    appendUniforms()
-    {
-        let declarations = "";
+		this.material = new THREE.ShaderMaterial({ uniforms: this.uniforms });
+		this.material.fragmentShader = this.appendUniforms() + this.fragmentShader;
+		this.material.needsUpdate = true;
+		this.mesh.material = this.material;
+	}
 
-        for( let name in this.uniforms )
-        {
-            let uniform = this.uniforms[name];
-            declarations += "uniform " + uniform.type + " " + name + ";\n";
-        }
+	createDefaultUniforms() {
+		return {
+			time: { value: 0, type: 'float' },
+			resolution: { value: new THREE.Vector2(), type: 'vec2' },
+			mouse: { value: new THREE.Vector2(), type: 'vec2' },
+		};
+	}
 
-        return declarations;
-    }
+	appendUniforms() {
+		let declarations = '';
 
-    addUniform( item )
-    {
-        const name = item.getName();
-        const type = item.getType();
-        const value = item.getValue();
+		for (let name in this.uniforms) {
+			let uniform = this.uniforms[name];
+			declarations += 'uniform ' + uniform.type + ' ' + name + ';\n';
+		}
 
-        if( name in this.uniforms )
-        {
-            return false;
-        }
+		return declarations;
+	}
 
-        switch( type )
-        {
-            case "int":
-            case "float":
-            {
-                this.uniforms[name] = { value: value, type: type };
-                break;
-            }
-            case "vec2":
-            case "vec3":
-            case "vec4":
-            case "mat2":
-            case "mat3":
-            case "mat4":
-            {
-                this.uniforms[name] = { value: value.flat(), type: type };
-                break;
-            }
-            case "color":
-            {
-                this.uniforms[name] = { value: value.flat(), type: "vec3" };
-                break;
-            }
-            case "image":
-            {
-                let texture = new THREE.Texture(value.image);
-                texture.wrapS = value.wrapHorizontal;
-                texture.wrapT = value.wrapVertical;
-                texture.generateMipmaps = false;
-                texture.needsUpdate = true;
-                this.uniforms[name] = { value: texture, type: "sampler2D" };
-                break;
-            }
-            case "webcam":
-            {
-                let texture = new THREE.VideoTexture(value.video);
-                texture.wrapS = value.wrapHorizontal;
-                texture.wrapT = value.wrapVertical;
-                texture.generateMipmaps = false;
-                texture.needsUpdate = true;
-                this.uniforms[name] = { value: texture, type: "sampler2D" };
-                break;
-            }
-            default:
-            {
-                return false;
-            }
-        }
+	addUniform(item) {
+		const name = item.getName();
+		const type = item.getType();
+		const value = item.getValue();
 
-        this.compile();
+		if (name in this.uniforms) {
+			return false;
+		}
 
-        return true;
-    }
+		switch (type) {
+			case 'int':
+			case 'float': {
+				this.uniforms[name] = { value: value, type: type };
+				break;
+			}
+			case 'vec2':
+			case 'vec3':
+			case 'vec4':
+			case 'mat2':
+			case 'mat3':
+			case 'mat4': {
+				this.uniforms[name] = { value: value.flat(), type: type };
+				break;
+			}
+			case 'color': {
+				this.uniforms[name] = { value: value.flat(), type: 'vec3' };
+				break;
+			}
+			case 'image': {
+				let texture = new THREE.Texture(value.image);
+				texture.wrapS = value.wrapHorizontal;
+				texture.wrapT = value.wrapVertical;
+				texture.generateMipmaps = false;
+				texture.needsUpdate = true;
+				this.uniforms[name] = { value: texture, type: 'sampler2D' };
+				break;
+			}
+			case 'webcam': {
+				let texture = new THREE.VideoTexture(value.video);
+				texture.wrapS = value.wrapHorizontal;
+				texture.wrapT = value.wrapVertical;
+				texture.generateMipmaps = false;
+				texture.needsUpdate = true;
+				this.uniforms[name] = { value: texture, type: 'sampler2D' };
+				break;
+			}
+			default: {
+				return false;
+			}
+		}
 
-    setUniform( item )
-    {
-        const name = item.getName();
-        const type = item.getType();
-        const value = item.getValue();
+		this.compile();
 
-        if( !(name in this.uniforms) )
-        {
-            return false;
-        }
+		return true;
+	}
 
-        switch( type )
-        {
-            case "int":
-            case "float":
-            {
-                this.uniforms[name].value = value;
-                break;
-            }
-            case "vec2":
-            case "vec3":
-            case "vec4":
-            case "mat2":
-            case "mat3":
-            case "mat4":
-            case "color":
-            {
-                this.uniforms[name].value = value.flat();
-                break;
-            }
-            case "image":
-            {
-                // After the initial use of a texture, its dimensions, format, and type cannot be changed.
-                // Instead, call .dispose() on the texture and instantiate a new one.
+	setUniform(item) {
+		const name = item.getName();
+		const type = item.getType();
+		const value = item.getValue();
 
-                let texture = this.uniforms[name].value;
-                texture.dispose();
-                delete this.uniforms[name];
-                this.compile();
+		if (!(name in this.uniforms)) {
+			return false;
+		}
 
-                const loader = new THREE.TextureLoader();
-                loader.load(value.image.src,
-                    ( texture ) =>
-                    {
-                        texture.wrapS = value.wrapHorizontal;
-                        texture.wrapT = value.wrapVertical;
-                        texture.generateMipmaps = false;
-                        texture.needsUpdate = true;
-                        this.uniforms[name] = { value: texture, type: "sampler2D" };
-                        this.compile();
-                    },
-                    undefined,
-                    ( error ) =>
-                    {
-                        console.log(error);
-                    }
-                );
+		switch (type) {
+			case 'int':
+			case 'float': {
+				this.uniforms[name].value = value;
+				break;
+			}
+			case 'vec2':
+			case 'vec3':
+			case 'vec4':
+			case 'mat2':
+			case 'mat3':
+			case 'mat4':
+			case 'color': {
+				this.uniforms[name].value = value.flat();
+				break;
+			}
+			case 'image': {
+				// After the initial use of a texture, its dimensions, format, and type cannot be changed.
+				// Instead, call .dispose() on the texture and instantiate a new one.
 
-                break;
-            }
-            case "webcam":
-            {
-                // After the initial use of a texture, its dimensions, format, and type cannot be changed.
-                // Instead, call .dispose() on the texture and instantiate a new one.
+				let texture = this.uniforms[name].value;
+				texture.dispose();
+				delete this.uniforms[name];
+				this.compile();
 
-                let texture = this.uniforms[name].value;
-                texture.dispose();
-                delete this.uniforms[name];
-                this.compile();
+				const loader = new THREE.TextureLoader();
+				loader.load(
+					value.image.src,
+					(texture) => {
+						texture.wrapS = value.wrapHorizontal;
+						texture.wrapT = value.wrapVertical;
+						texture.generateMipmaps = false;
+						texture.needsUpdate = true;
+						this.uniforms[name] = { value: texture, type: 'sampler2D' };
+						this.compile();
+					},
+					undefined,
+					(error) => {
+						console.log(error);
+					},
+				);
 
-                texture = new THREE.VideoTexture(value.video);
-                texture.wrapS = value.wrapHorizontal;
-                texture.wrapT = value.wrapVertical;
-                texture.generateMipmaps = false;
-                texture.needsUpdate = true;
-                this.uniforms[name] = { value: texture, type: "sampler2D" };
-                this.compile();
+				break;
+			}
+			case 'webcam': {
+				// After the initial use of a texture, its dimensions, format, and type cannot be changed.
+				// Instead, call .dispose() on the texture and instantiate a new one.
 
-                break;
-            }
-            default:
-            {
-                return false;
-            }
-        }
+				let texture = this.uniforms[name].value;
+				texture.dispose();
+				delete this.uniforms[name];
+				this.compile();
 
-        this.material.needsUpdate = true;
+				texture = new THREE.VideoTexture(value.video);
+				texture.wrapS = value.wrapHorizontal;
+				texture.wrapT = value.wrapVertical;
+				texture.generateMipmaps = false;
+				texture.needsUpdate = true;
+				this.uniforms[name] = { value: texture, type: 'sampler2D' };
+				this.compile();
 
-        return true;
-    }
+				break;
+			}
+			default: {
+				return false;
+			}
+		}
 
-    deleteUniform( item )
-    {
-        const name = item.getName();
+		this.material.needsUpdate = true;
 
-        if( !(name in this.uniforms) )
-        {
-            return false;
-        }
+		return true;
+	}
 
-        delete this.uniforms[name];
-        this.compile();
+	deleteUniform(item) {
+		const name = item.getName();
 
-        return true;
-    }
+		if (!(name in this.uniforms)) {
+			return false;
+		}
+
+		delete this.uniforms[name];
+		this.compile();
+
+		return true;
+	}
 }
 
-window.customElements.define("render-view", RenderView);
+window.customElements.define('render-view', RenderView);

@@ -1,63 +1,53 @@
-"use strict";
+'use strict';
 
-function App()
-{
-    let loadTheme = function()
-    {
-        if( window.localStorage.getItem("theme") )
-        {
-            return window.localStorage.getItem("theme");
-        }
+function App() {
+	let loadTheme = function () {
+		if (window.localStorage.getItem('theme')) {
+			return window.localStorage.getItem('theme');
+		}
 
-        if( !!window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches )
-        {
-            return "dark";
-        }
+		if (!!window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+			return 'dark';
+		}
 
-        return "light";
-    }
+		return 'light';
+	};
 
-    let saveTheme = function( value )
-    {
-        window.localStorage.setItem("theme", value);
-    }
+	let saveTheme = function (value) {
+		window.localStorage.setItem('theme', value);
+	};
 
-    let toggleTheme = function()
-    {
-        this.theme = (this.theme === "dark") ? "light" : "dark";
-        saveTheme(this.theme);
-    }
+	let toggleTheme = function () {
+		this.theme = this.theme === 'dark' ? 'light' : 'dark';
+		saveTheme(this.theme);
+	};
 
-    let getUser = function()
-    {
-        return this.user;
-    }
+	let getUser = function () {
+		return this.user;
+	};
 
-    let setUser = function( user )
-    {
-        this.user = user || "";
-    }
+	let setUser = function (user) {
+		this.user = user || '';
+	};
 
-    let getAvatar = function()
-    {
-        return "https://avatars.dicebear.com/api/bottts/" + this.user + ".svg"
-    }
+	let getAvatar = function () {
+		return 'https://avatars.dicebear.com/api/bottts/' + this.user + '.svg';
+	};
 
-    this.theme = loadTheme();
+	this.theme = loadTheme();
 
-    return {
-        theme: "dark",
-        user: "",
-        toggleTheme,
-        getUser,
-        setUser,
-        getAvatar
-    }
+	return {
+		theme: 'dark',
+		user: '',
+		toggleTheme,
+		getUser,
+		setUser,
+		getAvatar,
+	};
 }
 
-document.addEventListener("alpine:init", () =>
-{
-    const app = new App();
-    Alpine.store("app", app);
-    window.app = Alpine.store("app");
+document.addEventListener('alpine:init', () => {
+	const app = new App();
+	Alpine.store('app', app);
+	window.app = Alpine.store('app');
 });

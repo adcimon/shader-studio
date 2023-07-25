@@ -1,9 +1,10 @@
-"use strict";
+'use strict';
 
-import { BaseElement } from "./baseElement.js";
+import { BaseElement } from './baseElement.js';
 
-const html = /*html*/
-`
+const html =
+	/*html*/
+	`
 <div
     class="fixed inset-0 z-30 flex items-end bg-black bg-opacity-50 sm:items-center sm:justify-center"
     x-show="visible"
@@ -186,51 +187,44 @@ const html = /*html*/
 </div>
 `;
 
-export class AboutModal extends BaseElement
-{
-    nodeLabel = null;
-    chromeLabel = null;
-    electronLabel = null;
+export class AboutModal extends BaseElement {
+	nodeLabel = null;
+	chromeLabel = null;
+	electronLabel = null;
 
-    constructor()
-    {
-        super();
+	constructor() {
+		super();
 
-        this.state =
-        {
-            close: this.close.bind(this)
-        };
-    }
+		this.state = {
+			close: this.close.bind(this),
+		};
+	}
 
-    connectedCallback()
-    {
-        this.createElement(html);
+	connectedCallback() {
+		this.createElement(html);
 
-        this.nodeLabel = this.querySelector("#nodeLabel");
-        this.chromeLabel = this.querySelector("#chromeLabel");
-        this.electronLabel = this.querySelector("#electronLabel");
+		this.nodeLabel = this.querySelector('#nodeLabel');
+		this.chromeLabel = this.querySelector('#chromeLabel');
+		this.electronLabel = this.querySelector('#electronLabel');
 
-        this.setState(this.state);
-        this.hide();
-        window.aboutModal = this;
-    }
+		this.setState(this.state);
+		this.hide();
+		window.aboutModal = this;
+	}
 
-    open()
-    {
-        this.show();
-    }
+	open() {
+		this.show();
+	}
 
-    close()
-    {
-        this.hide();
-    }
+	close() {
+		this.hide();
+	}
 
-    updateVersions( versions )
-    {
-        this.nodeLabel.innerText = versions.node;
-        this.chromeLabel.innerText = versions.chrome;
-        this.electronLabel.innerText = versions.electron;
-    }
+	updateVersions(versions) {
+		this.nodeLabel.innerText = versions.node;
+		this.chromeLabel.innerText = versions.chrome;
+		this.electronLabel.innerText = versions.electron;
+	}
 }
 
-window.customElements.define("about-modal", AboutModal);
+window.customElements.define('about-modal', AboutModal);

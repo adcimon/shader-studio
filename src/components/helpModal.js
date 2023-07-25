@@ -1,9 +1,10 @@
-"use strict";
+'use strict';
 
-import { BaseElement } from "./baseElement.js";
+import { BaseElement } from './baseElement.js';
 
-const html = /*html*/
-`
+const html =
+	/*html*/
+	`
 <div
     class="fixed inset-0 z-30 flex items-end bg-black bg-opacity-50 sm:items-center sm:justify-center"
     x-show="visible"
@@ -124,36 +125,30 @@ const html = /*html*/
 </div>
 `;
 
-export class HelpModal extends BaseElement
-{
-    constructor()
-    {
-        super();
+export class HelpModal extends BaseElement {
+	constructor() {
+		super();
 
-        this.state =
-        {
-            close: this.close.bind(this)
-        };
-    }
+		this.state = {
+			close: this.close.bind(this),
+		};
+	}
 
-    connectedCallback()
-    {
-        this.createElement(html);
+	connectedCallback() {
+		this.createElement(html);
 
-        this.setState(this.state);
-        this.hide();
-        window.helpModal = this;
-    }
+		this.setState(this.state);
+		this.hide();
+		window.helpModal = this;
+	}
 
-    open()
-    {
-        this.show();
-    }
+	open() {
+		this.show();
+	}
 
-    close()
-    {
-        this.hide();
-    }
+	close() {
+		this.hide();
+	}
 }
 
-window.customElements.define("help-modal", HelpModal);
+window.customElements.define('help-modal', HelpModal);

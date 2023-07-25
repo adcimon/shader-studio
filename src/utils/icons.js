@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 /*
 |--------------------------------------------------------------------------
@@ -9,8 +9,9 @@
 |
 */
 
-const defaultIcon = /*html*/
-`
+const defaultIcon =
+	/*html*/
+	`
 <svg
     class="w-6 h-6"
     fill="none"
@@ -25,8 +26,9 @@ const defaultIcon = /*html*/
 </svg>
 `;
 
-const scalarIcon = /*html*/
-`
+const scalarIcon =
+	/*html*/
+	`
 <svg
     class="w-6 h-6"
     fill="none"
@@ -41,8 +43,9 @@ const scalarIcon = /*html*/
 </svg>
 `;
 
-const vectorIcon = /*html*/
-`
+const vectorIcon =
+	/*html*/
+	`
 <svg
     class="w-6 h-6"
     fill="none"
@@ -57,8 +60,9 @@ const vectorIcon = /*html*/
 </svg>
 `;
 
-const matrixIcon = /*html*/
-`
+const matrixIcon =
+	/*html*/
+	`
 <svg
     class="w-6 h-6"
     fill="none"
@@ -73,8 +77,9 @@ const matrixIcon = /*html*/
 </svg>
 `;
 
-const colorIcon = /*html*/
-`
+const colorIcon =
+	/*html*/
+	`
 <svg
     class="w-6 h-6"
     fill="none"
@@ -95,8 +100,9 @@ const colorIcon = /*html*/
 </svg>
 `;
 
-const imageIcon = /*html*/
-`
+const imageIcon =
+	/*html*/
+	`
 <svg
     class="w-6 h-6"
     fill="none"
@@ -111,8 +117,9 @@ const imageIcon = /*html*/
 </svg>
 `;
 
-const webcamIcon = /*html*/
-`
+const webcamIcon =
+	/*html*/
+	`
 <svg
     class="w-6 h-6"
     fill="none"
@@ -127,8 +134,9 @@ const webcamIcon = /*html*/
 </svg>
 `;
 
-const compileIcon = /*html*/
-`
+const compileIcon =
+	/*html*/
+	`
 <svg
     class="w-6 h-6"
     fill="none"
@@ -143,8 +151,9 @@ const compileIcon = /*html*/
 </svg>
 `;
 
-const saveIcon = /*html*/
-`
+const saveIcon =
+	/*html*/
+	`
 <svg
     class="w-6 h-6"
     fill="none"
@@ -159,8 +168,9 @@ const saveIcon = /*html*/
 </svg>
 `;
 
-const deleteIcon = /*html*/
-`
+const deleteIcon =
+	/*html*/
+	`
 <svg
     class="w-5 h-5"
     fill="currentColor"
@@ -176,36 +186,40 @@ const deleteIcon = /*html*/
 /**
  * Get the corresponding svg icon for each uniform item type.
  */
-function getTypeIcon( type )
-{
-    switch( type )
-    {
-        case "int":
-        case "float":   return scalarIcon;
-        case "vec2":
-        case "vec3":
-        case "vec4":    return vectorIcon;
-        case "mat2":
-        case "mat3":
-        case "mat4":    return matrixIcon;
-        case "color":   return colorIcon;
-        case "image":   return imageIcon;
-        case "webcam":  return webcamIcon;
-        default:        return defaultIcon;
-    }
+function getTypeIcon(type) {
+	switch (type) {
+		case 'int':
+		case 'float':
+			return scalarIcon;
+		case 'vec2':
+		case 'vec3':
+		case 'vec4':
+			return vectorIcon;
+		case 'mat2':
+		case 'mat3':
+		case 'mat4':
+			return matrixIcon;
+		case 'color':
+			return colorIcon;
+		case 'image':
+			return imageIcon;
+		case 'webcam':
+			return webcamIcon;
+		default:
+			return defaultIcon;
+	}
 }
 
-export const Icons =
-{
-    defaultIcon,
-    scalarIcon,
-    vectorIcon,
-    matrixIcon,
-    colorIcon,
-    imageIcon,
-    webcamIcon,
-    compileIcon,
-    saveIcon,
-    deleteIcon,
-    getTypeIcon
-}
+export const Icons = {
+	defaultIcon,
+	scalarIcon,
+	vectorIcon,
+	matrixIcon,
+	colorIcon,
+	imageIcon,
+	webcamIcon,
+	compileIcon,
+	saveIcon,
+	deleteIcon,
+	getTypeIcon,
+};

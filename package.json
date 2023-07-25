@@ -1,32 +1,34 @@
 {
-  "name": "shader-studio",
-  "productName": "Shader Studio",
-  "version": "1.0.1",
-  "description": "Shader Studio",
-  "main": "src/main.js",
-  "scripts": {
-    "start": "electron .",
-    "build": "electron-builder --win portable"
-  },
-  "author": "adcimon",
-  "license": "MIT",
-  "devDependencies": {
-    "electron": "^20.0.2",
-    "electron-builder": "^23.3.3"
-  },
-  "build": {
-    "appId": "shader-studio",
-    "win": {
-        "target": ["nsis"],
-        "icon": "assets/favicon/favicon.ico"
-    },
-    "nsis": {
-        "installerIcon": "assets/favicon/favicon.ico",
-        "uninstallerIcon": "assets/favicon/favicon.ico",
-        "uninstallDisplayName": "Shader Studio",
-        "license": "LICENSE",
-        "oneClick": false,
-        "allowToChangeInstallationDirectory": true
-    }
-  }
+	"name": "shader-studio",
+	"productName": "Shader Studio",
+	"version": "1.0.1",
+	"description": "Shader Studio",
+	"main": "src/main.js",
+	"scripts": {
+		"start": "electron .",
+		"build": "electron-builder --win portable"
+	},
+	"author": "adcimon",
+	"license": "MIT",
+	"devDependencies": {
+		"electron": "^20.0.2",
+		"electron-builder": "^23.3.3"
+	},
+	"build": {
+		"appId": "shader-studio",
+		"win": {
+			"target": [
+				"nsis"
+			],
+			"icon": "assets/favicon/favicon.ico"
+		},
+		"nsis": {
+			"installerIcon": "assets/favicon/favicon.ico",
+			"uninstallerIcon": "assets/favicon/favicon.ico",
+			"uninstallDisplayName": "Shader Studio",
+			"license": "LICENSE",
+			"oneClick": false,
+			"allowToChangeInstallationDirectory": true
+		}
+	}
 }

@@ -1,9 +1,10 @@
-"use strict";
+'use strict';
 
-import { BaseElement } from "./baseElement.js";
+import { BaseElement } from './baseElement.js';
 
-const html = /*html*/
-`
+const html =
+	/*html*/
+	`
 <ul class="flex items-center flex-shrink-0 space-x-6">
     <li class="relative">
 
@@ -101,57 +102,48 @@ const html = /*html*/
 </ul>
 `;
 
-export class ProfileMenu extends BaseElement
-{
-    constructor()
-    {
-        super();
+export class ProfileMenu extends BaseElement {
+	constructor() {
+		super();
 
-        this.state =
-        {
-            folded: true,
-            toggle: this.toggle.bind(this),
-            fold: this.fold.bind(this),
-            theme: this.theme.bind(this),
-            about: this.about.bind(this),
-            help: this.help.bind(this)
-        };
-    }
+		this.state = {
+			folded: true,
+			toggle: this.toggle.bind(this),
+			fold: this.fold.bind(this),
+			theme: this.theme.bind(this),
+			about: this.about.bind(this),
+			help: this.help.bind(this),
+		};
+	}
 
-    connectedCallback()
-    {
-        this.createElement(html);
-        this.classList.add("ml-auto");
-        this.setState(this.state);
-        window.profileMenu = this;
-    }
+	connectedCallback() {
+		this.createElement(html);
+		this.classList.add('ml-auto');
+		this.setState(this.state);
+		window.profileMenu = this;
+	}
 
-    toggle()
-    {
-        this.state.folded = !this.state.folded;
-    }
+	toggle() {
+		this.state.folded = !this.state.folded;
+	}
 
-    fold()
-    {
-        this.state.folded = true;
-    }
+	fold() {
+		this.state.folded = true;
+	}
 
-    theme()
-    {
-        window.app.toggleTheme();
-    }
+	theme() {
+		window.app.toggleTheme();
+	}
 
-    about()
-    {
-        this.fold();
-        window.aboutModal.open();
-    }
+	about() {
+		this.fold();
+		window.aboutModal.open();
+	}
 
-    help()
-    {
-        this.fold();
-        window.helpModal.open();
-    }
+	help() {
+		this.fold();
+		window.helpModal.open();
+	}
 }
 
-window.customElements.define("profile-menu", ProfileMenu);
+window.customElements.define('profile-menu', ProfileMenu);
